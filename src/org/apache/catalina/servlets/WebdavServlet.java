@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/servlets/WebdavServlet.java,v 1.28 2002/04/01 18:12:38 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/servlets/
+ * WebdavServlet.java,v 1.28 2002/04/01 18:12:38 remm Exp $
  * $Revision: 1.28 $
  * $Date: 2002/04/01 18:12:38 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +43,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.servlets;
-
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -96,7 +83,6 @@ import org.apache.catalina.util.XMLWriter;
 import org.apache.catalina.util.DOMWriter;
 import org.apache.catalina.util.RequestUtil;
 
-
 /**
  * Servlet which adds support for WebDAV level 2. All the basic HTTP requests
  * are handled by the DefaultServlet.
@@ -105,12 +91,9 @@ import org.apache.catalina.util.RequestUtil;
  * @version $Revision: 1.28 $ $Date: 2002/04/01 18:12:38 $
  */
 
-public class WebdavServlet
-    extends DefaultServlet {
-
+public class WebdavServlet extends DefaultServlet {
 
     // -------------------------------------------------------------- Constants
-
 
     private static final String METHOD_HEAD = "HEAD";
     private static final String METHOD_PROPFIND = "PROPFIND";
@@ -121,75 +104,62 @@ public class WebdavServlet
     private static final String METHOD_LOCK = "LOCK";
     private static final String METHOD_UNLOCK = "UNLOCK";
 
-
     /**
      * Default depth is infite.
      */
     private static final int INFINITY = 3; // To limit tree browsing a bit
-
 
     /**
      * PROPFIND - Specify a property mask.
      */
     private static final int FIND_BY_PROPERTY = 0;
 
-
     /**
      * PROPFIND - Display all properties.
      */
     private static final int FIND_ALL_PROP = 1;
-
 
     /**
      * PROPFIND - Return property names.
      */
     private static final int FIND_PROPERTY_NAMES = 2;
 
-
     /**
      * Create a new lock.
      */
     private static final int LOCK_CREATION = 0;
-
 
     /**
      * Refresh lock.
      */
     private static final int LOCK_REFRESH = 1;
 
-
     /**
      * Default lock timeout value.
      */
     private static final int DEFAULT_TIMEOUT = 3600;
-
 
     /**
      * Maximum lock timeout.
      */
     private static final int MAX_TIMEOUT = 604800;
 
-
     /**
      * Default namespace.
      */
     protected static final String DEFAULT_NAMESPACE = "DAV:";
 
-
     /**
      * Simple date format for the creation date ISO representation (partial).
      */
-    protected static final SimpleDateFormat creationDateFormat =
-        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
+    protected static final SimpleDateFormat creationDateFormat = new SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     static {
         creationDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Repository of the locks put on single resources.
@@ -198,7 +168,6 @@ public class WebdavServlet
      * Value : LockInfo
      */
     private Hashtable resourceLocks = new Hashtable();
-
 
     /**
      * Repository of the lock-null resources.
@@ -210,7 +179,6 @@ public class WebdavServlet
      */
     private Hashtable lockNullResources = new Hashtable();
 
-
     /**
      * Vector of the heritable locks.
      * <p>
@@ -219,21 +187,17 @@ public class WebdavServlet
      */
     private Vector collectionLocks = new Vector();
 
-
     /**
      * Secret information used to generate reasonably secure lock ids.
      */
     private String secret = "catalina";
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Initialize this servlet.
      */
-    public void init()
-        throws ServletException {
+    public void init() throws ServletException {
 
         super.init();
 
@@ -248,32 +212,28 @@ public class WebdavServlet
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Return JAXP document builder instance.
      */
-    protected DocumentBuilder getDocumentBuilder()
-        throws ServletException {
+    protected DocumentBuilder getDocumentBuilder() throws ServletException {
         DocumentBuilder documentBuilder = null;
         try {
-            documentBuilder = 
-                DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        } catch(ParserConfigurationException e) {
-            throw new ServletException
-                (sm.getString("webdavservlet.jaxpfailed"));
+            documentBuilder = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            throw new ServletException(sm.getString(
+                    "webdavservlet.jaxpfailed"));
         }
         return documentBuilder;
     }
-
 
     /**
      * Handles the special WebDAV methods.
      */
     protected void service(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         String method = req.getMethod();
 
@@ -303,22 +263,21 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Check if the conditions specified in the optional If headers are
      * satisfied.
      *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
+     * @param request      The servlet request we are processing
+     * @param response     The servlet response we are creating
      * @param resourceInfo File object
      * @return boolean true if the resource meets all the specified conditions,
-     * and false if any of the conditions is not satisfied, in which case
-     * request processing is stopped
+     *         and false if any of the conditions is not satisfied, in which
+     *         case
+     *         request processing is stopped
      */
     protected boolean checkIfHeaders(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     ResourceInfo resourceInfo)
-        throws IOException {
+            HttpServletResponse response, ResourceInfo resourceInfo)
+            throws IOException {
 
         if (!super.checkIfHeaders(request, response, resourceInfo))
             return false;
@@ -328,12 +287,11 @@ public class WebdavServlet
 
     }
 
-
     /**
      * OPTIONS Method.
      */
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         String path = getRelativePath(req);
 
@@ -363,7 +321,7 @@ public class WebdavServlet
         }
 
         methodsAllowed = "OPTIONS, GET, HEAD, POST, DELETE, TRACE, "
-            + "PROPFIND, PROPPATCH, COPY, MOVE, LOCK, UNLOCK";
+                + "PROPFIND, PROPPATCH, COPY, MOVE, LOCK, UNLOCK";
         if (!(object instanceof DirContext)) {
             methodsAllowed += ", PUT";
         }
@@ -374,12 +332,11 @@ public class WebdavServlet
 
     }
 
-
     /**
      * PROPFIND Method.
      */
     protected void doPropfind(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         if (!listings) {
             resp.sendError(WebdavStatus.SC_METHOD_NOT_ALLOWED);
@@ -390,8 +347,8 @@ public class WebdavServlet
         if (path.endsWith("/"))
             path = path.substring(0, path.length() - 1);
 
-        if ((path.toUpperCase().startsWith("/WEB-INF")) ||
-            (path.toUpperCase().startsWith("/META-INF"))) {
+        if ((path.toUpperCase().startsWith("/WEB-INF")) || (path.toUpperCase()
+                .startsWith("/META-INF"))) {
             resp.sendError(WebdavStatus.SC_FORBIDDEN);
             return;
         }
@@ -422,33 +379,33 @@ public class WebdavServlet
         DocumentBuilder documentBuilder = getDocumentBuilder();
 
         try {
-            Document document = documentBuilder.parse
-                (new InputSource(req.getInputStream()));
+            Document document = documentBuilder.parse(new InputSource(req
+                    .getInputStream()));
 
             // Get the root element of the document
             Element rootElement = document.getDocumentElement();
             NodeList childList = rootElement.getChildNodes();
 
-            for (int i=0; i < childList.getLength(); i++) {
+            for (int i = 0; i < childList.getLength(); i++) {
                 Node currentNode = childList.item(i);
                 switch (currentNode.getNodeType()) {
-                case Node.TEXT_NODE:
-                    break;
-                case Node.ELEMENT_NODE:
-                    if (currentNode.getNodeName().endsWith("prop")) {
-                        type = FIND_BY_PROPERTY;
-                        propNode = currentNode;
-                    }
-                    if (currentNode.getNodeName().endsWith("propname")) {
-                        type = FIND_PROPERTY_NAMES;
-                    }
-                    if (currentNode.getNodeName().endsWith("allprop")) {
-                        type = FIND_ALL_PROP;
-                    }
-                    break;
+                    case Node.TEXT_NODE:
+                        break;
+                    case Node.ELEMENT_NODE:
+                        if (currentNode.getNodeName().endsWith("prop")) {
+                            type = FIND_BY_PROPERTY;
+                            propNode = currentNode;
+                        }
+                        if (currentNode.getNodeName().endsWith("propname")) {
+                            type = FIND_PROPERTY_NAMES;
+                        }
+                        if (currentNode.getNodeName().endsWith("allprop")) {
+                            type = FIND_ALL_PROP;
+                        }
+                        break;
                 }
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             // Most likely there was no content : we use the defaults.
             // TODO : Enhance that !
         }
@@ -457,23 +414,23 @@ public class WebdavServlet
             properties = new Vector();
             NodeList childList = propNode.getChildNodes();
 
-            for (int i=0; i < childList.getLength(); i++) {
+            for (int i = 0; i < childList.getLength(); i++) {
                 Node currentNode = childList.item(i);
                 switch (currentNode.getNodeType()) {
-                case Node.TEXT_NODE:
-                    break;
-                case Node.ELEMENT_NODE:
-                    String nodeName = currentNode.getNodeName();
-                    String propertyName = null;
-                    if (nodeName.indexOf(':') != -1) {
-                        propertyName = nodeName.substring
-                            (nodeName.indexOf(':') + 1);
-                    } else {
-                        propertyName = nodeName;
-                    }
-                    // href is a live property which is handled differently
-                    properties.addElement(propertyName);
-                    break;
+                    case Node.TEXT_NODE:
+                        break;
+                    case Node.ELEMENT_NODE:
+                        String nodeName = currentNode.getNodeName();
+                        String propertyName = null;
+                        if (nodeName.indexOf(':') != -1) {
+                            propertyName = nodeName.substring(nodeName.indexOf(
+                                    ':') + 1);
+                        } else {
+                            propertyName = nodeName;
+                        }
+                        // href is a live property which is handled differently
+                        properties.addElement(propertyName);
+                        break;
                 }
             }
 
@@ -496,30 +453,28 @@ public class WebdavServlet
             int slash = path.lastIndexOf('/');
             if (slash != -1) {
                 String parentPath = path.substring(0, slash);
-                Vector currentLockNullResources =
-                    (Vector) lockNullResources.get(parentPath);
+                Vector currentLockNullResources = (Vector) lockNullResources
+                        .get(parentPath);
                 if (currentLockNullResources != null) {
-                    Enumeration lockNullResourcesList =
-                        currentLockNullResources.elements();
+                    Enumeration lockNullResourcesList = currentLockNullResources
+                            .elements();
                     while (lockNullResourcesList.hasMoreElements()) {
-                        String lockNullPath = (String)
-                            lockNullResourcesList.nextElement();
+                        String lockNullPath = (String) lockNullResourcesList
+                                .nextElement();
                         if (lockNullPath.equals(path)) {
                             resp.setStatus(WebdavStatus.SC_MULTI_STATUS);
                             resp.setContentType("text/xml; charset=UTF-8");
                             // Create multistatus object
-                            XMLWriter generatedXML = 
-                                new XMLWriter(resp.getWriter());
+                            XMLWriter generatedXML = new XMLWriter(resp
+                                    .getWriter());
                             generatedXML.writeXMLHeader();
-                            generatedXML.writeElement
-                                (null, "multistatus"
-                                 + generateNamespaceDeclarations(),
-                                 XMLWriter.OPENING);
-                            parseLockNullProperties
-                                (req, generatedXML, lockNullPath, type,
-                                 properties);
+                            generatedXML.writeElement(null, "multistatus"
+                                    + generateNamespaceDeclarations(),
+                                    XMLWriter.OPENING);
+                            parseLockNullProperties(req, generatedXML,
+                                    lockNullPath, type, properties);
                             generatedXML.writeElement(null, "multistatus",
-                                                      XMLWriter.CLOSING);
+                                    XMLWriter.CLOSING);
                             generatedXML.sendData();
                             return;
                         }
@@ -542,12 +497,11 @@ public class WebdavServlet
         generatedXML.writeXMLHeader();
 
         generatedXML.writeElement(null, "multistatus"
-                                  + generateNamespaceDeclarations(),
-                                  XMLWriter.OPENING);
+                + generateNamespaceDeclarations(), XMLWriter.OPENING);
 
         if (depth == 0) {
             parseProperties(req, resources, generatedXML, path, type,
-                            properties);
+                    properties);
         } else {
             // The stack always contains the object of the current level
             Stack stack = new Stack();
@@ -559,8 +513,8 @@ public class WebdavServlet
             while ((!stack.isEmpty()) && (depth >= 0)) {
 
                 String currentPath = (String) stack.pop();
-                parseProperties(req, resources, generatedXML, currentPath,
-                                type, properties);
+                parseProperties(req, resources, generatedXML, currentPath, type,
+                        properties);
 
                 try {
                     object = resources.lookup(currentPath);
@@ -573,8 +527,8 @@ public class WebdavServlet
                     try {
                         NamingEnumeration enums = resources.list(currentPath);
                         while (enums.hasMoreElements()) {
-                            NameClassPair ncPair =
-                                (NameClassPair) enums.nextElement();
+                            NameClassPair ncPair = (NameClassPair) enums
+                                    .nextElement();
                             String newPath = currentPath;
                             if (!(newPath.endsWith("/")))
                                 newPath += "/";
@@ -582,9 +536,9 @@ public class WebdavServlet
                             stackBelow.push(newPath);
                         }
                     } catch (NamingException e) {
-                        resp.sendError
-                            (HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                             path);
+                        resp.sendError(
+                                HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                                path);
                         return;
                     }
 
@@ -592,19 +546,17 @@ public class WebdavServlet
                     // collection
                     String lockPath = currentPath;
                     if (lockPath.endsWith("/"))
-                        lockPath = 
-                            lockPath.substring(0, lockPath.length() - 1);
-                    Vector currentLockNullResources =
-                        (Vector) lockNullResources.get(lockPath);
+                        lockPath = lockPath.substring(0, lockPath.length() - 1);
+                    Vector currentLockNullResources = (Vector) lockNullResources
+                            .get(lockPath);
                     if (currentLockNullResources != null) {
-                        Enumeration lockNullResourcesList =
-                            currentLockNullResources.elements();
+                        Enumeration lockNullResourcesList = currentLockNullResources
+                                .elements();
                         while (lockNullResourcesList.hasMoreElements()) {
-                            String lockNullPath = (String)
-                                lockNullResourcesList.nextElement();
-                            parseLockNullProperties
-                                (req, generatedXML, lockNullPath, type,
-                                 properties);
+                            String lockNullPath = (String) lockNullResourcesList
+                                    .nextElement();
+                            parseLockNullProperties(req, generatedXML,
+                                    lockNullPath, type, properties);
                         }
                     }
 
@@ -621,20 +573,17 @@ public class WebdavServlet
             }
         }
 
-        generatedXML.writeElement(null, "multistatus",
-                                  XMLWriter.CLOSING);
+        generatedXML.writeElement(null, "multistatus", XMLWriter.CLOSING);
 
         generatedXML.sendData();
 
     }
 
-
     /**
      * PROPPATCH Method.
      */
-    protected void doProppatch(HttpServletRequest req,
-                               HttpServletResponse resp)
-        throws ServletException, IOException {
+    protected void doProppatch(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
         if (readOnly) {
             resp.sendError(WebdavStatus.SC_FORBIDDEN);
@@ -650,12 +599,11 @@ public class WebdavServlet
 
     }
 
-
     /**
      * MKCOL Method.
      */
     protected void doMkcol(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         if (readOnly) {
             resp.sendError(WebdavStatus.SC_FORBIDDEN);
@@ -669,8 +617,8 @@ public class WebdavServlet
 
         String path = getRelativePath(req);
 
-        if ((path.toUpperCase().startsWith("/WEB-INF")) ||
-            (path.toUpperCase().startsWith("/META-INF"))) {
+        if ((path.toUpperCase().startsWith("/WEB-INF")) || (path.toUpperCase()
+                .startsWith("/META-INF"))) {
             resp.sendError(WebdavStatus.SC_FORBIDDEN);
             return;
         }
@@ -706,9 +654,8 @@ public class WebdavServlet
         }
 
         if (!result) {
-            resp.sendError(WebdavStatus.SC_CONFLICT,
-                           WebdavStatus.getStatusText
-                           (WebdavStatus.SC_CONFLICT));
+            resp.sendError(WebdavStatus.SC_CONFLICT, WebdavStatus.getStatusText(
+                    WebdavStatus.SC_CONFLICT));
         } else {
             resp.setStatus(WebdavStatus.SC_CREATED);
             // Removing any lock-null resource which would be present
@@ -717,12 +664,11 @@ public class WebdavServlet
 
     }
 
-
     /**
      * DELETE Method.
      */
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         if (readOnly) {
             resp.sendError(WebdavStatus.SC_FORBIDDEN);
@@ -738,18 +684,17 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Process a POST request for the specified resource.
      *
-     * @param request The servlet request we are processing
+     * @param request  The servlet request we are processing
      * @param response The servlet response we are creating
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet-specified error occurs
      */
     protected void doPut(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         if (isLocked(req)) {
             resp.sendError(WebdavStatus.SC_LOCKED);
@@ -769,7 +714,7 @@ public class WebdavServlet
      * COPY Method.
      */
     protected void doCopy(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         if (readOnly) {
             resp.sendError(WebdavStatus.SC_FORBIDDEN);
@@ -780,12 +725,11 @@ public class WebdavServlet
 
     }
 
-
     /**
      * MOVE Method.
      */
     protected void doMove(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         if (readOnly) {
             resp.sendError(WebdavStatus.SC_FORBIDDEN);
@@ -805,12 +749,11 @@ public class WebdavServlet
 
     }
 
-
     /**
      * LOCK Method.
      */
     protected void doLock(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         if (readOnly) {
             resp.sendError(WebdavStatus.SC_FORBIDDEN);
@@ -848,15 +791,15 @@ public class WebdavServlet
             lockDuration = DEFAULT_TIMEOUT;
         } else {
             if (lockDurationStr.startsWith("Second-")) {
-                lockDuration =
-                    (new Integer(lockDurationStr.substring(7))).intValue();
+                lockDuration = (new Integer(lockDurationStr.substring(7)))
+                        .intValue();
             } else {
                 if (lockDurationStr.equalsIgnoreCase("infinity")) {
                     lockDuration = MAX_TIMEOUT;
                 } else {
                     try {
-                        lockDuration =
-                            (new Integer(lockDurationStr)).intValue();
+                        lockDuration = (new Integer(lockDurationStr))
+                                .intValue();
                     } catch (NumberFormatException e) {
                         lockDuration = MAX_TIMEOUT;
                     }
@@ -878,13 +821,13 @@ public class WebdavServlet
         DocumentBuilder documentBuilder = getDocumentBuilder();
 
         try {
-            Document document = documentBuilder.parse(new InputSource
-                (req.getInputStream()));
+            Document document = documentBuilder.parse(new InputSource(req
+                    .getInputStream()));
 
             // Get the root element of the document
             Element rootElement = document.getDocumentElement();
             lockInfoNode = rootElement;
-        } catch(Exception e) {
+        } catch (Exception e) {
             lockRequestType = LOCK_REFRESH;
         }
 
@@ -900,43 +843,43 @@ public class WebdavServlet
             Node lockTypeNode = null;
             Node lockOwnerNode = null;
 
-            for (int i=0; i < childList.getLength(); i++) {
+            for (int i = 0; i < childList.getLength(); i++) {
                 Node currentNode = childList.item(i);
                 switch (currentNode.getNodeType()) {
-                case Node.TEXT_NODE:
-                    break;
-                case Node.ELEMENT_NODE:
-                    String nodeName = currentNode.getNodeName();
-                    if (nodeName.endsWith("lockscope")) {
-                        lockScopeNode = currentNode;
-                    }
-                    if (nodeName.endsWith("locktype")) {
-                        lockTypeNode = currentNode;
-                    }
-                    if (nodeName.endsWith("owner")) {
-                        lockOwnerNode = currentNode;
-                    }
-                    break;
+                    case Node.TEXT_NODE:
+                        break;
+                    case Node.ELEMENT_NODE:
+                        String nodeName = currentNode.getNodeName();
+                        if (nodeName.endsWith("lockscope")) {
+                            lockScopeNode = currentNode;
+                        }
+                        if (nodeName.endsWith("locktype")) {
+                            lockTypeNode = currentNode;
+                        }
+                        if (nodeName.endsWith("owner")) {
+                            lockOwnerNode = currentNode;
+                        }
+                        break;
                 }
             }
 
             if (lockScopeNode != null) {
 
                 childList = lockScopeNode.getChildNodes();
-                for (int i=0; i < childList.getLength(); i++) {
+                for (int i = 0; i < childList.getLength(); i++) {
                     Node currentNode = childList.item(i);
                     switch (currentNode.getNodeType()) {
-                    case Node.TEXT_NODE:
-                        break;
-                    case Node.ELEMENT_NODE:
-                        String tempScope = currentNode.getNodeName();
-                        if (tempScope.indexOf(':') != -1) {
-                            lock.scope = tempScope.substring
-                                (tempScope.indexOf(':') + 1);
-                        } else {
-                            lock.scope = tempScope;
-                        }
-                        break;
+                        case Node.TEXT_NODE:
+                            break;
+                        case Node.ELEMENT_NODE:
+                            String tempScope = currentNode.getNodeName();
+                            if (tempScope.indexOf(':') != -1) {
+                                lock.scope = tempScope.substring(tempScope
+                                        .indexOf(':') + 1);
+                            } else {
+                                lock.scope = tempScope;
+                            }
+                            break;
                     }
                 }
 
@@ -953,20 +896,20 @@ public class WebdavServlet
             if (lockTypeNode != null) {
 
                 childList = lockTypeNode.getChildNodes();
-                for (int i=0; i < childList.getLength(); i++) {
+                for (int i = 0; i < childList.getLength(); i++) {
                     Node currentNode = childList.item(i);
                     switch (currentNode.getNodeType()) {
-                    case Node.TEXT_NODE:
-                        break;
-                    case Node.ELEMENT_NODE:
-                        String tempType = currentNode.getNodeName();
-                        if (tempType.indexOf(':') != -1) {
-                            lock.type =
-                                tempType.substring(tempType.indexOf(':') + 1);
-                        } else {
-                            lock.type = tempType;
-                        }
-                        break;
+                        case Node.TEXT_NODE:
+                            break;
+                        case Node.ELEMENT_NODE:
+                            String tempType = currentNode.getNodeName();
+                            if (tempType.indexOf(':') != -1) {
+                                lock.type = tempType.substring(tempType.indexOf(
+                                        ':') + 1);
+                            } else {
+                                lock.type = tempType;
+                            }
+                            break;
                     }
                 }
 
@@ -983,18 +926,18 @@ public class WebdavServlet
             if (lockOwnerNode != null) {
 
                 childList = lockOwnerNode.getChildNodes();
-                for (int i=0; i < childList.getLength(); i++) {
+                for (int i = 0; i < childList.getLength(); i++) {
                     Node currentNode = childList.item(i);
                     switch (currentNode.getNodeType()) {
-                    case Node.TEXT_NODE:
-                        lock.owner += currentNode.getNodeValue();
-                        break;
-                    case Node.ELEMENT_NODE:
-                        strWriter = new StringWriter();
-                        domWriter = new DOMWriter(strWriter, true);
-                        domWriter.print(currentNode);
-                        lock.owner += strWriter.toString();
-                        break;
+                        case Node.TEXT_NODE:
+                            lock.owner += currentNode.getNodeValue();
+                            break;
+                        case Node.ELEMENT_NODE:
+                            strWriter = new StringWriter();
+                            domWriter = new DOMWriter(strWriter, true);
+                            domWriter.print(currentNode);
+                            lock.owner += strWriter.toString();
+                            break;
                     }
                 }
 
@@ -1035,15 +978,15 @@ public class WebdavServlet
 
             // Generating lock id
             String lockTokenStr = req.getServletPath() + "-" + lock.type + "-"
-                + lock.scope + "-" + req.getUserPrincipal() + "-"
-                + lock.depth + "-" + lock.owner + "-" + lock.tokens + "-"
-                + lock.expiresAt + "-" + System.currentTimeMillis() + "-"
-                + secret;
-            String lockToken =
-                md5Encoder.encode(md5Helper.digest(lockTokenStr.getBytes()));
+                    + lock.scope + "-" + req.getUserPrincipal() + "-"
+                    + lock.depth + "-" + lock.owner + "-" + lock.tokens + "-"
+                    + lock.expiresAt + "-" + System.currentTimeMillis() + "-"
+                    + secret;
+            String lockToken = md5Encoder.encode(md5Helper.digest(lockTokenStr
+                    .getBytes()));
 
-            if ( (exists) && (object instanceof DirContext) &&
-                 (lock.depth == INFINITY) ) {
+            if ((exists) && (object instanceof DirContext)
+                    && (lock.depth == INFINITY)) {
 
                 // Locking a collection (and all its member resources)
 
@@ -1057,9 +1000,9 @@ public class WebdavServlet
                         resourceLocks.remove(currentLock.path);
                         continue;
                     }
-                    if ( (currentLock.path.startsWith(lock.path)) &&
-                         ((currentLock.isExclusive()) ||
-                          (lock.isExclusive())) ) {
+                    if ((currentLock.path.startsWith(lock.path))
+                            && ((currentLock.isExclusive()) || (lock
+                                    .isExclusive()))) {
                         // A child collection of this collection is locked
                         lockPaths.addElement(currentLock.path);
                     }
@@ -1071,9 +1014,9 @@ public class WebdavServlet
                         resourceLocks.remove(currentLock.path);
                         continue;
                     }
-                    if ( (currentLock.path.startsWith(lock.path)) &&
-                         ((currentLock.isExclusive()) ||
-                          (lock.isExclusive())) ) {
+                    if ((currentLock.path.startsWith(lock.path))
+                            && ((currentLock.isExclusive()) || (lock
+                                    .isExclusive()))) {
                         // A child resource of this collection is locked
                         lockPaths.addElement(currentLock.path);
                     }
@@ -1091,34 +1034,33 @@ public class WebdavServlet
                     XMLWriter generatedXML = new XMLWriter();
                     generatedXML.writeXMLHeader();
 
-                    generatedXML.writeElement
-                        (null, "multistatus" + generateNamespaceDeclarations(),
-                         XMLWriter.OPENING);
+                    generatedXML.writeElement(null, "multistatus"
+                            + generateNamespaceDeclarations(),
+                            XMLWriter.OPENING);
 
                     while (lockPathsList.hasMoreElements()) {
                         generatedXML.writeElement(null, "response",
-                                                  XMLWriter.OPENING);
+                                XMLWriter.OPENING);
                         generatedXML.writeElement(null, "href",
-                                                  XMLWriter.OPENING);
-                        generatedXML
-                            .writeText((String) lockPathsList.nextElement());
+                                XMLWriter.OPENING);
+                        generatedXML.writeText((String) lockPathsList
+                                .nextElement());
                         generatedXML.writeElement(null, "href",
-                                                  XMLWriter.CLOSING);
+                                XMLWriter.CLOSING);
                         generatedXML.writeElement(null, "status",
-                                                  XMLWriter.OPENING);
-                        generatedXML
-                            .writeText("HTTP/1.1 " + WebdavStatus.SC_LOCKED
-                                       + " " + WebdavStatus
-                                       .getStatusText(WebdavStatus.SC_LOCKED));
+                                XMLWriter.OPENING);
+                        generatedXML.writeText("HTTP/1.1 "
+                                + WebdavStatus.SC_LOCKED + " " + WebdavStatus
+                                        .getStatusText(WebdavStatus.SC_LOCKED));
                         generatedXML.writeElement(null, "status",
-                                                  XMLWriter.CLOSING);
+                                XMLWriter.CLOSING);
 
                         generatedXML.writeElement(null, "response",
-                                                  XMLWriter.CLOSING);
+                                XMLWriter.CLOSING);
                     }
 
                     generatedXML.writeElement(null, "multistatus",
-                                          XMLWriter.CLOSING);
+                            XMLWriter.CLOSING);
 
                     Writer writer = resp.getWriter();
                     writer.write(generatedXML.toString());
@@ -1196,8 +1138,8 @@ public class WebdavServlet
                         int slash = lock.path.lastIndexOf('/');
                         String parentPath = lock.path.substring(0, slash);
 
-                        Vector lockNulls =
-                            (Vector) lockNullResources.get(parentPath);
+                        Vector lockNulls = (Vector) lockNullResources.get(
+                                parentPath);
                         if (lockNulls == null) {
                             lockNulls = new Vector();
                             lockNullResources.put(parentPath, lockNulls);
@@ -1264,16 +1206,13 @@ public class WebdavServlet
         XMLWriter generatedXML = new XMLWriter();
         generatedXML.writeXMLHeader();
         generatedXML.writeElement(null, "prop"
-                                  + generateNamespaceDeclarations(),
-                                  XMLWriter.OPENING);
+                + generateNamespaceDeclarations(), XMLWriter.OPENING);
 
-        generatedXML.writeElement(null, "lockdiscovery",
-                                  XMLWriter.OPENING);
+        generatedXML.writeElement(null, "lockdiscovery", XMLWriter.OPENING);
 
         lock.toXML(generatedXML, true);
 
-        generatedXML.writeElement(null, "lockdiscovery",
-                                  XMLWriter.CLOSING);
+        generatedXML.writeElement(null, "lockdiscovery", XMLWriter.CLOSING);
 
         generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
 
@@ -1285,12 +1224,11 @@ public class WebdavServlet
 
     }
 
-
     /**
      * UNLOCK Method.
      */
     protected void doUnlock(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         if (readOnly) {
             resp.sendError(WebdavStatus.SC_FORBIDDEN);
@@ -1361,14 +1299,11 @@ public class WebdavServlet
 
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     protected String getETagValue(ResourceInfo resourceInfo) {
         return resourceInfo.length + "-" + resourceInfo.date;
     }
-
 
     /**
      * Generate the namespace declarations.
@@ -1377,7 +1312,6 @@ public class WebdavServlet
         return " xmlns=\"" + DEFAULT_NAMESPACE + "\"";
     }
 
-
     /**
      * Check to see if a resource is currently write locked. The method
      * will look at the "If" header to make sure the client
@@ -1385,8 +1319,9 @@ public class WebdavServlet
      *
      * @param req Servlet request
      * @return boolean true if the resource is locked (and no appropriate
-     * lock token has been found for at least one of the non-shared locks which
-     * are present on the resource).
+     *         lock token has been found for at least one of the non-shared
+     *         locks which
+     *         are present on the resource).
      */
     private boolean isLocked(HttpServletRequest req) {
 
@@ -1404,15 +1339,15 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Check to see if a resource is currently write locked.
      *
-     * @param path Path of the resource
+     * @param path     Path of the resource
      * @param ifHeader "If" HTTP header which was included in the request
      * @return boolean true if the resource is locked (and no appropriate
-     * lock token has been found for at least one of the non-shared locks which
-     * are present on the resource).
+     *         lock token has been found for at least one of the non-shared
+     *         locks which
+     *         are present on the resource).
      */
     private boolean isLocked(String path, String ifHeader) {
 
@@ -1464,17 +1399,15 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Copy a resource.
      *
-     * @param req Servlet request
+     * @param req  Servlet request
      * @param resp Servlet response
      * @return boolean true if the copy is successful
      */
     private boolean copyResource(HttpServletRequest req,
-                                 HttpServletResponse resp)
-        throws ServletException, IOException {
+            HttpServletResponse resp) throws ServletException, IOException {
 
         // Parsing destination header
 
@@ -1489,8 +1422,8 @@ public class WebdavServlet
         if (protocolIndex >= 0) {
             // if the Destination URL contains the protocol, we can safely
             // trim everything upto the first "/" character after "://"
-            int firstSeparator =
-                destinationPath.indexOf("/", protocolIndex + 4);
+            int firstSeparator = destinationPath.indexOf("/", protocolIndex
+                    + 4);
             if (firstSeparator < 0) {
                 destinationPath = "/";
             } else {
@@ -1512,44 +1445,43 @@ public class WebdavServlet
                 if (firstSeparator < 0) {
                     destinationPath = "/";
                 } else {
-                    destinationPath = 
-                        destinationPath.substring(firstSeparator);
+                    destinationPath = destinationPath.substring(firstSeparator);
                 }
             }
         }
 
         String contextPath = req.getContextPath();
-        if ((contextPath != null) &&
-            (destinationPath.startsWith(contextPath))) {
+        if ((contextPath != null) && (destinationPath.startsWith(
+                contextPath))) {
             destinationPath = destinationPath.substring(contextPath.length());
         }
 
         String pathInfo = req.getPathInfo();
         if (pathInfo != null) {
             String servletPath = req.getServletPath();
-            if ((servletPath != null) &&
-                (destinationPath.startsWith(servletPath))) {
-                destinationPath = destinationPath
-                    .substring(servletPath.length());
+            if ((servletPath != null) && (destinationPath.startsWith(
+                    servletPath))) {
+                destinationPath = destinationPath.substring(servletPath
+                        .length());
             }
         }
 
-        destinationPath = 
-            RequestUtil.URLDecode(normalize(destinationPath), "UTF8");
+        destinationPath = RequestUtil.URLDecode(normalize(destinationPath),
+                "UTF8");
 
         if (debug > 0)
             System.out.println("Dest path :" + destinationPath);
 
-        if ((destinationPath.toUpperCase().startsWith("/WEB-INF")) ||
-            (destinationPath.toUpperCase().startsWith("/META-INF"))) {
+        if ((destinationPath.toUpperCase().startsWith("/WEB-INF"))
+                || (destinationPath.toUpperCase().startsWith("/META-INF"))) {
             resp.sendError(WebdavStatus.SC_FORBIDDEN);
             return false;
         }
 
         String path = getRelativePath(req);
 
-        if ((path.toUpperCase().startsWith("/WEB-INF")) ||
-            (path.toUpperCase().startsWith("/META-INF"))) {
+        if ((path.toUpperCase().startsWith("/WEB-INF")) || (path.toUpperCase()
+                .startsWith("/META-INF"))) {
             resp.sendError(WebdavStatus.SC_FORBIDDEN);
             return false;
         }
@@ -1616,8 +1548,8 @@ public class WebdavServlet
 
         Hashtable errorList = new Hashtable();
 
-        boolean result = copyResource(resources, errorList,
-                                      path, destinationPath);
+        boolean result = copyResource(resources, errorList, path,
+                destinationPath);
 
         if ((!result) || (!errorList.isEmpty())) {
 
@@ -1634,18 +1566,17 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Copy a collection.
      *
      * @param resources Resources implementation to be used
      * @param errorList Hashtable containing the list of errors which occurred
-     * during the copy operation
-     * @param source Path of the resource to be copied
-     * @param dest Destination path
+     *                  during the copy operation
+     * @param source    Path of the resource to be copied
+     * @param dest      Destination path
      */
     private boolean copyResource(DirContext resources, Hashtable errorList,
-                                 String source, String dest) {
+            String source, String dest) {
 
         if (debug > 1)
             System.out.println("Copy: " + source + " To: " + dest);
@@ -1661,8 +1592,7 @@ public class WebdavServlet
             try {
                 resources.createSubcontext(dest);
             } catch (NamingException e) {
-                errorList.put
-                    (dest, new Integer(WebdavStatus.SC_CONFLICT));
+                errorList.put(dest, new Integer(WebdavStatus.SC_CONFLICT));
                 return false;
             }
 
@@ -1681,8 +1611,8 @@ public class WebdavServlet
                     copyResource(resources, errorList, childSrc, childDest);
                 }
             } catch (NamingException e) {
-                errorList.put
-                    (dest, new Integer(WebdavStatus.SC_INTERNAL_SERVER_ERROR));
+                errorList.put(dest, new Integer(
+                        WebdavStatus.SC_INTERNAL_SERVER_ERROR));
                 return false;
             }
 
@@ -1692,15 +1622,13 @@ public class WebdavServlet
                 try {
                     resources.bind(dest, object);
                 } catch (NamingException e) {
-                    errorList.put
-                        (source,
-                         new Integer(WebdavStatus.SC_INTERNAL_SERVER_ERROR));
+                    errorList.put(source, new Integer(
+                            WebdavStatus.SC_INTERNAL_SERVER_ERROR));
                     return false;
                 }
             } else {
-                errorList.put
-                    (source,
-                     new Integer(WebdavStatus.SC_INTERNAL_SERVER_ERROR));
+                errorList.put(source, new Integer(
+                        WebdavStatus.SC_INTERNAL_SERVER_ERROR));
                 return false;
             }
 
@@ -1710,17 +1638,15 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Delete a resource.
      *
-     * @param req Servlet request
+     * @param req  Servlet request
      * @param resp Servlet response
      * @return boolean true if the copy is successful
      */
     private boolean deleteResource(HttpServletRequest req,
-                                   HttpServletResponse resp)
-        throws ServletException, IOException {
+            HttpServletResponse resp) throws ServletException, IOException {
 
         String path = getRelativePath(req);
 
@@ -1728,20 +1654,18 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Delete a resource.
      *
      * @param path Path of the resource which is to be deleted
-     * @param req Servlet request
+     * @param req  Servlet request
      * @param resp Servlet response
      */
     private boolean deleteResource(String path, HttpServletRequest req,
-                                   HttpServletResponse resp)
-        throws ServletException, IOException {
+            HttpServletResponse resp) throws ServletException, IOException {
 
-        if ((path.toUpperCase().startsWith("/WEB-INF")) ||
-            (path.toUpperCase().startsWith("/META-INF"))) {
+        if ((path.toUpperCase().startsWith("/WEB-INF")) || (path.toUpperCase()
+                .startsWith("/META-INF"))) {
             resp.sendError(WebdavStatus.SC_FORBIDDEN);
             return false;
         }
@@ -1797,8 +1721,8 @@ public class WebdavServlet
             try {
                 resources.unbind(path);
             } catch (NamingException e) {
-                errorList.put(path, new Integer
-                    (WebdavStatus.SC_INTERNAL_SERVER_ERROR));
+                errorList.put(path, new Integer(
+                        WebdavStatus.SC_INTERNAL_SERVER_ERROR));
             }
 
             if (!errorList.isEmpty()) {
@@ -1815,23 +1739,21 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Deletes a collection.
      *
      * @param resources Resources implementation associated with the context
-     * @param path Path to the collection to be deleted
+     * @param path      Path to the collection to be deleted
      * @param errorList Contains the list of the errors which occurred
      */
-    private void deleteCollection(HttpServletRequest req,
-                                  DirContext resources,
-                                  String path, Hashtable errorList) {
+    private void deleteCollection(HttpServletRequest req, DirContext resources,
+            String path, Hashtable errorList) {
 
         if (debug > 1)
             System.out.println("Delete:" + path);
 
-        if ((path.toUpperCase().startsWith("/WEB-INF")) ||
-            (path.toUpperCase().startsWith("/META-INF"))) {
+        if ((path.toUpperCase().startsWith("/WEB-INF")) || (path.toUpperCase()
+                .startsWith("/META-INF"))) {
             errorList.put(path, new Integer(WebdavStatus.SC_FORBIDDEN));
             return;
         }
@@ -1846,10 +1768,10 @@ public class WebdavServlet
 
         Enumeration enums = null;
         try {
-        	enums = resources.list(path);
+            enums = resources.list(path);
         } catch (NamingException e) {
-            errorList.put(path, new Integer
-                (WebdavStatus.SC_INTERNAL_SERVER_ERROR));
+            errorList.put(path, new Integer(
+                    WebdavStatus.SC_INTERNAL_SERVER_ERROR));
             return;
         }
 
@@ -1878,15 +1800,13 @@ public class WebdavServlet
                         if (!(object instanceof DirContext)) {
                             // If it's not a collection, then it's an unknown
                             // error
-                            errorList.put
-                                (childName, new Integer
-                                    (WebdavStatus.SC_INTERNAL_SERVER_ERROR));
+                            errorList.put(childName, new Integer(
+                                    WebdavStatus.SC_INTERNAL_SERVER_ERROR));
                         }
                     }
                 } catch (NamingException e) {
-                    errorList.put
-                        (childName, new Integer
-                            (WebdavStatus.SC_INTERNAL_SERVER_ERROR));
+                    errorList.put(childName, new Integer(
+                            WebdavStatus.SC_INTERNAL_SERVER_ERROR));
                 }
             }
 
@@ -1894,18 +1814,16 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Send a multistatus element containing a complete error report to the
      * client.
      *
-     * @param req Servlet request
-     * @param resp Servlet response
+     * @param req       Servlet request
+     * @param resp      Servlet response
      * @param errorList List of error to be displayed
      */
     private void sendReport(HttpServletRequest req, HttpServletResponse resp,
-                            Hashtable errorList)
-        throws ServletException, IOException {
+            Hashtable errorList) throws ServletException, IOException {
 
         resp.setStatus(WebdavStatus.SC_MULTI_STATUS);
 
@@ -1916,8 +1834,7 @@ public class WebdavServlet
         generatedXML.writeXMLHeader();
 
         generatedXML.writeElement(null, "multistatus"
-                                  + generateNamespaceDeclarations(),
-                                  XMLWriter.OPENING);
+                + generateNamespaceDeclarations(), XMLWriter.OPENING);
 
         Enumeration pathList = errorList.keys();
         while (pathList.hasMoreElements()) {
@@ -1934,9 +1851,8 @@ public class WebdavServlet
             generatedXML.writeText(absoluteUri + toAppend);
             generatedXML.writeElement(null, "href", XMLWriter.CLOSING);
             generatedXML.writeElement(null, "status", XMLWriter.OPENING);
-            generatedXML
-                .writeText("HTTP/1.1 " + errorCode + " "
-                           + WebdavStatus.getStatusText(errorCode));
+            generatedXML.writeText("HTTP/1.1 " + errorCode + " " + WebdavStatus
+                    .getStatusText(errorCode));
             generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
 
             generatedXML.writeElement(null, "response", XMLWriter.CLOSING);
@@ -1951,34 +1867,31 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Propfind helper method.
      *
-     * @param resources Resources object associated with this context
-     * @param generatedXML XML response to the Propfind request
-     * @param path Path of the current resource
-     * @param type Propfind type
+     * @param resources        Resources object associated with this context
+     * @param generatedXML     XML response to the Propfind request
+     * @param path             Path of the current resource
+     * @param type             Propfind type
      * @param propertiesVector If the propfind type is find properties by
-     * name, then this Vector contains those properties
+     *                         name, then this Vector contains those properties
      */
-    private void parseProperties(HttpServletRequest req,
-                                 DirContext resources, XMLWriter generatedXML,
-                                 String path, int type,
-                                 Vector propertiesVector) {
+    private void parseProperties(HttpServletRequest req, DirContext resources,
+            XMLWriter generatedXML, String path, int type,
+            Vector propertiesVector) {
 
         // Exclude any resource in the /WEB-INF and /META-INF subdirectories
         // (the "toUpperCase()" avoids problems on Windows systems)
-        if (path.toUpperCase().startsWith("/WEB-INF") ||
-            path.toUpperCase().startsWith("/META-INF"))
+        if (path.toUpperCase().startsWith("/WEB-INF") || path.toUpperCase()
+                .startsWith("/META-INF"))
             return;
 
         ResourceInfo resourceInfo = new ResourceInfo(path, resources);
 
         generatedXML.writeElement(null, "response", XMLWriter.OPENING);
         String status = new String("HTTP/1.1 " + WebdavStatus.SC_OK + " "
-                                   + WebdavStatus.getStatusText
-                                   (WebdavStatus.SC_OK));
+                + WebdavStatus.getStatusText(WebdavStatus.SC_OK));
 
         // Generating href element
         generatedXML.writeElement(null, "href", XMLWriter.OPENING);
@@ -2002,222 +1915,193 @@ public class WebdavServlet
 
         switch (type) {
 
-        case FIND_ALL_PROP :
-
-            generatedXML.writeElement(null, "propstat", XMLWriter.OPENING);
-            generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
-
-            generatedXML.writeProperty
-                (null, "creationdate",
-                 getISOCreationDate(resourceInfo.creationDate));
-            generatedXML.writeElement(null, "displayname", XMLWriter.OPENING);
-            generatedXML.writeData(resourceName);
-            generatedXML.writeElement(null, "displayname", XMLWriter.CLOSING);
-            generatedXML.writeProperty(null, "getcontentlanguage",
-                                       Locale.getDefault().toString());
-            if (!resourceInfo.collection) {
-                generatedXML.writeProperty
-                    (null, "getlastmodified", resourceInfo.httpDate);
-                generatedXML.writeProperty
-                    (null, "getcontentlength",
-                     String.valueOf(resourceInfo.length));
-                generatedXML.writeProperty
-                    (null, "getcontenttype",
-                     getServletContext().getMimeType(resourceInfo.path));
-                generatedXML.writeProperty(null, "getetag",
-                                           getETagValue(resourceInfo));
-                generatedXML.writeElement(null, "resourcetype",
-                                          XMLWriter.NO_CONTENT);
-            } else {
-                generatedXML.writeElement(null, "resourcetype",
-                                          XMLWriter.OPENING);
-                generatedXML.writeElement(null, "collection",
-                                          XMLWriter.NO_CONTENT);
-                generatedXML.writeElement(null, "resourcetype",
-                                          XMLWriter.CLOSING);
-            }
-
-            generatedXML.writeProperty(null, "source", "");
-
-            String supportedLocks = "<lockentry>"
-                + "<lockscope><exclusive/></lockscope>"
-                + "<locktype><write/></locktype>"
-                + "</lockentry>" + "<lockentry>"
-                + "<lockscope><shared/></lockscope>"
-                + "<locktype><write/></locktype>"
-                + "</lockentry>";
-            generatedXML.writeElement(null, "supportedlock",
-                                      XMLWriter.OPENING);
-            generatedXML.writeText(supportedLocks);
-            generatedXML.writeElement(null, "supportedlock",
-                                      XMLWriter.CLOSING);
-
-            generateLockDiscovery(path, generatedXML);
-
-            generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
-            generatedXML.writeElement(null, "status", XMLWriter.OPENING);
-            generatedXML.writeText(status);
-            generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
-            generatedXML.writeElement(null, "propstat", XMLWriter.CLOSING);
-
-            break;
-
-        case FIND_PROPERTY_NAMES :
-
-            generatedXML.writeElement(null, "propstat", XMLWriter.OPENING);
-            generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
-
-            generatedXML.writeElement(null, "creationdate",
-                                      XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "displayname",
-                                      XMLWriter.NO_CONTENT);
-            if (!resourceInfo.collection) {
-                generatedXML.writeElement(null, "getcontentlanguage",
-                                          XMLWriter.NO_CONTENT);
-                generatedXML.writeElement(null, "getcontentlength",
-                                          XMLWriter.NO_CONTENT);
-                generatedXML.writeElement(null, "getcontenttype",
-                                          XMLWriter.NO_CONTENT);
-                generatedXML.writeElement(null, "getetag",
-                                          XMLWriter.NO_CONTENT);
-                generatedXML.writeElement(null, "getlastmodified",
-                                          XMLWriter.NO_CONTENT);
-            }
-            generatedXML.writeElement(null, "resourcetype",
-                                      XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "source", XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "lockdiscovery",
-                                      XMLWriter.NO_CONTENT);
-
-            generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
-            generatedXML.writeElement(null, "status", XMLWriter.OPENING);
-            generatedXML.writeText(status);
-            generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
-            generatedXML.writeElement(null, "propstat", XMLWriter.CLOSING);
-
-            break;
-
-        case FIND_BY_PROPERTY :
-
-            Vector propertiesNotFound = new Vector();
-
-            // Parse the list of properties
-
-            generatedXML.writeElement(null, "propstat", XMLWriter.OPENING);
-            generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
-
-            Enumeration properties = propertiesVector.elements();
-
-            while (properties.hasMoreElements()) {
-
-                String property = (String) properties.nextElement();
-
-                if (property.equals("creationdate")) {
-                    generatedXML.writeProperty
-                        (null, "creationdate",
-                         getISOCreationDate(resourceInfo.creationDate));
-                } else if (property.equals("displayname")) {
-                    generatedXML.writeElement
-                        (null, "displayname", XMLWriter.OPENING);
-                    generatedXML.writeData(resourceName);
-                    generatedXML.writeElement
-                        (null, "displayname", XMLWriter.CLOSING);
-                } else if (property.equals("getcontentlanguage")) {
-                    if (resourceInfo.collection) {
-                        propertiesNotFound.addElement(property);
-                    } else {
-                        generatedXML.writeProperty
-                            (null, "getcontentlanguage",
-                             Locale.getDefault().toString());
-                    }
-                } else if (property.equals("getcontentlength")) {
-                    if (resourceInfo.collection) {
-                        propertiesNotFound.addElement(property);
-                    } else {
-                        generatedXML.writeProperty
-                            (null, "getcontentlength",
-                             (String.valueOf(resourceInfo.length)));
-                    }
-                } else if (property.equals("getcontenttype")) {
-                    if (resourceInfo.collection) {
-                        propertiesNotFound.addElement(property);
-                    } else {
-                        generatedXML.writeProperty
-                            (null, "getcontenttype",
-                             getServletContext().getMimeType
-                             (resourceInfo.path));
-                    }
-                } else if (property.equals("getetag")) {
-                    if (resourceInfo.collection) {
-                        propertiesNotFound.addElement(property);
-                    } else {
-                        generatedXML.writeProperty
-                            (null, "getetag", getETagValue(resourceInfo));
-                    }
-                } else if (property.equals("getlastmodified")) {
-                    if (resourceInfo.collection) {
-                        propertiesNotFound.addElement(property);
-                    } else {
-                        generatedXML.writeProperty
-                            (null, "getlastmodified", resourceInfo.httpDate);
-                    }
-                } else if (property.equals("resourcetype")) {
-                    if (resourceInfo.collection) {
-                        generatedXML.writeElement(null, "resourcetype",
-                                                  XMLWriter.OPENING);
-                        generatedXML.writeElement(null, "collection",
-                                                  XMLWriter.NO_CONTENT);
-                        generatedXML.writeElement(null, "resourcetype",
-                                                  XMLWriter.CLOSING);
-                    } else {
-                        generatedXML.writeElement(null, "resourcetype",
-                                                  XMLWriter.NO_CONTENT);
-                    }
-                } else if (property.equals("source")) {
-                    generatedXML.writeProperty(null, "source", "");
-                } else if (property.equals("supportedlock")) {
-                    supportedLocks = "<lockentry>"
-                        + "<lockscope><exclusive/></lockscope>"
-                        + "<locktype><write/></locktype>"
-                        + "</lockentry>" + "<lockentry>"
-                        + "<lockscope><shared/></lockscope>"
-                        + "<locktype><write/></locktype>"
-                        + "</lockentry>";
-                    generatedXML.writeElement(null, "supportedlock",
-                                              XMLWriter.OPENING);
-                    generatedXML.writeText(supportedLocks);
-                    generatedXML.writeElement(null, "supportedlock",
-                                              XMLWriter.CLOSING);
-                } else if (property.equals("lockdiscovery")) {
-                    if (!generateLockDiscovery(path, generatedXML))
-                        propertiesNotFound.addElement(property);
-                } else {
-                    propertiesNotFound.addElement(property);
-                }
-
-            }
-
-            generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
-            generatedXML.writeElement(null, "status", XMLWriter.OPENING);
-            generatedXML.writeText(status);
-            generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
-            generatedXML.writeElement(null, "propstat", XMLWriter.CLOSING);
-
-            Enumeration propertiesNotFoundList = propertiesNotFound.elements();
-
-            if (propertiesNotFoundList.hasMoreElements()) {
-
-                status = new String("HTTP/1.1 " + WebdavStatus.SC_NOT_FOUND
-                                    + " " + WebdavStatus.getStatusText
-                                    (WebdavStatus.SC_NOT_FOUND));
+            case FIND_ALL_PROP:
 
                 generatedXML.writeElement(null, "propstat", XMLWriter.OPENING);
                 generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
 
-                while (propertiesNotFoundList.hasMoreElements()) {
-                    generatedXML.writeElement
-                        (null, (String) propertiesNotFoundList.nextElement(),
-                         XMLWriter.NO_CONTENT);
+                generatedXML.writeProperty(null, "creationdate",
+                        getISOCreationDate(resourceInfo.creationDate));
+                generatedXML.writeElement(null, "displayname",
+                        XMLWriter.OPENING);
+                generatedXML.writeData(resourceName);
+                generatedXML.writeElement(null, "displayname",
+                        XMLWriter.CLOSING);
+                generatedXML.writeProperty(null, "getcontentlanguage", Locale
+                        .getDefault().toString());
+                if (!resourceInfo.collection) {
+                    generatedXML.writeProperty(null, "getlastmodified",
+                            resourceInfo.httpDate);
+                    generatedXML.writeProperty(null, "getcontentlength", String
+                            .valueOf(resourceInfo.length));
+                    generatedXML.writeProperty(null, "getcontenttype",
+                            getServletContext().getMimeType(resourceInfo.path));
+                    generatedXML.writeProperty(null, "getetag", getETagValue(
+                            resourceInfo));
+                    generatedXML.writeElement(null, "resourcetype",
+                            XMLWriter.NO_CONTENT);
+                } else {
+                    generatedXML.writeElement(null, "resourcetype",
+                            XMLWriter.OPENING);
+                    generatedXML.writeElement(null, "collection",
+                            XMLWriter.NO_CONTENT);
+                    generatedXML.writeElement(null, "resourcetype",
+                            XMLWriter.CLOSING);
+                }
+
+                generatedXML.writeProperty(null, "source", "");
+
+                String supportedLocks = "<lockentry>"
+                        + "<lockscope><exclusive/></lockscope>"
+                        + "<locktype><write/></locktype>" + "</lockentry>"
+                        + "<lockentry>" + "<lockscope><shared/></lockscope>"
+                        + "<locktype><write/></locktype>" + "</lockentry>";
+                generatedXML.writeElement(null, "supportedlock",
+                        XMLWriter.OPENING);
+                generatedXML.writeText(supportedLocks);
+                generatedXML.writeElement(null, "supportedlock",
+                        XMLWriter.CLOSING);
+
+                generateLockDiscovery(path, generatedXML);
+
+                generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
+                generatedXML.writeElement(null, "status", XMLWriter.OPENING);
+                generatedXML.writeText(status);
+                generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
+                generatedXML.writeElement(null, "propstat", XMLWriter.CLOSING);
+
+                break;
+
+            case FIND_PROPERTY_NAMES:
+
+                generatedXML.writeElement(null, "propstat", XMLWriter.OPENING);
+                generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
+
+                generatedXML.writeElement(null, "creationdate",
+                        XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "displayname",
+                        XMLWriter.NO_CONTENT);
+                if (!resourceInfo.collection) {
+                    generatedXML.writeElement(null, "getcontentlanguage",
+                            XMLWriter.NO_CONTENT);
+                    generatedXML.writeElement(null, "getcontentlength",
+                            XMLWriter.NO_CONTENT);
+                    generatedXML.writeElement(null, "getcontenttype",
+                            XMLWriter.NO_CONTENT);
+                    generatedXML.writeElement(null, "getetag",
+                            XMLWriter.NO_CONTENT);
+                    generatedXML.writeElement(null, "getlastmodified",
+                            XMLWriter.NO_CONTENT);
+                }
+                generatedXML.writeElement(null, "resourcetype",
+                        XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "source", XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "lockdiscovery",
+                        XMLWriter.NO_CONTENT);
+
+                generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
+                generatedXML.writeElement(null, "status", XMLWriter.OPENING);
+                generatedXML.writeText(status);
+                generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
+                generatedXML.writeElement(null, "propstat", XMLWriter.CLOSING);
+
+                break;
+
+            case FIND_BY_PROPERTY:
+
+                Vector propertiesNotFound = new Vector();
+
+                // Parse the list of properties
+
+                generatedXML.writeElement(null, "propstat", XMLWriter.OPENING);
+                generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
+
+                Enumeration properties = propertiesVector.elements();
+
+                while (properties.hasMoreElements()) {
+
+                    String property = (String) properties.nextElement();
+
+                    if (property.equals("creationdate")) {
+                        generatedXML.writeProperty(null, "creationdate",
+                                getISOCreationDate(resourceInfo.creationDate));
+                    } else if (property.equals("displayname")) {
+                        generatedXML.writeElement(null, "displayname",
+                                XMLWriter.OPENING);
+                        generatedXML.writeData(resourceName);
+                        generatedXML.writeElement(null, "displayname",
+                                XMLWriter.CLOSING);
+                    } else if (property.equals("getcontentlanguage")) {
+                        if (resourceInfo.collection) {
+                            propertiesNotFound.addElement(property);
+                        } else {
+                            generatedXML.writeProperty(null,
+                                    "getcontentlanguage", Locale.getDefault()
+                                            .toString());
+                        }
+                    } else if (property.equals("getcontentlength")) {
+                        if (resourceInfo.collection) {
+                            propertiesNotFound.addElement(property);
+                        } else {
+                            generatedXML.writeProperty(null, "getcontentlength",
+                                    (String.valueOf(resourceInfo.length)));
+                        }
+                    } else if (property.equals("getcontenttype")) {
+                        if (resourceInfo.collection) {
+                            propertiesNotFound.addElement(property);
+                        } else {
+                            generatedXML.writeProperty(null, "getcontenttype",
+                                    getServletContext().getMimeType(
+                                            resourceInfo.path));
+                        }
+                    } else if (property.equals("getetag")) {
+                        if (resourceInfo.collection) {
+                            propertiesNotFound.addElement(property);
+                        } else {
+                            generatedXML.writeProperty(null, "getetag",
+                                    getETagValue(resourceInfo));
+                        }
+                    } else if (property.equals("getlastmodified")) {
+                        if (resourceInfo.collection) {
+                            propertiesNotFound.addElement(property);
+                        } else {
+                            generatedXML.writeProperty(null, "getlastmodified",
+                                    resourceInfo.httpDate);
+                        }
+                    } else if (property.equals("resourcetype")) {
+                        if (resourceInfo.collection) {
+                            generatedXML.writeElement(null, "resourcetype",
+                                    XMLWriter.OPENING);
+                            generatedXML.writeElement(null, "collection",
+                                    XMLWriter.NO_CONTENT);
+                            generatedXML.writeElement(null, "resourcetype",
+                                    XMLWriter.CLOSING);
+                        } else {
+                            generatedXML.writeElement(null, "resourcetype",
+                                    XMLWriter.NO_CONTENT);
+                        }
+                    } else if (property.equals("source")) {
+                        generatedXML.writeProperty(null, "source", "");
+                    } else if (property.equals("supportedlock")) {
+                        supportedLocks = "<lockentry>"
+                                + "<lockscope><exclusive/></lockscope>"
+                                + "<locktype><write/></locktype>"
+                                + "</lockentry>" + "<lockentry>"
+                                + "<lockscope><shared/></lockscope>"
+                                + "<locktype><write/></locktype>"
+                                + "</lockentry>";
+                        generatedXML.writeElement(null, "supportedlock",
+                                XMLWriter.OPENING);
+                        generatedXML.writeText(supportedLocks);
+                        generatedXML.writeElement(null, "supportedlock",
+                                XMLWriter.CLOSING);
+                    } else if (property.equals("lockdiscovery")) {
+                        if (!generateLockDiscovery(path, generatedXML))
+                            propertiesNotFound.addElement(property);
+                    } else {
+                        propertiesNotFound.addElement(property);
+                    }
+
                 }
 
                 generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
@@ -2226,9 +2110,37 @@ public class WebdavServlet
                 generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
                 generatedXML.writeElement(null, "propstat", XMLWriter.CLOSING);
 
-            }
+                Enumeration propertiesNotFoundList = propertiesNotFound
+                        .elements();
 
-            break;
+                if (propertiesNotFoundList.hasMoreElements()) {
+
+                    status = new String("HTTP/1.1 " + WebdavStatus.SC_NOT_FOUND
+                            + " " + WebdavStatus.getStatusText(
+                                    WebdavStatus.SC_NOT_FOUND));
+
+                    generatedXML.writeElement(null, "propstat",
+                            XMLWriter.OPENING);
+                    generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
+
+                    while (propertiesNotFoundList.hasMoreElements()) {
+                        generatedXML.writeElement(null,
+                                (String) propertiesNotFoundList.nextElement(),
+                                XMLWriter.NO_CONTENT);
+                    }
+
+                    generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
+                    generatedXML.writeElement(null, "status",
+                            XMLWriter.OPENING);
+                    generatedXML.writeText(status);
+                    generatedXML.writeElement(null, "status",
+                            XMLWriter.CLOSING);
+                    generatedXML.writeElement(null, "propstat",
+                            XMLWriter.CLOSING);
+
+                }
+
+                break;
 
         }
 
@@ -2236,26 +2148,24 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Propfind helper method. Dispays the properties of a lock-null resource.
      *
-     * @param resources Resources object associated with this context
-     * @param generatedXML XML response to the Propfind request
-     * @param path Path of the current resource
-     * @param type Propfind type
+     * @param resources        Resources object associated with this context
+     * @param generatedXML     XML response to the Propfind request
+     * @param path             Path of the current resource
+     * @param type             Propfind type
      * @param propertiesVector If the propfind type is find properties by
-     * name, then this Vector contains those properties
+     *                         name, then this Vector contains those properties
      */
     private void parseLockNullProperties(HttpServletRequest req,
-                                         XMLWriter generatedXML,
-                                         String path, int type,
-                                         Vector propertiesVector) {
+            XMLWriter generatedXML, String path, int type,
+            Vector propertiesVector) {
 
         // Exclude any resource in the /WEB-INF and /META-INF subdirectories
         // (the "toUpperCase()" avoids problems on Windows systems)
-        if (path.toUpperCase().startsWith("/WEB-INF") ||
-            path.toUpperCase().startsWith("/META-INF"))
+        if (path.toUpperCase().startsWith("/WEB-INF") || path.toUpperCase()
+                .startsWith("/META-INF"))
             return;
 
         // Retrieving the lock associated with the lock-null resource
@@ -2266,8 +2176,7 @@ public class WebdavServlet
 
         generatedXML.writeElement(null, "response", XMLWriter.OPENING);
         String status = new String("HTTP/1.1 " + WebdavStatus.SC_OK + " "
-                                   + WebdavStatus.getStatusText
-                                   (WebdavStatus.SC_OK));
+                + WebdavStatus.getStatusText(WebdavStatus.SC_OK));
 
         // Generating href element
         generatedXML.writeElement(null, "href", XMLWriter.OPENING);
@@ -2289,185 +2198,156 @@ public class WebdavServlet
 
         switch (type) {
 
-        case FIND_ALL_PROP :
-
-            generatedXML.writeElement(null, "propstat", XMLWriter.OPENING);
-            generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
-
-            generatedXML.writeProperty
-                (null, "creationdate",
-                 getISOCreationDate(lock.creationDate.getTime()));
-            generatedXML.writeElement
-                (null, "displayname", XMLWriter.OPENING);
-            generatedXML.writeData(resourceName);
-            generatedXML.writeElement
-                (null, "displayname", XMLWriter.CLOSING);
-            generatedXML.writeProperty(null, "getcontentlanguage",
-                                       Locale.getDefault().toString());
-            generatedXML.writeProperty(null, "getlastmodified",
-                                       formats[0].format(lock.creationDate));
-            generatedXML.writeProperty
-                (null, "getcontentlength", String.valueOf(0));
-            generatedXML.writeProperty(null, "getcontenttype", "");
-            generatedXML.writeProperty(null, "getetag", "");
-            generatedXML.writeElement(null, "resourcetype",
-                                      XMLWriter.OPENING);
-            generatedXML.writeElement(null, "lock-null", XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "resourcetype",
-                                      XMLWriter.CLOSING);
-
-            generatedXML.writeProperty(null, "source", "");
-
-            String supportedLocks = "<lockentry>"
-                + "<lockscope><exclusive/></lockscope>"
-                + "<locktype><write/></locktype>"
-                + "</lockentry>" + "<lockentry>"
-                + "<lockscope><shared/></lockscope>"
-                + "<locktype><write/></locktype>"
-                + "</lockentry>";
-            generatedXML.writeElement(null, "supportedlock",
-                                      XMLWriter.OPENING);
-            generatedXML.writeText(supportedLocks);
-            generatedXML.writeElement(null, "supportedlock",
-                                      XMLWriter.CLOSING);
-
-            generateLockDiscovery(path, generatedXML);
-
-            generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
-            generatedXML.writeElement(null, "status", XMLWriter.OPENING);
-            generatedXML.writeText(status);
-            generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
-            generatedXML.writeElement(null, "propstat", XMLWriter.CLOSING);
-
-            break;
-
-        case FIND_PROPERTY_NAMES :
-
-            generatedXML.writeElement(null, "propstat", XMLWriter.OPENING);
-            generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
-
-            generatedXML.writeElement(null, "creationdate",
-                                      XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "displayname",
-                                      XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "getcontentlanguage",
-                                      XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "getcontentlength",
-                                      XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "getcontenttype",
-                                      XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "getetag",
-                                      XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "getlastmodified",
-                                      XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "resourcetype",
-                                      XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "source",
-                                      XMLWriter.NO_CONTENT);
-            generatedXML.writeElement(null, "lockdiscovery",
-                                      XMLWriter.NO_CONTENT);
-
-            generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
-            generatedXML.writeElement(null, "status", XMLWriter.OPENING);
-            generatedXML.writeText(status);
-            generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
-            generatedXML.writeElement(null, "propstat", XMLWriter.CLOSING);
-
-            break;
-
-        case FIND_BY_PROPERTY :
-
-            Vector propertiesNotFound = new Vector();
-
-            // Parse the list of properties
-
-            generatedXML.writeElement(null, "propstat", XMLWriter.OPENING);
-            generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
-
-            Enumeration properties = propertiesVector.elements();
-
-            while (properties.hasMoreElements()) {
-
-                String property = (String) properties.nextElement();
-
-                if (property.equals("creationdate")) {
-                    generatedXML.writeProperty
-                        (null, "creationdate",
-                         getISOCreationDate(lock.creationDate.getTime()));
-                } else if (property.equals("displayname")) {
-                    generatedXML.writeElement
-                        (null, "displayname", XMLWriter.OPENING);
-                    generatedXML.writeData(resourceName);
-                    generatedXML.writeElement
-                        (null, "displayname", XMLWriter.CLOSING);
-                } else if (property.equals("getcontentlanguage")) {
-                    generatedXML.writeProperty
-                        (null, "getcontentlanguage",
-                         Locale.getDefault().toString());
-                } else if (property.equals("getcontentlength")) {
-                    generatedXML.writeProperty
-                        (null, "getcontentlength", (String.valueOf(0)));
-                } else if (property.equals("getcontenttype")) {
-                    generatedXML.writeProperty
-                        (null, "getcontenttype", "");
-                } else if (property.equals("getetag")) {
-                    generatedXML.writeProperty(null, "getetag", "");
-                } else if (property.equals("getlastmodified")) {
-                    generatedXML.writeProperty
-                        (null, "getlastmodified",
-                         formats[0].format(lock.creationDate));
-                } else if (property.equals("resourcetype")) {
-                    generatedXML.writeElement(null, "resourcetype",
-                                              XMLWriter.OPENING);
-                    generatedXML.writeElement(null, "lock-null",
-                                              XMLWriter.NO_CONTENT);
-                    generatedXML.writeElement(null, "resourcetype",
-                                              XMLWriter.CLOSING);
-                } else if (property.equals("source")) {
-                    generatedXML.writeProperty(null, "source", "");
-                } else if (property.equals("supportedlock")) {
-                    supportedLocks = "<lockentry>"
-                        + "<lockscope><exclusive/></lockscope>"
-                        + "<locktype><write/></locktype>"
-                        + "</lockentry>" + "<lockentry>"
-                        + "<lockscope><shared/></lockscope>"
-                        + "<locktype><write/></locktype>"
-                        + "</lockentry>";
-                    generatedXML.writeElement(null, "supportedlock",
-                                              XMLWriter.OPENING);
-                    generatedXML.writeText(supportedLocks);
-                    generatedXML.writeElement(null, "supportedlock",
-                                              XMLWriter.CLOSING);
-                } else if (property.equals("lockdiscovery")) {
-                    if (!generateLockDiscovery(path, generatedXML))
-                        propertiesNotFound.addElement(property);
-                } else {
-                    propertiesNotFound.addElement(property);
-                }
-
-            }
-
-            generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
-            generatedXML.writeElement(null, "status", XMLWriter.OPENING);
-            generatedXML.writeText(status);
-            generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
-            generatedXML.writeElement(null, "propstat", XMLWriter.CLOSING);
-
-            Enumeration propertiesNotFoundList = propertiesNotFound.elements();
-
-            if (propertiesNotFoundList.hasMoreElements()) {
-
-                status = new String("HTTP/1.1 " + WebdavStatus.SC_NOT_FOUND
-                                    + " " + WebdavStatus.getStatusText
-                                    (WebdavStatus.SC_NOT_FOUND));
+            case FIND_ALL_PROP:
 
                 generatedXML.writeElement(null, "propstat", XMLWriter.OPENING);
                 generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
 
-                while (propertiesNotFoundList.hasMoreElements()) {
-                    generatedXML.writeElement
-                        (null, (String) propertiesNotFoundList.nextElement(),
-                         XMLWriter.NO_CONTENT);
+                generatedXML.writeProperty(null, "creationdate",
+                        getISOCreationDate(lock.creationDate.getTime()));
+                generatedXML.writeElement(null, "displayname",
+                        XMLWriter.OPENING);
+                generatedXML.writeData(resourceName);
+                generatedXML.writeElement(null, "displayname",
+                        XMLWriter.CLOSING);
+                generatedXML.writeProperty(null, "getcontentlanguage", Locale
+                        .getDefault().toString());
+                generatedXML.writeProperty(null, "getlastmodified", formats[0]
+                        .format(lock.creationDate));
+                generatedXML.writeProperty(null, "getcontentlength", String
+                        .valueOf(0));
+                generatedXML.writeProperty(null, "getcontenttype", "");
+                generatedXML.writeProperty(null, "getetag", "");
+                generatedXML.writeElement(null, "resourcetype",
+                        XMLWriter.OPENING);
+                generatedXML.writeElement(null, "lock-null",
+                        XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "resourcetype",
+                        XMLWriter.CLOSING);
+
+                generatedXML.writeProperty(null, "source", "");
+
+                String supportedLocks = "<lockentry>"
+                        + "<lockscope><exclusive/></lockscope>"
+                        + "<locktype><write/></locktype>" + "</lockentry>"
+                        + "<lockentry>" + "<lockscope><shared/></lockscope>"
+                        + "<locktype><write/></locktype>" + "</lockentry>";
+                generatedXML.writeElement(null, "supportedlock",
+                        XMLWriter.OPENING);
+                generatedXML.writeText(supportedLocks);
+                generatedXML.writeElement(null, "supportedlock",
+                        XMLWriter.CLOSING);
+
+                generateLockDiscovery(path, generatedXML);
+
+                generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
+                generatedXML.writeElement(null, "status", XMLWriter.OPENING);
+                generatedXML.writeText(status);
+                generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
+                generatedXML.writeElement(null, "propstat", XMLWriter.CLOSING);
+
+                break;
+
+            case FIND_PROPERTY_NAMES:
+
+                generatedXML.writeElement(null, "propstat", XMLWriter.OPENING);
+                generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
+
+                generatedXML.writeElement(null, "creationdate",
+                        XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "displayname",
+                        XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "getcontentlanguage",
+                        XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "getcontentlength",
+                        XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "getcontenttype",
+                        XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "getetag",
+                        XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "getlastmodified",
+                        XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "resourcetype",
+                        XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "source", XMLWriter.NO_CONTENT);
+                generatedXML.writeElement(null, "lockdiscovery",
+                        XMLWriter.NO_CONTENT);
+
+                generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
+                generatedXML.writeElement(null, "status", XMLWriter.OPENING);
+                generatedXML.writeText(status);
+                generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
+                generatedXML.writeElement(null, "propstat", XMLWriter.CLOSING);
+
+                break;
+
+            case FIND_BY_PROPERTY:
+
+                Vector propertiesNotFound = new Vector();
+
+                // Parse the list of properties
+
+                generatedXML.writeElement(null, "propstat", XMLWriter.OPENING);
+                generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
+
+                Enumeration properties = propertiesVector.elements();
+
+                while (properties.hasMoreElements()) {
+
+                    String property = (String) properties.nextElement();
+
+                    if (property.equals("creationdate")) {
+                        generatedXML.writeProperty(null, "creationdate",
+                                getISOCreationDate(lock.creationDate
+                                        .getTime()));
+                    } else if (property.equals("displayname")) {
+                        generatedXML.writeElement(null, "displayname",
+                                XMLWriter.OPENING);
+                        generatedXML.writeData(resourceName);
+                        generatedXML.writeElement(null, "displayname",
+                                XMLWriter.CLOSING);
+                    } else if (property.equals("getcontentlanguage")) {
+                        generatedXML.writeProperty(null, "getcontentlanguage",
+                                Locale.getDefault().toString());
+                    } else if (property.equals("getcontentlength")) {
+                        generatedXML.writeProperty(null, "getcontentlength",
+                                (String.valueOf(0)));
+                    } else if (property.equals("getcontenttype")) {
+                        generatedXML.writeProperty(null, "getcontenttype", "");
+                    } else if (property.equals("getetag")) {
+                        generatedXML.writeProperty(null, "getetag", "");
+                    } else if (property.equals("getlastmodified")) {
+                        generatedXML.writeProperty(null, "getlastmodified",
+                                formats[0].format(lock.creationDate));
+                    } else if (property.equals("resourcetype")) {
+                        generatedXML.writeElement(null, "resourcetype",
+                                XMLWriter.OPENING);
+                        generatedXML.writeElement(null, "lock-null",
+                                XMLWriter.NO_CONTENT);
+                        generatedXML.writeElement(null, "resourcetype",
+                                XMLWriter.CLOSING);
+                    } else if (property.equals("source")) {
+                        generatedXML.writeProperty(null, "source", "");
+                    } else if (property.equals("supportedlock")) {
+                        supportedLocks = "<lockentry>"
+                                + "<lockscope><exclusive/></lockscope>"
+                                + "<locktype><write/></locktype>"
+                                + "</lockentry>" + "<lockentry>"
+                                + "<lockscope><shared/></lockscope>"
+                                + "<locktype><write/></locktype>"
+                                + "</lockentry>";
+                        generatedXML.writeElement(null, "supportedlock",
+                                XMLWriter.OPENING);
+                        generatedXML.writeText(supportedLocks);
+                        generatedXML.writeElement(null, "supportedlock",
+                                XMLWriter.CLOSING);
+                    } else if (property.equals("lockdiscovery")) {
+                        if (!generateLockDiscovery(path, generatedXML))
+                            propertiesNotFound.addElement(property);
+                    } else {
+                        propertiesNotFound.addElement(property);
+                    }
+
                 }
 
                 generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
@@ -2476,9 +2356,37 @@ public class WebdavServlet
                 generatedXML.writeElement(null, "status", XMLWriter.CLOSING);
                 generatedXML.writeElement(null, "propstat", XMLWriter.CLOSING);
 
-            }
+                Enumeration propertiesNotFoundList = propertiesNotFound
+                        .elements();
 
-            break;
+                if (propertiesNotFoundList.hasMoreElements()) {
+
+                    status = new String("HTTP/1.1 " + WebdavStatus.SC_NOT_FOUND
+                            + " " + WebdavStatus.getStatusText(
+                                    WebdavStatus.SC_NOT_FOUND));
+
+                    generatedXML.writeElement(null, "propstat",
+                            XMLWriter.OPENING);
+                    generatedXML.writeElement(null, "prop", XMLWriter.OPENING);
+
+                    while (propertiesNotFoundList.hasMoreElements()) {
+                        generatedXML.writeElement(null,
+                                (String) propertiesNotFoundList.nextElement(),
+                                XMLWriter.NO_CONTENT);
+                    }
+
+                    generatedXML.writeElement(null, "prop", XMLWriter.CLOSING);
+                    generatedXML.writeElement(null, "status",
+                            XMLWriter.OPENING);
+                    generatedXML.writeText(status);
+                    generatedXML.writeElement(null, "status",
+                            XMLWriter.CLOSING);
+                    generatedXML.writeElement(null, "propstat",
+                            XMLWriter.CLOSING);
+
+                }
+
+                break;
 
         }
 
@@ -2486,16 +2394,14 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Print the lock discovery information associated with a path.
      *
-     * @param path Path
+     * @param path         Path
      * @param generatedXML XML data to which the locks info will be appended
      * @return true if at least one lock was displayed
      */
-    private boolean generateLockDiscovery
-        (String path, XMLWriter generatedXML) {
+    private boolean generateLockDiscovery(String path, XMLWriter generatedXML) {
 
         LockInfo resourceLock = (LockInfo) resourceLocks.get(path);
         Enumeration collectionLocksList = collectionLocks.elements();
@@ -2504,27 +2410,24 @@ public class WebdavServlet
 
         if (resourceLock != null) {
             wroteStart = true;
-            generatedXML.writeElement(null, "lockdiscovery",
-                                      XMLWriter.OPENING);
+            generatedXML.writeElement(null, "lockdiscovery", XMLWriter.OPENING);
             resourceLock.toXML(generatedXML);
         }
 
         while (collectionLocksList.hasMoreElements()) {
-            LockInfo currentLock =
-                (LockInfo) collectionLocksList.nextElement();
+            LockInfo currentLock = (LockInfo) collectionLocksList.nextElement();
             if (path.startsWith(currentLock.path)) {
                 if (!wroteStart) {
                     wroteStart = true;
                     generatedXML.writeElement(null, "lockdiscovery",
-                                              XMLWriter.OPENING);
+                            XMLWriter.OPENING);
                 }
                 currentLock.toXML(generatedXML);
             }
         }
 
         if (wroteStart) {
-            generatedXML.writeElement(null, "lockdiscovery",
-                                      XMLWriter.CLOSING);
+            generatedXML.writeElement(null, "lockdiscovery", XMLWriter.CLOSING);
         } else {
             return false;
         }
@@ -2533,46 +2436,40 @@ public class WebdavServlet
 
     }
 
-
     /**
      * Get creation date in ISO format.
      */
     private String getISOCreationDate(long creationDate) {
-        StringBuffer creationDateValue = new StringBuffer
-            (creationDateFormat.format
-             (new Date(creationDate)));
+        StringBuffer creationDateValue = new StringBuffer(creationDateFormat
+                .format(new Date(creationDate)));
         /*
-        int offset = Calendar.getInstance().getTimeZone().getRawOffset()
-            / 3600000; // FIXME ?
-        if (offset < 0) {
-            creationDateValue.append("-");
-            offset = -offset;
-        } else if (offset > 0) {
-            creationDateValue.append("+");
-        }
-        if (offset != 0) {
-            if (offset < 10)
-                creationDateValue.append("0");
-            creationDateValue.append(offset + ":00");
-        } else {
-            creationDateValue.append("Z");
-        }
-        */
+         * int offset = Calendar.getInstance().getTimeZone().getRawOffset()
+         * / 3600000; // FIXME ?
+         * if (offset < 0) {
+         * creationDateValue.append("-");
+         * offset = -offset;
+         * } else if (offset > 0) {
+         * creationDateValue.append("+");
+         * }
+         * if (offset != 0) {
+         * if (offset < 10)
+         * creationDateValue.append("0");
+         * creationDateValue.append(offset + ":00");
+         * } else {
+         * creationDateValue.append("Z");
+         * }
+         */
         return creationDateValue.toString();
     }
 
-
     // --------------------------------------------------  LockInfo Inner Class
-
 
     /**
      * Holds a lock information.
      */
     private class LockInfo {
 
-
         // -------------------------------------------------------- Constructor
-
 
         /**
          * Constructor.
@@ -2583,9 +2480,7 @@ public class WebdavServlet
 
         }
 
-
         // ------------------------------------------------- Instance Variables
-
 
         String path = "/";
         String type = "write";
@@ -2596,21 +2491,19 @@ public class WebdavServlet
         long expiresAt = 0;
         Date creationDate = new Date();
 
-
         // ----------------------------------------------------- Public Methods
-
 
         /**
          * Get a String representation of this lock token.
          */
         public String toString() {
 
-            String result =  "Type:" + type + "\n";
+            String result = "Type:" + type + "\n";
             result += "Scope:" + scope + "\n";
             result += "Depth:" + depth + "\n";
             result += "Owner:" + owner + "\n";
-            result += "Expiration:" +
-                formats[0].format(new Date(expiresAt)) + "\n";
+            result += "Expiration:" + formats[0].format(new Date(expiresAt))
+                    + "\n";
             Enumeration tokensList = tokens.elements();
             while (tokensList.hasMoreElements()) {
                 result += "Token:" + tokensList.nextElement() + "\n";
@@ -2619,14 +2512,12 @@ public class WebdavServlet
 
         }
 
-
         /**
          * Return true if the lock has expired.
          */
         public boolean hasExpired() {
             return (System.currentTimeMillis() > expiresAt);
         }
-
 
         /**
          * Return true if the lock is exclusive.
@@ -2637,7 +2528,6 @@ public class WebdavServlet
 
         }
 
-
         /**
          * Get an XML representation of this lock token. This method will
          * append an XML fragment to the given XML writer.
@@ -2645,7 +2535,6 @@ public class WebdavServlet
         public void toXML(XMLWriter generatedXML) {
             toXML(generatedXML, false);
         }
-
 
         /**
          * Get an XML representation of this lock token. This method will
@@ -2685,8 +2574,8 @@ public class WebdavServlet
                 Enumeration tokensList = tokens.elements();
                 while (tokensList.hasMoreElements()) {
                     generatedXML.writeElement(null, "href", XMLWriter.OPENING);
-                    generatedXML.writeText("opaquelocktoken:"
-                                           + tokensList.nextElement());
+                    generatedXML.writeText("opaquelocktoken:" + tokensList
+                            .nextElement());
                     generatedXML.writeElement(null, "href", XMLWriter.CLOSING);
                 }
             } else {
@@ -2700,12 +2589,9 @@ public class WebdavServlet
 
         }
 
-
     }
 
-
     // --------------------------------------------------- Property Inner Class
-
 
     private class Property {
 
@@ -2717,44 +2603,36 @@ public class WebdavServlet
 
     }
 
-
 };
-
 
 // --------------------------------------------------------  WebdavStatus Class
 
-
 /**
  * Wraps the HttpServletResponse class to abstract the
- * specific protocol used.  To support other protocols
+ * specific protocol used. To support other protocols
  * we would only need to modify this class and the
  * WebDavRetCode classes.
  *
- * @author              Marc Eaddy
- * @version             1.0, 16 Nov 1997
+ * @author Marc Eaddy
+ * @version 1.0, 16 Nov 1997
  */
 class WebdavStatus {
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * This Hashtable contains the mapping of HTTP and WebDAV
-     * status codes to descriptive text.  This is a static
+     * status codes to descriptive text. This is a static
      * variable.
      */
     private static Hashtable mapStatusCodes = new Hashtable();
 
-
     // ------------------------------------------------------ HTTP Status Codes
-
 
     /**
      * Status code (200) indicating the request succeeded normally.
      */
     public static final int SC_OK = HttpServletResponse.SC_OK;
-
 
     /**
      * Status code (201) indicating the request succeeded and created
@@ -2762,13 +2640,11 @@ class WebdavStatus {
      */
     public static final int SC_CREATED = HttpServletResponse.SC_CREATED;
 
-
     /**
      * Status code (202) indicating that a request was accepted for
      * processing, but was not completed.
      */
     public static final int SC_ACCEPTED = HttpServletResponse.SC_ACCEPTED;
-
 
     /**
      * Status code (204) indicating that the request succeeded but that
@@ -2776,48 +2652,37 @@ class WebdavStatus {
      */
     public static final int SC_NO_CONTENT = HttpServletResponse.SC_NO_CONTENT;
 
-
     /**
      * Status code (301) indicating that the resource has permanently
      * moved to a new location, and that future references should use a
      * new URI with their requests.
      */
-    public static final int SC_MOVED_PERMANENTLY =
-        HttpServletResponse.SC_MOVED_PERMANENTLY;
-
+    public static final int SC_MOVED_PERMANENTLY = HttpServletResponse.SC_MOVED_PERMANENTLY;
 
     /**
      * Status code (302) indicating that the resource has temporarily
      * moved to another location, but that future references should
      * still use the original URI to access the resource.
      */
-    public static final int SC_MOVED_TEMPORARILY =
-        HttpServletResponse.SC_MOVED_TEMPORARILY;
-
+    public static final int SC_MOVED_TEMPORARILY = HttpServletResponse.SC_MOVED_TEMPORARILY;
 
     /**
      * Status code (304) indicating that a conditional GET operation
      * found that the resource was available and not modified.
      */
-    public static final int SC_NOT_MODIFIED =
-        HttpServletResponse.SC_NOT_MODIFIED;
-
+    public static final int SC_NOT_MODIFIED = HttpServletResponse.SC_NOT_MODIFIED;
 
     /**
      * Status code (400) indicating the request sent by the client was
      * syntactically incorrect.
      */
-    public static final int SC_BAD_REQUEST =
-        HttpServletResponse.SC_BAD_REQUEST;
-
+    public static final int SC_BAD_REQUEST = HttpServletResponse.SC_BAD_REQUEST;
 
     /**
      * Status code (401) indicating that the request requires HTTP
      * authentication.
      */
-    public static final int SC_UNAUTHORIZED =
-        HttpServletResponse.SC_UNAUTHORIZED;
-
+    public static final int SC_UNAUTHORIZED = HttpServletResponse.SC_UNAUTHORIZED;
 
     /**
      * Status code (403) indicating the server understood the request
@@ -2825,62 +2690,50 @@ class WebdavStatus {
      */
     public static final int SC_FORBIDDEN = HttpServletResponse.SC_FORBIDDEN;
 
-
     /**
      * Status code (404) indicating that the requested resource is not
      * available.
      */
     public static final int SC_NOT_FOUND = HttpServletResponse.SC_NOT_FOUND;
 
-
     /**
      * Status code (500) indicating an error inside the HTTP service
      * which prevented it from fulfilling the request.
      */
-    public static final int SC_INTERNAL_SERVER_ERROR =
-        HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-
+    public static final int SC_INTERNAL_SERVER_ERROR = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
     /**
      * Status code (501) indicating the HTTP service does not support
      * the functionality needed to fulfill the request.
      */
-    public static final int SC_NOT_IMPLEMENTED =
-        HttpServletResponse.SC_NOT_IMPLEMENTED;
-
+    public static final int SC_NOT_IMPLEMENTED = HttpServletResponse.SC_NOT_IMPLEMENTED;
 
     /**
      * Status code (502) indicating that the HTTP server received an
      * invalid response from a server it consulted when acting as a
      * proxy or gateway.
      */
-    public static final int SC_BAD_GATEWAY =
-        HttpServletResponse.SC_BAD_GATEWAY;
-
+    public static final int SC_BAD_GATEWAY = HttpServletResponse.SC_BAD_GATEWAY;
 
     /**
      * Status code (503) indicating that the HTTP service is
      * temporarily overloaded, and unable to handle the request.
      */
-    public static final int SC_SERVICE_UNAVAILABLE =
-        HttpServletResponse.SC_SERVICE_UNAVAILABLE;
-
+    public static final int SC_SERVICE_UNAVAILABLE = HttpServletResponse.SC_SERVICE_UNAVAILABLE;
 
     /**
      * Status code (100) indicating the client may continue with
-     * its request.  This interim response is used to inform the
+     * its request. This interim response is used to inform the
      * client that the initial part of the request has been
      * received and has not yet been rejected by the server.
      */
     public static final int SC_CONTINUE = 100;
-
 
     /**
      * Status code (405) indicating the method specified is not
      * allowed for the resource.
      */
     public static final int SC_METHOD_NOT_ALLOWED = 405;
-
 
     /**
      * Status code (409) indicating that the request could not be
@@ -2889,7 +2742,6 @@ class WebdavStatus {
      */
     public static final int SC_CONFLICT = 409;
 
-
     /**
      * Status code (412) indicating the precondition given in one
      * or more of the request-header fields evaluated to false
@@ -2897,14 +2749,12 @@ class WebdavStatus {
      */
     public static final int SC_PRECONDITION_FAILED = 412;
 
-
     /**
      * Status code (413) indicating the server is refusing to
      * process a request because the request entity is larger
      * than the server is willing or able to process.
      */
     public static final int SC_REQUEST_TOO_LONG = 413;
-
 
     /**
      * Status code (415) indicating the server is refusing to service
@@ -2914,9 +2764,7 @@ class WebdavStatus {
      */
     public static final int SC_UNSUPPORTED_MEDIA_TYPE = 415;
 
-
     // -------------------------------------------- Extended WebDav status code
-
 
     /**
      * Status code (207) indicating that the response requires
@@ -2926,7 +2774,6 @@ class WebdavStatus {
     // This one colides with HTTP 1.1
     // "207 Parital Update OK"
 
-
     /**
      * Status code (418) indicating the entity body submitted with
      * the PATCH method was not understood by the resource.
@@ -2934,7 +2781,6 @@ class WebdavStatus {
     public static final int SC_UNPROCESSABLE_ENTITY = 418;
     // This one colides with HTTP 1.1
     // "418 Reauthentication Required"
-
 
     /**
      * Status code (419) indicating that the resource does not have
@@ -2945,7 +2791,6 @@ class WebdavStatus {
     // This one colides with HTTP 1.1
     // "419 Proxy Reauthentication Required"
 
-
     /**
      * Status code (420) indicating the method was not executed on
      * a particular resource within its scope because some part of
@@ -2953,7 +2798,6 @@ class WebdavStatus {
      * aborted.
      */
     public static final int SC_METHOD_FAILURE = 420;
-
 
     /**
      * Status code (423) indicating the destination resource of a
@@ -2963,9 +2807,7 @@ class WebdavStatus {
      */
     public static final int SC_LOCKED = 423;
 
-
     // ------------------------------------------------------------ Initializer
-
 
     static {
         // HTTP 1.0 tatus Code
@@ -2994,23 +2836,21 @@ class WebdavStatus {
         addStatusCodeMap(SC_MULTI_STATUS, "Multi-Status");
         addStatusCodeMap(SC_UNPROCESSABLE_ENTITY, "Unprocessable Entity");
         addStatusCodeMap(SC_INSUFFICIENT_SPACE_ON_RESOURCE,
-                         "Insufficient Space On Resource");
+                "Insufficient Space On Resource");
         addStatusCodeMap(SC_METHOD_FAILURE, "Method Failure");
         addStatusCodeMap(SC_LOCKED, "Locked");
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Returns the HTTP status text for the HTTP or WebDav status code
-     * specified by looking it up in the static mapping.  This is a
+     * specified by looking it up in the static mapping. This is a
      * static function.
      *
-     * @param   nHttpStatusCode [IN] HTTP or WebDAV status code
-     * @return  A string with a short descriptive phrase for the
-     *                  HTTP status code (e.g., "OK").
+     * @param nHttpStatusCode [IN] HTTP or WebDAV status code
+     * @return A string with a short descriptive phrase for the
+     *         HTTP status code (e.g., "OK").
      */
     public static String getStatusText(int nHttpStatusCode) {
         Integer intKey = new Integer(nHttpStatusCode);
@@ -3022,21 +2862,17 @@ class WebdavStatus {
         }
     }
 
-
     // -------------------------------------------------------- Private Methods
 
-
     /**
-     * Adds a new status code -> status text mapping.  This is a static
+     * Adds a new status code -> status text mapping. This is a static
      * method because the mapping is a static variable.
      *
-     * @param   nKey    [IN] HTTP or WebDAV status code
-     * @param   strVal  [IN] HTTP status text
+     * @param nKey   [IN] HTTP or WebDAV status code
+     * @param strVal [IN] HTTP status text
      */
     private static void addStatusCodeMap(int nKey, String strVal) {
         mapStatusCodes.put(new Integer(nKey), strVal);
     }
 
-
 };
-

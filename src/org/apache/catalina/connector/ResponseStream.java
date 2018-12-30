@@ -1,16 +1,14 @@
 package org.apache.catalina.connector;
 
-
 import java.io.IOException;
 import java.io.OutputStream;
 import javax.servlet.ServletOutputStream;
 import org.apache.catalina.Response;
 import org.apache.catalina.util.StringManager;
 
-
 /**
  * Convenience implementation of <b>ServletOutputStream</b> that works with
- * the standard ResponseBase implementation of <b>Response</b>.  If the content
+ * the standard ResponseBase implementation of <b>Response</b>. If the content
  * length has been set on our associated Response, this implementation will
  * enforce not writing more than that many bytes on the underlying stream.
  *
@@ -19,12 +17,9 @@ import org.apache.catalina.util.StringManager;
  * @deprecated
  */
 
-public class ResponseStream
-    extends ServletOutputStream {
-
+public class ResponseStream extends ServletOutputStream {
 
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a servlet output stream associated with the specified Request.
@@ -43,27 +38,22 @@ public class ResponseStream
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Has this stream been closed?
      */
     protected boolean closed = false;
 
-
     /**
      * Should we commit the response when we are flushed?
      */
     protected boolean commit = false;
 
-
     /**
      * The number of bytes which have already been written to this stream.
      */
     protected int count = 0;
-
 
     /**
      * The content length past which we will not write, or -1 if there is
@@ -71,34 +61,28 @@ public class ResponseStream
      */
     protected int length = -1;
 
-
     /**
      * The Response with which this input stream is associated.
      */
     protected Response response = null;
 
-
     /**
      * The localized strings for this package.
      */
-    protected static StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected static StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The underlying output stream to which we should write data.
      */
     protected OutputStream stream = null;
 
-
     /**
      * Has this response output been suspended?
      */
     protected boolean suspended = false;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * [Package Private] Return the "commit response on flush" flag.
@@ -108,7 +92,6 @@ public class ResponseStream
         return (this.commit);
 
     }
-
 
     /**
      * [Package Private] Set the "commit response on flush" flag.
@@ -121,7 +104,6 @@ public class ResponseStream
 
     }
 
-
     /**
      * Set the suspended flag.
      */
@@ -130,7 +112,6 @@ public class ResponseStream
         this.suspended = suspended;
 
     }
-
 
     /**
      * Suspended flag accessor.
@@ -141,9 +122,7 @@ public class ResponseStream
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Close this output stream, causing any buffered data to be flushed and
@@ -152,8 +131,7 @@ public class ResponseStream
     public void close() throws IOException {
 
         if (suspended)
-            throw new IOException
-                (sm.getString("responseStream.suspended"));
+            throw new IOException(sm.getString("responseStream.suspended"));
 
         if (closed)
             throw new IOException(sm.getString("responseStream.close.closed"));
@@ -163,7 +141,6 @@ public class ResponseStream
 
     }
 
-
     /**
      * Flush any buffered data for this output stream, which also causes the
      * response to be committed.
@@ -171,8 +148,7 @@ public class ResponseStream
     public void flush() throws IOException {
 
         if (suspended)
-            throw new IOException
-                (sm.getString("responseStream.suspended"));
+            throw new IOException(sm.getString("responseStream.suspended"));
 
         if (closed)
             throw new IOException(sm.getString("responseStream.flush.closed"));
@@ -181,7 +157,6 @@ public class ResponseStream
             response.getResponse().flushBuffer();
 
     }
-
 
     /**
      * Write the specified byte to our output stream.
@@ -206,7 +181,6 @@ public class ResponseStream
 
     }
 
-
     /**
      * Write <code>b.length</code> bytes from the specified byte array
      * to our output stream.
@@ -224,12 +198,11 @@ public class ResponseStream
 
     }
 
-
     /**
      * Write <code>len</code> bytes from the specified byte array, starting
      * at the specified offset, to our output stream.
      *
-     * @param b The byte array containing the bytes to be written
+     * @param b   The byte array containing the bytes to be written
      * @param off Zero-relative starting offset of the bytes to be written
      * @param len The number of bytes to be written
      *
@@ -253,9 +226,7 @@ public class ResponseStream
 
     }
 
-
     // -------------------------------------------------------- Package Methods
-
 
     /**
      * Has this response stream been closed?
@@ -266,7 +237,6 @@ public class ResponseStream
 
     }
 
-
     /**
      * Reset the count of bytes written to this stream to zero.
      */
@@ -275,6 +245,5 @@ public class ResponseStream
         count = 0;
 
     }
-
 
 }

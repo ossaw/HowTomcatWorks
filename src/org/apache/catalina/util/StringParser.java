@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/util/StringParser.java,v 1.2 2001/07/22 20:25:14 pier Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/util/
+ * StringParser.java,v 1.2 2001/07/22 20:25:14 pier Exp $
  * $Revision: 1.2 $
  * $Date: 2001/07/22 20:25:14 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,26 +43,21 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
-
 
 package org.apache.catalina.util;
 
-
 /**
  * Utility class for string parsing that is higher performance than
- * StringParser for simple delimited text cases.  Parsing is performed
+ * StringParser for simple delimited text cases. Parsing is performed
  * by setting the string, and then using the <code>findXxxx()</code> and
  * <code>skipXxxx()</code> families of methods to remember significant
- * offsets.  To retrieve the parsed substrings, call the <code>extract()</code>
+ * offsets. To retrieve the parsed substrings, call the <code>extract()</code>
  * method with the appropriate saved offset values.
  *
  * @author Craig R. McClanahan
@@ -79,9 +66,7 @@ package org.apache.catalina.util;
 
 public final class StringParser {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a string parser with no preset string to be parsed.
@@ -91,7 +76,6 @@ public final class StringParser {
         this(null);
 
     }
-
 
     /**
      * Construct a string parser that is initialized to parse the specified
@@ -106,44 +90,37 @@ public final class StringParser {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
 
-
     /**
-     * The characters of the current string, as a character array.  Stored
+     * The characters of the current string, as a character array. Stored
      * when the string is first specified to speed up access to characters
      * being compared during parsing.
      */
     private char chars[] = null;
 
-
     /**
      * The zero-relative index of the current point at which we are
-     * positioned within the string being parsed.  <strong>NOTE</strong>:
+     * positioned within the string being parsed. <strong>NOTE</strong>:
      * the value of this index can be one larger than the index of the last
      * character of the string (i.e. equal to the string length) if you
-     * parse off the end of the string.  This value is useful for extracting
+     * parse off the end of the string. This value is useful for extracting
      * substrings that include the end of the string.
      */
     private int index = 0;
 
-
     /**
-     * The length of the String we are currently parsing.  Stored when the
+     * The length of the String we are currently parsing. Stored when the
      * string is first specified to avoid repeated recalculations.
      */
     private int length = 0;
-
 
     /**
      * The String we are currently parsing.
      */
     private String string = null;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the zero-relative index of our current parsing position
@@ -155,7 +132,6 @@ public final class StringParser {
 
     }
 
-
     /**
      * Return the length of the string we are parsing.
      */
@@ -164,7 +140,6 @@ public final class StringParser {
         return (this.length);
 
     }
-
 
     /**
      * Return the String we are currently parsing.
@@ -175,9 +150,8 @@ public final class StringParser {
 
     }
 
-
     /**
-     * Set the String we are currently parsing.  The parser state is also reset
+     * Set the String we are currently parsing. The parser state is also reset
      * to begin at the start of this string.
      *
      * @param string The string to be parsed.
@@ -196,9 +170,7 @@ public final class StringParser {
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Advance the current parsing position by one, if we are not already
@@ -211,10 +183,9 @@ public final class StringParser {
 
     }
 
-
     /**
      * Extract and return a substring that starts at the specified position,
-     * and extends to the end of the string being parsed.  If this is not
+     * and extends to the end of the string being parsed. If this is not
      * possible, a zero-length string is returned.
      *
      * @param start Starting index, zero relative, inclusive
@@ -228,14 +199,13 @@ public final class StringParser {
 
     }
 
-
     /**
      * Extract and return a substring that starts at the specified position,
-     * and ends at the character before the specified position.  If this is
+     * and ends at the character before the specified position. If this is
      * not possible, a zero-length string is returned.
      *
      * @param start Starting index, zero relative, inclusive
-     * @param end Ending index, zero relative, exclusive
+     * @param end   Ending index, zero relative, exclusive
      */
     public String extract(int start, int end) {
 
@@ -246,11 +216,10 @@ public final class StringParser {
 
     }
 
-
     /**
      * Return the index of the next occurrence of the specified character,
      * or the index of the character after the last position of the string
-     * if no more occurrences of this character are found.  The current
+     * if no more occurrences of this character are found. The current
      * parsing position is updated to the returned value.
      *
      * @param ch Character to be found
@@ -263,11 +232,10 @@ public final class StringParser {
 
     }
 
-
     /**
      * Return the index of the next occurrence of a non-whitespace character,
      * or the index of the character after the last position of the string
-     * if no more non-whitespace characters are found.  The current
+     * if no more non-whitespace characters are found. The current
      * parsing position is updated to the returned value.
      */
     public int findText() {
@@ -278,11 +246,10 @@ public final class StringParser {
 
     }
 
-
     /**
      * Return the index of the next occurrence of a whitespace character,
      * or the index of the character after the last position of the string
-     * if no more whitespace characters are found.  The current parsing
+     * if no more whitespace characters are found. The current parsing
      * position is updated to the returned value.
      */
     public int findWhite() {
@@ -293,7 +260,6 @@ public final class StringParser {
 
     }
 
-
     /**
      * Reset the current state of the parser to the beginning of the
      * current string being parsed.
@@ -303,7 +269,6 @@ public final class StringParser {
         index = 0;
 
     }
-
 
     /**
      * Advance the current parsing position while it is pointing at the
@@ -320,7 +285,6 @@ public final class StringParser {
 
     }
 
-
     /**
      * Advance the current parsing position while it is pointing at a
      * non-whitespace character, or until it moves past the end of the string.
@@ -333,7 +297,6 @@ public final class StringParser {
         return (index);
 
     }
-
 
     /**
      * Advance the current parsing position while it is pointing at a
@@ -348,9 +311,7 @@ public final class StringParser {
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Is the specified character considered to be whitespace?
@@ -365,6 +326,5 @@ public final class StringParser {
             return (false);
 
     }
-
 
 }

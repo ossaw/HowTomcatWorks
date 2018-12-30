@@ -7,10 +7,9 @@ import java.io.IOException;
 import javax.servlet.ServletInputStream;
 import org.apache.catalina.util.StringManager;
 
-
 /**
  * Convenience implementation of <b>ServletInputStream</b> that works with
- * the standard implementations of <b>Request</b>.  If the content length has
+ * the standard implementations of <b>Request</b>. If the content length has
  * been set on our associated Request, this implementation will enforce
  * not reading more than that many bytes on the underlying stream.
  *
@@ -19,12 +18,9 @@ import org.apache.catalina.util.StringManager;
  * @deprecated
  */
 
-public class RequestStream
-    extends ServletInputStream {
-
+public class RequestStream extends ServletInputStream {
 
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a servlet input stream associated with the specified Request.
@@ -41,21 +37,17 @@ public class RequestStream
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Has this stream been closed?
      */
     protected boolean closed = false;
 
-
     /**
      * The number of bytes which have already been returned by this stream.
      */
     protected int count = 0;
-
 
     /**
      * The content length past which we will not read, or -1 if there is
@@ -63,25 +55,21 @@ public class RequestStream
      */
     protected int length = -1;
 
-
     /**
      * The localized strings for this package.
      */
-    protected static StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected static StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The underlying input stream from which we should read data.
      */
     protected InputStream stream = null;
 
-
     // --------------------------------------------------------- Public Methods
 
-
     /**
-     * Close this input stream.  No physical level I-O is performed, but
+     * Close this input stream. No physical level I-O is performed, but
      * any further attempt to read from this stream will throw an IOException.
      * If a content length has been set but not all of the bytes have yet been
      * consumed, the remaining bytes will be swallowed.
@@ -103,8 +91,6 @@ public class RequestStream
 
     }
 
-
-
     /**
      * Read and return a single byte from this input stream, or -1 if end of
      * file has been encountered.
@@ -119,7 +105,7 @@ public class RequestStream
 
         // Have we read the specified content length already?
         if ((length >= 0) && (count >= length))
-            return (-1);        // End of file indicator
+            return (-1); // End of file indicator
 
         // Read and count the next byte, then return it
         int b = stream.read();
@@ -129,11 +115,10 @@ public class RequestStream
 
     }
 
-
     /**
      * Read some number of bytes from the input stream, and store them
-     * into the buffer array b.  The number of bytes actually read is
-     * returned as an integer.  This method blocks until input data is
+     * into the buffer array b. The number of bytes actually read is
+     * returned as an integer. This method blocks until input data is
      * available, end of file is detected, or an exception is thrown.
      *
      * @param b The buffer into which the data is read
@@ -146,18 +131,17 @@ public class RequestStream
 
     }
 
-
     /**
      * Read up to <code>len</code> bytes of data from the input stream
-     * into an array of bytes.  An attempt is made to read as many as
+     * into an array of bytes. An attempt is made to read as many as
      * <code>len</code> bytes, but a smaller number may be read,
-     * possibly zero.  The number of bytes actually read is returned as
-     * an integer.  This method blocks until input data is available,
+     * possibly zero. The number of bytes actually read is returned as
+     * an integer. This method blocks until input data is available,
      * end of file is detected, or an exception is thrown.
      *
-     * @param b The buffer into which the data is read
+     * @param b   The buffer into which the data is read
      * @param off The start offset into array <code>b</code> at which
-     *  the data is written
+     *            the data is written
      * @param len The maximum number of bytes to read
      *
      * @exception IOException if an input/output error occurs
@@ -175,6 +159,5 @@ public class RequestStream
         return (actuallyRead);
 
     }
-
 
 }

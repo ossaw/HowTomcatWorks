@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/connector/HttpRequestWrapper.java,v 1.3 2002/03/18 07:15:39 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/connector
+ * /HttpRequestWrapper.java,v 1.3 2002/03/18 07:15:39 remm Exp $
  * $Revision: 1.3 $
  * $Date: 2002/03/18 07:15:39 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,29 +43,23 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.connector;
-
 
 import java.security.Principal;
 import java.util.Locale;
 import javax.servlet.http.Cookie;
 import org.apache.catalina.HttpRequest;
 
-
 /**
  * Abstract convenience class that wraps a Catalina-internal <b>HttpRequest</b>
- * object.  By default, all methods are delegated to the wrapped request,
+ * object. By default, all methods are delegated to the wrapped request,
  * but subclasses can override individual methods as required to provide the
  * functionality that they require.
  *
@@ -82,13 +68,10 @@ import org.apache.catalina.HttpRequest;
  * @deprecated
  */
 
-public abstract class HttpRequestWrapper
-    extends RequestWrapper
-    implements HttpRequest {
-
+public abstract class HttpRequestWrapper extends RequestWrapper implements
+        HttpRequest {
 
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a wrapper for the specified request.
@@ -101,9 +84,7 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add a Cookie to the set of Cookies associated with this Request.
@@ -116,11 +97,10 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
      * Add a Header to the set of Headers associated with this Request.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     public void addHeader(String name, String value) {
@@ -129,9 +109,8 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
-     * Add a Locale to the set of preferred Locales for this Request.  The
+     * Add a Locale to the set of preferred Locales for this Request. The
      * first added Locale will be the first one returned by getLocales().
      *
      * @param locale The new preferred Locale
@@ -142,7 +121,6 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
      * Clear the collection of Cookies associated with this Request.
      */
@@ -151,7 +129,6 @@ public abstract class HttpRequestWrapper
         ((HttpRequest) request).clearCookies();
 
     }
-
 
     /**
      * Clear the collection of Headers associated with this Request.
@@ -162,7 +139,6 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
      * Clear the collection of Locales associated with this Request.
      */
@@ -172,10 +148,9 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
      * Set the authentication type used for this request, if any; otherwise
-     * set the type to <code>null</code>.  Typical values are "BASIC",
+     * set the type to <code>null</code>. Typical values are "BASIC",
      * "DIGEST", or "SSL".
      *
      * @param type The authentication type used
@@ -186,9 +161,8 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
-     * Set the context path for this Request.  This will normally be called
+     * Set the context path for this Request. This will normally be called
      * when the associated Context is mapping the Request to a particular
      * Wrapper.
      *
@@ -199,7 +173,6 @@ public abstract class HttpRequestWrapper
         ((HttpRequest) request).setContextPath(path);
 
     }
-
 
     /**
      * Set the HTTP request method used for this Request.
@@ -212,9 +185,8 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
-     * Set the query string for this Request.  This will normally be called
+     * Set the query string for this Request. This will normally be called
      * by the HTTP Connector, when it parses the request headers.
      *
      * @param query The query string
@@ -225,9 +197,8 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
-     * Set the path information for this Request.  This will normally be called
+     * Set the path information for this Request. This will normally be called
      * when the associated Context is mapping the Request to a particular
      * Wrapper.
      *
@@ -239,10 +210,9 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
      * Set a flag indicating whether or not the requested session ID for this
-     * request came in through a cookie.  This is normally called by the
+     * request came in through a cookie. This is normally called by the
      * HTTP Connector, when it parses the request headers.
      *
      * @param flag The new flag
@@ -253,9 +223,8 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
-     * Set the requested session ID for this request.  This is normally called
+     * Set the requested session ID for this request. This is normally called
      * by the HTTP Connector, when it parses the request headers.
      *
      * @param id The new session id
@@ -266,10 +235,9 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
      * Set a flag indicating whether or not the requested session ID for this
-     * request came in through a URL.  This is normally called by the
+     * request came in through a URL. This is normally called by the
      * HTTP Connector, when it parses the request headers.
      *
      * @param flag The new flag
@@ -280,9 +248,8 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
-     * Set the unparsed request URI for this Request.  This will normally be
+     * Set the unparsed request URI for this Request. This will normally be
      * called by the HTTP Connector, when it parses the request headers.
      *
      * @param uri The request URI
@@ -293,9 +260,8 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
-     * Set the servlet path for this Request.  This will normally be called
+     * Set the servlet path for this Request. This will normally be called
      * when the associated Context is mapping the Request to a particular
      * Wrapper.
      *
@@ -307,9 +273,8 @@ public abstract class HttpRequestWrapper
 
     }
 
-
     /**
-     * Set the Principal who has been authenticated for this Request.  This
+     * Set the Principal who has been authenticated for this Request. This
      * value is also used to calculate the value to be returned by the
      * <code>getRemoteUser()</code> method.
      *
@@ -320,6 +285,5 @@ public abstract class HttpRequestWrapper
         ((HttpRequest) request).setUserPrincipal(principal);
 
     }
-
 
 }

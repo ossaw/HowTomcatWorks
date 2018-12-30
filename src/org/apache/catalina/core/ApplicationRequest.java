@@ -1,6 +1,5 @@
 package org.apache.catalina.core;
 
-
 import java.util.Enumeration;
 import java.util.HashMap;
 import javax.servlet.ServletRequest;
@@ -9,7 +8,6 @@ import org.apache.catalina.Globals;
 import org.apache.catalina.util.Enumerator;
 import org.apache.catalina.util.StringManager;
 
-
 /**
  * Wrapper around a <code>javax.servlet.ServletRequest</code>
  * that transforms an application request object (which might be the original
@@ -17,9 +15,9 @@ import org.apache.catalina.util.StringManager;
  * <code>javax.servlet.ServletRequestWrapper</code> class)
  * back into an internal <code>org.apache.catalina.Request</code>.
  * <p>
- * <strong>WARNING</strong>:  Due to Java's lack of support for multiple
+ * <strong>WARNING</strong>: Due to Java's lack of support for multiple
  * inheritance, all of the logic in <code>ApplicationRequest</code> is
- * duplicated in <code>ApplicationHttpRequest</code>.  Make sure that you
+ * duplicated in <code>ApplicationHttpRequest</code>. Make sure that you
  * keep these two classes in synchronization when making changes!
  *
  * @author Craig R. McClanahan
@@ -28,21 +26,16 @@ import org.apache.catalina.util.StringManager;
 
 class ApplicationRequest extends ServletRequestWrapper {
 
-
     // ------------------------------------------------------- Static Variables
-
 
     /**
      * The set of attribute names that are special for request dispatchers.
      */
-    protected static final String specials[] =
-    { Globals.REQUEST_URI_ATTR, Globals.CONTEXT_PATH_ATTR,
-      Globals.SERVLET_PATH_ATTR, Globals.PATH_INFO_ATTR,
-      Globals.QUERY_STRING_ATTR };
-
+    protected static final String specials[] = { Globals.REQUEST_URI_ATTR,
+            Globals.CONTEXT_PATH_ATTR, Globals.SERVLET_PATH_ATTR,
+            Globals.PATH_INFO_ATTR, Globals.QUERY_STRING_ATTR };
 
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a new wrapped request around the specified servlet request.
@@ -56,26 +49,21 @@ class ApplicationRequest extends ServletRequestWrapper {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
 
-
     /**
-     * The request attributes for this request.  This is initialized from the
+     * The request attributes for this request. This is initialized from the
      * wrapped request, but updates are allowed.
      */
     protected HashMap attributes = new HashMap();
 
-
     /**
      * The string manager for this package.
      */
-    protected static StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected static StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     // ------------------------------------------------- ServletRequest Methods
-
 
     /**
      * Override the <code>getAttribute()</code> method of the wrapped request.
@@ -90,7 +78,6 @@ class ApplicationRequest extends ServletRequestWrapper {
 
     }
 
-
     /**
      * Override the <code>getAttributeNames()</code> method of the wrapped
      * request.
@@ -102,7 +89,6 @@ class ApplicationRequest extends ServletRequestWrapper {
         }
 
     }
-
 
     /**
      * Override the <code>removeAttribute()</code> method of the
@@ -120,12 +106,11 @@ class ApplicationRequest extends ServletRequestWrapper {
 
     }
 
-
     /**
      * Override the <code>setAttribute()</code> method of the
      * wrapped request.
      *
-     * @param name Name of the attribute to set
+     * @param name  Name of the attribute to set
      * @param value Value of the attribute to set
      */
     public void setAttribute(String name, Object value) {
@@ -138,9 +123,7 @@ class ApplicationRequest extends ServletRequestWrapper {
 
     }
 
-
     // ------------------------------------------ ServletRequestWrapper Methods
-
 
     /**
      * Set the request that we are wrapping.
@@ -164,9 +147,7 @@ class ApplicationRequest extends ServletRequestWrapper {
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Is this attribute name one of the special ones that is added only for
@@ -183,6 +164,5 @@ class ApplicationRequest extends ServletRequestWrapper {
         return (false);
 
     }
-
 
 }

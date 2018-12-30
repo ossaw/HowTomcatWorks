@@ -1,6 +1,5 @@
 package org.apache.catalina.connector;
 
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.AccessController;
@@ -30,11 +29,10 @@ import org.apache.catalina.util.Enumerator;
 import org.apache.catalina.util.ParameterMap;
 import org.apache.catalina.util.RequestUtil;
 
-
 /**
  * Convenience base implementation of the <b>HttpRequest</b> interface, which
  * can be used for the Request implementation required by most Connectors that
- * implement the HTTP protocol.  Only the connector-specific methods need to
+ * implement the HTTP protocol. Only the connector-specific methods need to
  * be implemented.
  *
  * @author Craig R. McClanahan
@@ -42,13 +40,10 @@ import org.apache.catalina.util.RequestUtil;
  * @deprecated
  */
 
-public class HttpRequestBase
-    extends RequestBase
-    implements HttpRequest, HttpServletRequest {
+public class HttpRequestBase extends RequestBase implements HttpRequest,
+        HttpServletRequest {
 
-
-    protected class PrivilegedGetSession
-        implements PrivilegedAction {
+    protected class PrivilegedGetSession implements PrivilegedAction {
 
         private boolean create;
 
@@ -62,75 +57,62 @@ public class HttpRequestBase
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The authentication type used for this request.
      */
     protected String authType = null;
 
-
     /**
      * The context path for this request.
      */
     protected String contextPath = "";
-
 
     /**
      * The set of cookies associated with this Request.
      */
     protected ArrayList cookies = new ArrayList();
 
-
     /**
-     * An empty collection to use for returning empty Enumerations.  Do not
+     * An empty collection to use for returning empty Enumerations. Do not
      * add any elements to this collection!
      */
     protected static ArrayList empty = new ArrayList();
 
-
     /**
      * The set of SimpleDateFormat formats to use in getDateHeader().
      */
-    protected SimpleDateFormat formats[] = {
-        new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
-        new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
-        new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US)
-    };
-
+    protected SimpleDateFormat formats[] = { new SimpleDateFormat(
+            "EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US), new SimpleDateFormat(
+                    "EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
+            new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US) };
 
     /**
      * The facade associated with this request.
      */
     protected HttpRequestFacade facade = new HttpRequestFacade(this);
 
-
     /**
-     * The HTTP headers associated with this Request, keyed by name.  The
+     * The HTTP headers associated with this Request, keyed by name. The
      * values are ArrayLists of the corresponding header values.
      */
     protected HashMap headers = new HashMap();
 
-
     /**
      * Descriptive information about this HttpRequest implementation.
      */
-    protected static final String info =
-        "org.apache.catalina.connector.HttpRequestBase/1.0";
-
+    protected static final String info = "org.apache.catalina.connector.HttpRequestBase/1.0";
 
     /**
      * The request method associated with this Request.
      */
     protected String method = null;
 
-
     /**
-     * The parsed parameters for this request.  This is populated only if
+     * The parsed parameters for this request. This is populated only if
      * parameter information is requested via one of the
-     * <code>getParameter()</code> family of method calls.  The key is the
+     * <code>getParameter()</code> family of method calls. The key is the
      * parameter name, while the value is a String array of values for this
      * parameter.
      * <p>
@@ -141,81 +123,67 @@ public class HttpRequestBase
      */
     protected ParameterMap parameters = null;
 
-
     /**
      * Have the parameters for this request been parsed yet?
      */
     protected boolean parsed = false;
-
 
     /**
      * The path information for this request.
      */
     protected String pathInfo = null;
 
-
     /**
      * The query string for this request.
      */
     protected String queryString = null;
-
 
     /**
      * Was the requested session ID received in a cookie?
      */
     protected boolean requestedSessionCookie = false;
 
-
     /**
      * The requested session ID (if any) for this request.
      */
     protected String requestedSessionId = null;
-
 
     /**
      * Was the requested session ID received in a URL?
      */
     protected boolean requestedSessionURL = false;
 
-
     /**
      * The request URI associated with this request.
      */
     protected String requestURI = null;
-
 
     /**
      * The decoded request URI associated with this request.
      */
     protected String decodedRequestURI = null;
 
-
     /**
      * Was this request received on a secure channel?
      */
     protected boolean secure = false;
-
 
     /**
      * The servlet path for this request.
      */
     protected String servletPath = null;
 
-
     /**
      * The currently active session for this request.
      */
     protected Session session = null;
-
 
     /**
      * The Principal who has been authenticated for this Request.
      */
     protected Principal userPrincipal = null;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return descriptive information about this Request implementation and
@@ -228,10 +196,9 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the <code>ServletRequest</code> for which this object
-     * is the facade.  This method must be implemented by a subclass.
+     * is the facade. This method must be implemented by a subclass.
      */
     public ServletRequest getRequest() {
 
@@ -239,9 +206,7 @@ public class HttpRequestBase
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add a Cookie to the set of Cookies associated with this Request.
@@ -256,11 +221,10 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Add a Header to the set of Headers associated with this Request.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     public void addHeader(String name, String value) {
@@ -277,13 +241,12 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Add a parameter name and corresponding set of values to this Request.
      * (This is used when restoring the original request on a form based
      * login).
      *
-     * @param name Name of this request parameter
+     * @param name   Name of this request parameter
      * @param values Corresponding values for this request parameter
      */
     public void addParameter(String name, String values[]) {
@@ -293,7 +256,6 @@ public class HttpRequestBase
         }
 
     }
-
 
     /**
      * Clear the collection of Cookies associated with this Request.
@@ -306,7 +268,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Clear the collection of Headers associated with this Request.
      */
@@ -316,7 +277,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Clear the collection of Locales associated with this Request.
      */
@@ -325,7 +285,6 @@ public class HttpRequestBase
         locales.clear();
 
     }
-
 
     /**
      * Clear the collection of parameters associated with this Request.
@@ -340,7 +299,6 @@ public class HttpRequestBase
         }
 
     }
-
 
     /**
      * Release all object references, and initialize instance variables, in
@@ -373,10 +331,9 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Set the authentication type used for this request, if any; otherwise
-     * set the type to <code>null</code>.  Typical values are "BASIC",
+     * set the type to <code>null</code>. Typical values are "BASIC",
      * "DIGEST", or "SSL".
      *
      * @param authType The authentication type used
@@ -387,9 +344,8 @@ public class HttpRequestBase
 
     }
 
-
     /**
-     * Set the context path for this Request.  This will normally be called
+     * Set the context path for this Request. This will normally be called
      * when the associated Context is mapping the Request to a particular
      * Wrapper.
      *
@@ -404,7 +360,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Set the HTTP request method used for this Request.
      *
@@ -416,9 +371,8 @@ public class HttpRequestBase
 
     }
 
-
     /**
-     * Set the path information for this Request.  This will normally be called
+     * Set the path information for this Request. This will normally be called
      * when the associated Context is mapping the Request to a particular
      * Wrapper.
      *
@@ -430,9 +384,8 @@ public class HttpRequestBase
 
     }
 
-
     /**
-     * Set the query string for this Request.  This will normally be called
+     * Set the query string for this Request. This will normally be called
      * by the HTTP Connector, when it parses the request headers.
      *
      * @param query The query string
@@ -443,10 +396,9 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Set a flag indicating whether or not the requested session ID for this
-     * request came in through a cookie.  This is normally called by the
+     * request came in through a cookie. This is normally called by the
      * HTTP Connector, when it parses the request headers.
      *
      * @param flag The new flag
@@ -457,9 +409,8 @@ public class HttpRequestBase
 
     }
 
-
     /**
-     * Set the requested session ID for this request.  This is normally called
+     * Set the requested session ID for this request. This is normally called
      * by the HTTP Connector, when it parses the request headers.
      *
      * @param id The new session id
@@ -470,10 +421,9 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Set a flag indicating whether or not the requested session ID for this
-     * request came in through a URL.  This is normally called by the
+     * request came in through a URL. This is normally called by the
      * HTTP Connector, when it parses the request headers.
      *
      * @param flag The new flag
@@ -484,9 +434,8 @@ public class HttpRequestBase
 
     }
 
-
     /**
-     * Set the unparsed request URI for this Request.  This will normally
+     * Set the unparsed request URI for this Request. This will normally
      * be called by the HTTP Connector, when it parses the request headers.
      *
      * @param uri The request URI
@@ -497,10 +446,9 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Set the flag indicating whether this Request was received on a secure
-     * communications link or not.  This will normally be called by the HTTP
+     * communications link or not. This will normally be called by the HTTP
      * Connector, when it parses the request headers.
      *
      * @param secure The new secure flag
@@ -511,9 +459,8 @@ public class HttpRequestBase
 
     }
 
-
     /**
-     * Set the servlet path for this Request.  This will normally be called
+     * Set the servlet path for this Request. This will normally be called
      * when the associated Context is mapping the Request to a particular
      * Wrapper.
      *
@@ -525,9 +472,8 @@ public class HttpRequestBase
 
     }
 
-
     /**
-     * Set the Principal who has been authenticated for this Request.  This
+     * Set the Principal who has been authenticated for this Request. This
      * value is also used to calculate the value to be returned by the
      * <code>getRemoteUser()</code> method.
      *
@@ -539,9 +485,7 @@ public class HttpRequestBase
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Parse the parameters of this request, if it has not already occurred.
@@ -581,8 +525,8 @@ public class HttpRequestBase
             contentType = contentType.trim();
         }
         if ("POST".equals(getMethod()) && (getContentLength() > 0)
-            && (this.stream == null)
-            && "application/x-www-form-urlencoded".equals(contentType)) {
+                && (this.stream == null) && "application/x-www-form-urlencoded"
+                        .equals(contentType)) {
 
             try {
                 int max = getContentLength();
@@ -591,7 +535,7 @@ public class HttpRequestBase
                 ServletInputStream is = getInputStream();
                 while (len < max) {
                     int next = is.read(buf, len, max - len);
-                    if (next < 0 ) {
+                    if (next < 0) {
                         break;
                     }
                     len += next;
@@ -604,7 +548,8 @@ public class HttpRequestBase
                     // going into an infinite loop.  But the bug must be in mod_jk.
                     // Log additional data when this occurs to help debug mod_jk
                     StringBuffer msg = new StringBuffer();
-                    msg.append("HttpRequestBase.parseParameters content length mismatch\n");
+                    msg.append(
+                            "HttpRequestBase.parseParameters content length mismatch\n");
                     msg.append("  URL: ");
                     msg.append(getRequestURL());
                     msg.append(" Content Length: ");
@@ -612,20 +557,19 @@ public class HttpRequestBase
                     msg.append(" Read: ");
                     msg.append(len);
                     msg.append("\n  Bytes Read: ");
-                    if ( len > 0 ) {
-                        msg.append(new String(buf,0,len));
+                    if (len > 0) {
+                        msg.append(new String(buf, 0, len));
                     }
                     log(msg.toString());
-                    throw new RuntimeException
-                        (sm.getString("httpRequestBase.contentLengthMismatch"));
+                    throw new RuntimeException(sm.getString(
+                            "httpRequestBase.contentLengthMismatch"));
                 }
                 RequestUtil.parseParameters(results, buf, encoding);
             } catch (UnsupportedEncodingException ue) {
                 ;
             } catch (IOException e) {
-                throw new RuntimeException
-                        (sm.getString("httpRequestBase.contentReadFail") +
-                         e.getMessage());
+                throw new RuntimeException(sm.getString(
+                        "httpRequestBase.contentReadFail") + e.getMessage());
             }
         }
 
@@ -636,13 +580,11 @@ public class HttpRequestBase
 
     }
 
-
     // ------------------------------------------------- ServletRequest Methods
-
 
     /**
      * Return the value of the specified request parameter, if any; otherwise,
-     * return <code>null</code>.  If there is more than one value defined,
+     * return <code>null</code>. If there is more than one value defined,
      * return only the first one.
      *
      * @param name Name of the desired request parameter
@@ -658,7 +600,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Returns a <code>Map</code> of the parameters of this request.
      * Request parameters are extra information sent with the request.
@@ -666,7 +607,7 @@ public class HttpRequestBase
      * or posted form data.
      *
      * @return A <code>Map</code> containing parameter names as keys
-     *  and parameter values as map values.
+     *         and parameter values as map values.
      */
     public Map getParameterMap() {
 
@@ -674,7 +615,6 @@ public class HttpRequestBase
         return (this.parameters);
 
     }
-
 
     /**
      * Return the names of all defined request parameters for this request.
@@ -685,7 +625,6 @@ public class HttpRequestBase
         return (new Enumerator(parameters.keySet()));
 
     }
-
 
     /**
      * Return the defined values for the specified request parameter, if any;
@@ -703,7 +642,6 @@ public class HttpRequestBase
             return (null);
 
     }
-
 
     /**
      * Return a RequestDispatcher that wraps the resource at the specified
@@ -730,8 +668,8 @@ public class HttpRequestBase
         int pos = servletPath.lastIndexOf('/');
         String relative = null;
         if (pos >= 0) {
-            relative = RequestUtil.normalize
-                (servletPath.substring(0, pos + 1) + path);
+            relative = RequestUtil.normalize(servletPath.substring(0, pos + 1)
+                    + path);
         } else {
             relative = RequestUtil.normalize(servletPath + path);
         }
@@ -739,7 +677,6 @@ public class HttpRequestBase
         return (context.getServletContext().getRequestDispatcher(relative));
 
     }
-
 
     /**
      * Was this request received on a secure connection?
@@ -750,9 +687,7 @@ public class HttpRequestBase
 
     }
 
-
     // --------------------------------------------- HttpServletRequest Methods
-
 
     /**
      * Return the authentication type used for this Request.
@@ -763,7 +698,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the portion of the request URI used to select the Context
      * of the Request.
@@ -773,7 +707,6 @@ public class HttpRequestBase
         return (contextPath);
 
     }
-
 
     /**
      * Return the set of Cookies received with this Request.
@@ -789,7 +722,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the value of the specified date header, if any; otherwise
      * return -1.
@@ -797,7 +729,7 @@ public class HttpRequestBase
      * @param name Name of the requested date header
      *
      * @exception IllegalArgumentException if the specified header value
-     *  cannot be converted to a date
+     *                                     cannot be converted to a date
      */
     public long getDateHeader(String name) {
 
@@ -822,7 +754,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the first value of the specified header, if any; otherwise,
      * return <code>null</code>
@@ -841,7 +772,6 @@ public class HttpRequestBase
         }
 
     }
-
 
     /**
      * Return all of the values of the specified header, if any; otherwise,
@@ -862,7 +792,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the names of all headers received with this request.
      */
@@ -874,7 +803,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the value of the specified header as an integer, or -1 if there
      * is no such header for this request.
@@ -882,7 +810,7 @@ public class HttpRequestBase
      * @param name Name of the requested header
      *
      * @exception IllegalArgumentException if the specified header value
-     *  cannot be converted to an integer
+     *                                     cannot be converted to an integer
      */
     public int getIntHeader(String name) {
 
@@ -894,7 +822,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the HTTP request method used in this Request.
      */
@@ -904,7 +831,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the path information associated with this Request.
      */
@@ -913,7 +839,6 @@ public class HttpRequestBase
         return (pathInfo);
 
     }
-
 
     /**
      * Return the extra path information for this request, translated
@@ -931,7 +856,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the query string associated with this request.
      */
@@ -940,7 +864,6 @@ public class HttpRequestBase
         return (queryString);
 
     }
-
 
     /**
      * Return the name of the remote user that has been authenticated
@@ -955,7 +878,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the session identifier included in this request, if any.
      */
@@ -965,7 +887,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the request URI for this request.
      */
@@ -974,7 +895,6 @@ public class HttpRequestBase
         return (requestURI);
 
     }
-
 
     /**
      * Set the decoded request URI.
@@ -987,7 +907,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the URL decoded request URI.
      */
@@ -999,7 +918,6 @@ public class HttpRequestBase
         return decodedRequestURI;
 
     }
-
 
     /**
      * Reconstructs the URL the client used to make the request.
@@ -1015,7 +933,7 @@ public class HttpRequestBase
      * for reporting errors.
      *
      * @return A <code>StringBuffer</code> object containing the
-     *  reconstructed URL
+     *         reconstructed URL
      */
     public StringBuffer getRequestURL() {
 
@@ -1028,8 +946,8 @@ public class HttpRequestBase
         url.append(scheme);
         url.append("://");
         url.append(getServerName());
-        if ((scheme.equals("http") && (port != 80))
-            || (scheme.equals("https") && (port != 443))) {
+        if ((scheme.equals("http") && (port != 80)) || (scheme.equals("https")
+                && (port != 443))) {
             url.append(':');
             url.append(port);
         }
@@ -1038,7 +956,6 @@ public class HttpRequestBase
         return (url);
 
     }
-
 
     /**
      * Return the portion of the request URI used to select the servlet
@@ -1050,7 +967,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the session associated with this Request, creating one
      * if necessary.
@@ -1061,7 +977,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return the session associated with this Request, creating one
      * if necessary and requested.
@@ -1069,9 +984,9 @@ public class HttpRequestBase
      * @param create Create a new session if one does not exist
      */
     public HttpSession getSession(boolean create) {
-        if( System.getSecurityManager() != null ) {
+        if (System.getSecurityManager() != null) {
             PrivilegedGetSession dp = new PrivilegedGetSession(create);
-            return (HttpSession)AccessController.doPrivileged(dp);
+            return (HttpSession) AccessController.doPrivileged(dp);
         }
         return doGetSession(create);
     }
@@ -1087,14 +1002,13 @@ public class HttpRequestBase
         if (session != null)
             return (session.getSession());
 
-
         // Return the requested session if it exists and is valid
         Manager manager = null;
         if (context != null)
             manager = context.getManager();
 
         if (manager == null)
-            return (null);      // Sessions are not supported
+            return (null); // Sessions are not supported
 
         if (requestedSessionId != null) {
             try {
@@ -1112,11 +1026,10 @@ public class HttpRequestBase
         // Create a new session if requested and the response is not committed
         if (!create)
             return (null);
-        if ((context != null) && (response != null) &&
-            context.getCookies() &&
-            response.getResponse().isCommitted()) {
-            throw new IllegalStateException
-              (sm.getString("httpRequestBase.createCommitted"));
+        if ((context != null) && (response != null) && context.getCookies()
+                && response.getResponse().isCommitted()) {
+            throw new IllegalStateException(sm.getString(
+                    "httpRequestBase.createCommitted"));
         }
 
         session = manager.createSession();
@@ -1126,7 +1039,6 @@ public class HttpRequestBase
             return (null);
 
     }
-
 
     /**
      * Return <code>true</code> if the session identifier included in this
@@ -1141,7 +1053,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return <code>true</code> if the session identifier included in this
      * request came from the request URI.
@@ -1155,20 +1066,18 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return <code>true</code> if the session identifier included in this
      * request came from the request URI.
      *
      * @deprecated As of Version 2.1 of the Java Servlet API, use
-     *  <code>isRequestedSessionIdFromURL()</code> instead.
+     *             <code>isRequestedSessionIdFromURL()</code> instead.
      */
     public boolean isRequestedSessionIdFromUrl() {
 
         return (isRequestedSessionIdFromURL());
 
     }
-
 
     /**
      * Return <code>true</code> if the session identifier included in this
@@ -1196,7 +1105,6 @@ public class HttpRequestBase
 
     }
 
-
     /**
      * Return <code>true</code> if the authenticated user principal
      * possesses the specified role name.
@@ -1219,8 +1127,7 @@ public class HttpRequestBase
         // Check for a role alias defined in a <security-role-ref> element
         if (wrapper != null) {
             String realRole = wrapper.findSecurityReference(role);
-            if ((realRole != null) &&
-                realm.hasRole(userPrincipal, realRole))
+            if ((realRole != null) && realm.hasRole(userPrincipal, realRole))
                 return (true);
         }
 
@@ -1228,7 +1135,6 @@ public class HttpRequestBase
         return (realm.hasRole(userPrincipal, role));
 
     }
-
 
     /**
      * Return the principal that has been authenticated for this Request.
@@ -1239,12 +1145,10 @@ public class HttpRequestBase
 
     }
 
-
     private void log(String message) {
         Logger logger = context.getLogger();
         logger.log(message);
     }
-
 
     private void log(String message, Throwable throwable) {
         Logger logger = context.getLogger();

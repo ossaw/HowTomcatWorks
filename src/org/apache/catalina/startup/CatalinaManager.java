@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/startup/CatalinaManager.java,v 1.3 2001/07/22 20:25:13 pier Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/startup/
+ * CatalinaManager.java,v 1.3 2001/07/22 20:25:13 pier Exp $
  * $Revision: 1.3 $
  * $Date: 2001/07/22 20:25:13 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,14 +43,11 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
 package org.apache.catalina.startup;
@@ -80,53 +69,40 @@ import javax.management.Notification;
  * @version $Revision: 1.3 $
  */
 
-public final class CatalinaManager
-    extends NotificationBroadcasterSupport
-    implements CatalinaManagerMBean, MBeanRegistration {
-
+public final class CatalinaManager extends NotificationBroadcasterSupport
+        implements CatalinaManagerMBean, MBeanRegistration {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Status of the Slide domain.
      */
     private int state = STOPPED;
 
-
     /**
      * Notification sequence number.
      */
     private long sequenceNumber = 0;
 
-
     // ---------------------------------------------- MBeanRegistration Methods
 
-
     public ObjectName preRegister(MBeanServer server, ObjectName name)
-        throws Exception {
+            throws Exception {
         return new ObjectName(OBJECT_NAME);
     }
-
 
     public void postRegister(Boolean registrationDone) {
         if (!registrationDone.booleanValue())
             destroy();
     }
 
-
-    public void preDeregister()
-        throws Exception {
-    }
-
+    public void preDeregister() throws Exception {}
 
     public void postDeregister() {
         destroy();
     }
 
-
     // ----------------------------------------------------- SlideMBean Methods
-
 
     /**
      * Retruns the Catalina component name.
@@ -135,14 +111,12 @@ public final class CatalinaManager
         return NAME;
     }
 
-
     /**
      * Returns the state.
      */
     public int getState() {
         return state;
     }
-
 
     /**
      * Returns a String representation of the state.
@@ -151,14 +125,12 @@ public final class CatalinaManager
         return states[state];
     }
 
-
     /**
      * Path accessor.
      */
     public String getPath() {
         return System.getProperty("catalina.home");
     }
-
 
     /**
      * Config file path mutator.
@@ -167,12 +139,10 @@ public final class CatalinaManager
         System.setProperty("catalina.home", path);
     }
 
-
     /**
      * Start the servlet container.
      */
-    public void start()
-        throws Exception {
+    public void start() throws Exception {
 
         Notification notification = null;
 
@@ -183,10 +153,10 @@ public final class CatalinaManager
 
         // Notifying the MBEan server that we're starting
 
-        notification = new AttributeChangeNotification
-            (this, sequenceNumber++, System.currentTimeMillis(),
-             "Starting " + NAME, "State", "java.lang.Integer",
-             new Integer(STOPPED), new Integer(STARTING));
+        notification = new AttributeChangeNotification(this, sequenceNumber++,
+                System.currentTimeMillis(), "Starting " + NAME, "State",
+                "java.lang.Integer", new Integer(STOPPED), new Integer(
+                        STARTING));
         sendNotification(notification);
 
         try {
@@ -196,22 +166,21 @@ public final class CatalinaManager
 
         } catch (Throwable t) {
             state = STOPPED;
-            notification = new AttributeChangeNotification
-                (this, sequenceNumber++, System.currentTimeMillis(),
-                 "Stopped " + NAME, "State", "java.lang.Integer",
-                 new Integer(STARTING), new Integer(STOPPED));
+            notification = new AttributeChangeNotification(this,
+                    sequenceNumber++, System.currentTimeMillis(), "Stopped "
+                            + NAME, "State", "java.lang.Integer", new Integer(
+                                    STARTING), new Integer(STOPPED));
             sendNotification(notification);
         }
 
         state = STARTED;
-        notification = new AttributeChangeNotification
-            (this, sequenceNumber++, System.currentTimeMillis(),
-             "Started " + NAME, "State", "java.lang.Integer",
-             new Integer(STARTING), new Integer(STARTED));
+        notification = new AttributeChangeNotification(this, sequenceNumber++,
+                System.currentTimeMillis(), "Started " + NAME, "State",
+                "java.lang.Integer", new Integer(STARTING), new Integer(
+                        STARTED));
         sendNotification(notification);
 
     }
-
 
     /**
      * Stop the servlet container.
@@ -225,10 +194,10 @@ public final class CatalinaManager
 
         state = STOPPING;
 
-        notification = new AttributeChangeNotification
-            (this, sequenceNumber++, System.currentTimeMillis(),
-             "Stopping " + NAME, "State", "java.lang.Integer",
-             new Integer(STARTED), new Integer(STOPPING));
+        notification = new AttributeChangeNotification(this, sequenceNumber++,
+                System.currentTimeMillis(), "Stopping " + NAME, "State",
+                "java.lang.Integer", new Integer(STARTED), new Integer(
+                        STOPPING));
         sendNotification(notification);
 
         try {
@@ -245,14 +214,13 @@ public final class CatalinaManager
 
         state = STOPPED;
 
-        notification = new AttributeChangeNotification
-            (this, sequenceNumber++, System.currentTimeMillis(),
-             "Stopped " + NAME, "State", "java.lang.Integer",
-             new Integer(STOPPING), new Integer(STOPPED));
+        notification = new AttributeChangeNotification(this, sequenceNumber++,
+                System.currentTimeMillis(), "Stopped " + NAME, "State",
+                "java.lang.Integer", new Integer(STOPPING), new Integer(
+                        STOPPED));
         sendNotification(notification);
 
     }
-
 
     /**
      * Destroy servlet container (if any is running).
@@ -263,6 +231,5 @@ public final class CatalinaManager
             stop();
 
     }
-
 
 }

@@ -1,15 +1,13 @@
 package org.apache.catalina.startup;
 
-
 import java.io.File;
 import java.lang.reflect.Method;
 
-
 /**
- * Boostrap loader for Catalina.  This application constructs a class loader
+ * Boostrap loader for Catalina. This application constructs a class loader
  * for use in loading the Catalina internal classes (by accumulating all of the
  * JAR files found in the "server" directory under "catalina.home"), and
- * starts the regular execution of the container.  The purpose of this
+ * starts the regular execution of the container. The purpose of this
  * roundabout approach is to keep the Catalina internal classes (and any
  * other classes they depend on, such as an XML parser) out of the system
  * class path and therefore not visible to application level classes.
@@ -20,18 +18,14 @@ import java.lang.reflect.Method;
 
 public final class Bootstrap {
 
-
     // ------------------------------------------------------- Static Variables
-
 
     /**
      * Debugging detail level for processing the startup.
      */
     private static int debug = 0;
 
-
     // ----------------------------------------------------------- Main Program
-
 
     /**
      * The main program for the bootstrap.
@@ -41,11 +35,11 @@ public final class Bootstrap {
     public static void main(String args[]) {
 
         // Set the debug flag appropriately
-        for (int i = 0; i < args.length; i++)  {
+        for (int i = 0; i < args.length; i++) {
             if ("-debug".equals(args[i]))
                 debug = 1;
         }
-        
+
         // Configure catalina.base from catalina.home if not yet set
         if (System.getProperty("catalina.base") == null)
             System.setProperty("catalina.base", getCatalinaHome());
@@ -61,30 +55,28 @@ public final class Bootstrap {
             File packed2[] = new File[2];
             ClassLoaderFactory.setDebug(debug);
 
-            unpacked[0] = new File(getCatalinaHome(),
-                                   "common" + File.separator + "classes");
-            packed2[0] = new File(getCatalinaHome(),
-                                  "common" + File.separator + "endorsed");
-            packed2[1] = new File(getCatalinaHome(),
-                                  "common" + File.separator + "lib");
-            commonLoader =
-                ClassLoaderFactory.createClassLoader(unpacked, packed2, null);
+            unpacked[0] = new File(getCatalinaHome(), "common" + File.separator
+                    + "classes");
+            packed2[0] = new File(getCatalinaHome(), "common" + File.separator
+                    + "endorsed");
+            packed2[1] = new File(getCatalinaHome(), "common" + File.separator
+                    + "lib");
+            commonLoader = ClassLoaderFactory.createClassLoader(unpacked,
+                    packed2, null);
 
-            unpacked[0] = new File(getCatalinaHome(),
-                                   "server" + File.separator + "classes");
-            packed[0] = new File(getCatalinaHome(),
-                                 "server" + File.separator + "lib");
-            catalinaLoader =
-                ClassLoaderFactory.createClassLoader(unpacked, packed,
-                                                     commonLoader);
+            unpacked[0] = new File(getCatalinaHome(), "server" + File.separator
+                    + "classes");
+            packed[0] = new File(getCatalinaHome(), "server" + File.separator
+                    + "lib");
+            catalinaLoader = ClassLoaderFactory.createClassLoader(unpacked,
+                    packed, commonLoader);
 
-            unpacked[0] = new File(getCatalinaBase(),
-                                   "shared" + File.separator + "classes");
-            packed[0] = new File(getCatalinaBase(),
-                                 "shared" + File.separator + "lib");
-            sharedLoader =
-                ClassLoaderFactory.createClassLoader(unpacked, packed,
-                                                     commonLoader);
+            unpacked[0] = new File(getCatalinaBase(), "shared" + File.separator
+                    + "classes");
+            packed[0] = new File(getCatalinaBase(), "shared" + File.separator
+                    + "lib");
+            sharedLoader = ClassLoaderFactory.createClassLoader(unpacked,
+                    packed, commonLoader);
         } catch (Throwable t) {
 
             log("Class loader creation threw exception", t);
@@ -102,9 +94,8 @@ public final class Bootstrap {
             // Instantiate a startup class instance
             if (debug >= 1)
                 log("Loading startup class");
-            Class startupClass =
-                catalinaLoader.loadClass
-                ("org.apache.catalina.startup.Catalina");
+            Class startupClass = catalinaLoader.loadClass(
+                    "org.apache.catalina.startup.Catalina");
             Object startupInstance = startupClass.newInstance();
 
             // Set the shared extensions class loader
@@ -115,8 +106,8 @@ public final class Bootstrap {
             paramTypes[0] = Class.forName("java.lang.ClassLoader");
             Object paramValues[] = new Object[1];
             paramValues[0] = sharedLoader;
-            Method method =
-                startupInstance.getClass().getMethod(methodName, paramTypes);
+            Method method = startupInstance.getClass().getMethod(methodName,
+                    paramTypes);
             method.invoke(startupInstance, paramValues);
 
             // Call the process() method
@@ -127,8 +118,8 @@ public final class Bootstrap {
             paramTypes[0] = args.getClass();
             paramValues = new Object[1];
             paramValues[0] = args;
-            method =
-                startupInstance.getClass().getMethod(methodName, paramTypes);
+            method = startupInstance.getClass().getMethod(methodName,
+                    paramTypes);
             method.invoke(startupInstance, paramValues);
 
         } catch (Exception e) {
@@ -139,15 +130,13 @@ public final class Bootstrap {
 
     }
 
-
     /**
      * Get the value of the catalina.home environment variable.
      */
     private static String getCatalinaHome() {
-        return System.getProperty("catalina.home",
-                                  System.getProperty("user.dir"));
+        return System.getProperty("catalina.home", System.getProperty(
+                "user.dir"));
     }
-
 
     /**
      * Get the value of the catalina.base environment variable.
@@ -155,7 +144,6 @@ public final class Bootstrap {
     private static String getCatalinaBase() {
         return System.getProperty("catalina.base", getCatalinaHome());
     }
-
 
     /**
      * Log a debugging detail message.
@@ -169,11 +157,10 @@ public final class Bootstrap {
 
     }
 
-
     /**
      * Log a debugging detail message with an exception.
      *
-     * @param message The message to be logged
+     * @param message   The message to be logged
      * @param exception The exception to be logged
      */
     private static void log(String message, Throwable exception) {
@@ -182,6 +169,5 @@ public final class Bootstrap {
         exception.printStackTrace(System.out);
 
     }
-
 
 }

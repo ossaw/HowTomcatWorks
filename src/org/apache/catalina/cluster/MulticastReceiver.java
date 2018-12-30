@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/cluster/MulticastReceiver.java,v 1.5 2002/01/03 08:52:56 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/cluster/
+ * MulticastReceiver.java,v 1.5 2002/01/03 08:52:56 remm Exp $
  * $Revision: 1.5 $
  * $Date: 2002/01/03 08:52:56 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,14 +43,11 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
 package org.apache.catalina.cluster;
@@ -71,7 +60,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Vector;
 
-
 /**
  * This class is responsible for checking for incoming multicast
  * data and determine if the data belongs to us and if so push
@@ -81,8 +69,8 @@ import java.util.Vector;
  * @version $Revision: 1.5 $, $Date: 2002/01/03 08:52:56 $
  */
 
-public final class MulticastReceiver
-    extends ClusterSessionBase implements ClusterReceiver {
+public final class MulticastReceiver extends ClusterSessionBase implements
+        ClusterReceiver {
 
     // ----------------------------------------------------- Instance Variables
 
@@ -136,11 +124,11 @@ public final class MulticastReceiver
     /**
      * Create a new MulticastReceiver.
      *
-     * @param senderId The unique senderId
+     * @param senderId        The unique senderId
      * @param multicastSocket The MulticastSocket to use
      */
     MulticastReceiver(String senderId, MulticastSocket multicastSocket,
-                    InetAddress multicastAddress, int multicastPort) {
+            InetAddress multicastAddress, int multicastPort) {
         this.multicastSocket = multicastSocket;
         this.senderId = senderId;
     }
@@ -152,7 +140,7 @@ public final class MulticastReceiver
      * @return The name of the implementation
      */
     public String getName() {
-        return(this.receiverName);
+        return (this.receiverName);
     }
 
     /**
@@ -171,7 +159,7 @@ public final class MulticastReceiver
      * @return The time in seconds this Cluster sleeps
      */
     public int getCheckInterval() {
-        return(this.checkInterval);
+        return (this.checkInterval);
     }
 
     /**
@@ -208,7 +196,6 @@ public final class MulticastReceiver
         threadStop();
     }
 
-
     // -------------------------------------------------------- Private Methods
 
     /**
@@ -225,16 +212,14 @@ public final class MulticastReceiver
             multicastSocket.receive(recv);
             ips = new ByteArrayInputStream(buf, 0, buf.length);
             ois = new ObjectInputStream(ips);
-            ReplicationWrapper obj = (ReplicationWrapper)ois.readObject();
+            ReplicationWrapper obj = (ReplicationWrapper) ois.readObject();
 
-            if(obj.getSenderId().equals(this.senderId))
+            if (obj.getSenderId().equals(this.senderId))
                 stack.add(obj);
         } catch (IOException e) {
-            log("An error occurred when trying to replicate: "+
-                e.toString());
+            log("An error occurred when trying to replicate: " + e.toString());
         } catch (ClassNotFoundException e) {
-            log("An error occurred when trying to replicate: "+
-                e.toString());
+            log("An error occurred when trying to replicate: " + e.toString());
         }
     }
 
@@ -271,7 +256,7 @@ public final class MulticastReceiver
             return;
 
         threadDone = false;
-        threadName = threadName+"["+senderId+"]";
+        threadName = threadName + "[" + senderId + "]";
         thread = new Thread(this, threadName);
         thread.setDaemon(true);
         thread.start();

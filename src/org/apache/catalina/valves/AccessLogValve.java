@@ -1,43 +1,34 @@
 /*
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2001 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -47,19 +38,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.valves;
-
 
 import java.io.File;
 import java.io.FileWriter;
@@ -83,22 +69,25 @@ import org.apache.catalina.ValveContext;
 import org.apache.catalina.util.LifecycleSupport;
 import org.apache.catalina.util.StringManager;
 
-
 /**
- * <p>Implementation of the <b>Valve</b> interface that generates a web server
+ * <p>
+ * Implementation of the <b>Valve</b> interface that generates a web server
  * access log with the detailed line contents matching a configurable pattern.
  * The syntax of the available patterns is similar to that supported by the
- * Apache <code>mod_log_config</code> module.  As an additional feature,
- * automatic rollover of log files when the date changes is also supported.</p>
+ * Apache <code>mod_log_config</code> module. As an additional feature,
+ * automatic rollover of log files when the date changes is also supported.
+ * </p>
  *
- * <p>Patterns for the logged message may include constant text or any of the
+ * <p>
+ * Patterns for the logged message may include constant text or any of the
  * following replacement strings, for which the corresponding information
- * from the specified Response is substituted:</p>
+ * from the specified Response is substituted:
+ * </p>
  * <ul>
  * <li><b>%a</b> - Remote IP address
  * <li><b>%A</b> - Local IP address
  * <li><b>%b</b> - Bytes sent, excluding HTTP headers, or '-' if no bytes
- *     were sent
+ * were sent
  * <li><b>%B</b> - Bytes sent, excluding HTTP headers
  * <li><b>%h</b> - Remote host name
  * <li><b>%H</b> - Request protocol
@@ -106,38 +95,38 @@ import org.apache.catalina.util.StringManager;
  * <li><b>%m</b> - Request method
  * <li><b>%p</b> - Local port
  * <li><b>%q</b> - Query string (prepended with a '?' if it exists, otherwise
- *     an empty string
+ * an empty string
  * <li><b>%r</b> - First line of the request
  * <li><b>%s</b> - HTTP status code of the response
- * <li><b>%S</b> - User session ID 
+ * <li><b>%S</b> - User session ID
  * <li><b>%t</b> - Date and time, in Common Log Format format
  * <li><b>%u</b> - Remote user that was authenticated
  * <li><b>%U</b> - Requested URL path
  * <li><b>%v</b> - Local server name
  * </ul>
- * <p>In addition, the caller can specify one of the following aliases for
- * commonly utilized patterns:</p>
+ * <p>
+ * In addition, the caller can specify one of the following aliases for
+ * commonly utilized patterns:
+ * </p>
  * <ul>
  * <li><b>common</b> - <code>%h %l %u %t "%r" %s %b</code>
- * <li><b>combined</b> - 
- *   <code>%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"</code>
+ * <li><b>combined</b> -
+ * <code>%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"</code>
  * </ul>
  *
- * <p><b>FIXME</b> - Improve the parsing so that things like
- * <code>%{xxx}i</code> can be implemented.</p>
+ * <p>
+ * <b>FIXME</b> - Improve the parsing so that things like
+ * <code>%{xxx}i</code> can be implemented.
+ * </p>
  *
  * @author Craig R. McClanahan
  * @author Jason Brittain
  * @version $Revision: 1.14 $ $Date: 2002/06/09 02:19:44 $
  */
 
-public final class AccessLogValve
-    extends ValveBase
-    implements Lifecycle {
-
+public final class AccessLogValve extends ValveBase implements Lifecycle {
 
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a new instance of this class with default property values.
@@ -147,12 +136,9 @@ public final class AccessLogValve
         super();
         setPattern("common");
 
-
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The as-of date for the currently open log file, or a zero-length
@@ -160,33 +146,26 @@ public final class AccessLogValve
      */
     private String dateStamp = "";
 
-
     /**
      * The directory in which log files are created.
      */
     private String directory = "logs";
 
-
     /**
      * The descriptive information about this implementation.
      */
-    protected static final String info =
-        "org.apache.catalina.valves.AccessLogValve/1.0";
-
+    protected static final String info = "org.apache.catalina.valves.AccessLogValve/1.0";
 
     /**
      * The lifecycle event support for this component.
      */
     protected LifecycleSupport lifecycle = new LifecycleSupport(this);
 
-
     /**
      * The set of month abbreviations for log messages.
      */
-    protected static final String months[] =
-    { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-
+    protected static final String months[] = { "Jan", "Feb", "Mar", "Apr",
+            "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
     /**
      * If the current log pattern is the same as the common access log
@@ -195,50 +174,41 @@ public final class AccessLogValve
      */
     private boolean common = false;
 
-
     /**
      * For the combined format (common, plus useragent and referer), we do
      * the same
      */
     private boolean combined = false;
 
-
     /**
      * The pattern used to format our access log lines.
      */
     private String pattern = null;
-
 
     /**
      * The prefix that is added to log file filenames.
      */
     private String prefix = "access_log.";
 
-
     /**
      * The string manager for this package.
      */
-    private StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    private StringManager sm = StringManager.getManager(Constants.Package);
 
     /**
      * Has this component been started yet?
      */
     private boolean started = false;
 
-
     /**
      * The suffix that is added to log file filenames.
      */
     private String suffix = "";
 
-
     /**
      * The PrintWriter to which we are currently logging, if any.
      */
     private PrintWriter writer = null;
-
 
     /**
      * A date formatter to format a Date into a date in the format
@@ -246,13 +216,11 @@ public final class AccessLogValve
      */
     private SimpleDateFormat dateFormatter = null;
 
-
     /**
      * A date formatter to format Dates into a day string in the format
      * "dd".
      */
     private SimpleDateFormat dayFormatter = null;
-
 
     /**
      * A date formatter to format a Date into a month string in the format
@@ -260,13 +228,11 @@ public final class AccessLogValve
      */
     private SimpleDateFormat monthFormatter = null;
 
-
     /**
      * A date formatter to format a Date into a year string in the format
      * "yyyy".
      */
     private SimpleDateFormat yearFormatter = null;
-
 
     /**
      * A date formatter to format a Date into a time in the format
@@ -274,12 +240,10 @@ public final class AccessLogValve
      */
     private SimpleDateFormat timeFormatter = null;
 
-
     /**
      * The time zone relative to GMT.
      */
     private String timeZone = null;
-
 
     /**
      * The system time when we last updated the Date that this valve
@@ -287,27 +251,22 @@ public final class AccessLogValve
      */
     private Date currentDate = null;
 
-
     /**
      * When formatting log lines, we often use strings like this one (" ").
      */
     private String space = " ";
-
 
     /**
      * Resolve hosts.
      */
     private boolean resolveHosts = false;
 
-
     /**
      * Instant when the log daily rotation was last checked.
      */
     private long rotationLastChecked = 0L;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the directory in which we create log files.
@@ -317,7 +276,6 @@ public final class AccessLogValve
         return (directory);
 
     }
-
 
     /**
      * Set the directory in which we create log files.
@@ -330,7 +288,6 @@ public final class AccessLogValve
 
     }
 
-
     /**
      * Return descriptive information about this implementation.
      */
@@ -340,7 +297,6 @@ public final class AccessLogValve
 
     }
 
-
     /**
      * Return the format pattern.
      */
@@ -349,7 +305,6 @@ public final class AccessLogValve
         return (this.pattern);
 
     }
-
 
     /**
      * Set the format pattern, first translating any recognized alias.
@@ -378,7 +333,6 @@ public final class AccessLogValve
 
     }
 
-
     /**
      * Return the log file prefix.
      */
@@ -387,7 +341,6 @@ public final class AccessLogValve
         return (prefix);
 
     }
-
 
     /**
      * Set the log file prefix.
@@ -400,7 +353,6 @@ public final class AccessLogValve
 
     }
 
-
     /**
      * Return the log file suffix.
      */
@@ -409,7 +361,6 @@ public final class AccessLogValve
         return (suffix);
 
     }
-
 
     /**
      * Set the log file suffix.
@@ -422,7 +373,6 @@ public final class AccessLogValve
 
     }
 
-
     /**
      * Set the resolve hosts flag.
      *
@@ -434,7 +384,6 @@ public final class AccessLogValve
 
     }
 
-
     /**
      * Get the value of the resolve hosts flag.
      */
@@ -444,25 +393,22 @@ public final class AccessLogValve
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Log a message summarizing the specified request and response, according
      * to the format specified by the <code>pattern</code> property.
      *
-     * @param request Request being processed
+     * @param request  Request being processed
      * @param response Response being processed
-     * @param context The valve context used to invoke the next valve
-     *  in the current processing pipeline
+     * @param context  The valve context used to invoke the next valve
+     *                 in the current processing pipeline
      *
-     * @exception IOException if an input/output error has occurred
+     * @exception IOException      if an input/output error has occurred
      * @exception ServletException if a servlet error has occurred
      */
-    public void invoke(Request request, Response response,
-                       ValveContext context)
-        throws IOException, ServletException {
+    public void invoke(Request request, Response response, ValveContext context)
+            throws IOException, ServletException {
 
         // Pass this request on to the next valve in our pipeline
         context.invokeNext(request, response);
@@ -496,15 +442,15 @@ public final class AccessLogValve
             }
 
             result.append("[");
-            result.append(dayFormatter.format(date));            // Day
+            result.append(dayFormatter.format(date)); // Day
             result.append('/');
             result.append(lookup(monthFormatter.format(date))); // Month
             result.append('/');
-            result.append(yearFormatter.format(date));            // Year
+            result.append(yearFormatter.format(date)); // Year
             result.append(':');
-            result.append(timeFormatter.format(date));        // Time
+            result.append(timeFormatter.format(date)); // Time
             result.append(space);
-            result.append(timeZone);                            // Time Zone
+            result.append(timeZone); // Time Zone
             result.append("] \"");
 
             result.append(hreq.getMethod());
@@ -534,7 +480,7 @@ public final class AccessLogValve
                 result.append(space);
                 result.append("\"");
                 String referer = hreq.getHeader("referer");
-                if(referer != null)
+                if (referer != null)
                     result.append(referer);
                 else
                     result.append("-");
@@ -543,7 +489,7 @@ public final class AccessLogValve
                 result.append(space);
                 result.append("\"");
                 String ua = hreq.getHeader("user-agent");
-                if(ua != null)
+                if (ua != null)
                     result.append(ua);
                 else
                     result.append("-");
@@ -569,9 +515,7 @@ public final class AccessLogValve
 
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Close the currently open log file (if any)
@@ -587,14 +531,13 @@ public final class AccessLogValve
 
     }
 
-
     /**
      * Log the specified message to the log file, switching files if the date
      * has changed since the previous log call.
      *
      * @param message Message to be logged
-     * @param date the current Date object (so this method doesn't need to
-     *        create a new one)
+     * @param date    the current Date object (so this method doesn't need to
+     *                create a new one)
      */
     public void log(String message, Date date) {
 
@@ -629,7 +572,6 @@ public final class AccessLogValve
 
     }
 
-
     /**
      * Return the month abbreviation for the specified month, which must
      * be a two-digit String.
@@ -642,12 +584,11 @@ public final class AccessLogValve
         try {
             index = Integer.parseInt(month) - 1;
         } catch (Throwable t) {
-            index = 0;  // Can not happen, in theory
+            index = 0; // Can not happen, in theory
         }
         return (months[index]);
 
     }
-
 
     /**
      * Open the new log file for the date specified by <code>dateStamp</code>.
@@ -662,8 +603,8 @@ public final class AccessLogValve
 
         // Open the current log file
         try {
-            String pathname = dir.getAbsolutePath() + File.separator +
-                prefix + dateStamp + suffix;
+            String pathname = dir.getAbsolutePath() + File.separator + prefix
+                    + dateStamp + suffix;
             writer = new PrintWriter(new FileWriter(pathname, true), true);
         } catch (IOException e) {
             writer = null;
@@ -671,18 +612,17 @@ public final class AccessLogValve
 
     }
 
-
     /**
      * Return the replacement text for the specified pattern character.
      *
-     * @param pattern Pattern character identifying the desired text
-     * @param date the current Date so that this method doesn't need to
-     *        create one
-     * @param request Request being processed
+     * @param pattern  Pattern character identifying the desired text
+     * @param date     the current Date so that this method doesn't need to
+     *                 create one
+     * @param request  Request being processed
      * @param response Response being processed
      */
     private String replace(char pattern, Date date, Request request,
-                           Response response) {
+            Response response) {
 
         String value = null;
 
@@ -698,7 +638,7 @@ public final class AccessLogValve
         if (pattern == 'a') {
             value = req.getRemoteAddr();
         } else if (pattern == 'A') {
-            value = "127.0.0.1";        // FIXME
+            value = "127.0.0.1"; // FIXME
         } else if (pattern == 'b') {
             int length = response.getContentCount();
             if (length <= 0)
@@ -749,7 +689,8 @@ public final class AccessLogValve
             if (hreq != null)
                 if (hreq.getSession(false) != null)
                     value = hreq.getSession(false).getId();
-                else value = "-";
+                else
+                    value = "-";
             else
                 value = "-";
         } else if (pattern == 's') {
@@ -759,15 +700,15 @@ public final class AccessLogValve
                 value = "-";
         } else if (pattern == 't') {
             StringBuffer temp = new StringBuffer("[");
-            temp.append(dayFormatter.format(date));             // Day
+            temp.append(dayFormatter.format(date)); // Day
             temp.append('/');
-            temp.append(lookup(monthFormatter.format(date)));   // Month
+            temp.append(lookup(monthFormatter.format(date))); // Month
             temp.append('/');
-            temp.append(yearFormatter.format(date));            // Year
+            temp.append(yearFormatter.format(date)); // Year
             temp.append(':');
-            temp.append(timeFormatter.format(date));            // Time
+            temp.append(timeFormatter.format(date)); // Time
             temp.append(' ');
-            temp.append(timeZone);                              // Timezone
+            temp.append(timeZone); // Timezone
             temp.append(']');
             value = temp.toString();
         } else if (pattern == 'u') {
@@ -793,10 +734,9 @@ public final class AccessLogValve
 
     }
 
-
     /**
      * This method returns a Date object that is accurate to within one
-     * second.  If a thread calls this method to get a Date and it's been
+     * second. If a thread calls this method to get a Date and it's been
      * less than 1 second since a new Date was created, this method
      * simply gives out the same Date again so that the system doesn't
      * spend time creating Date objects unnecessarily.
@@ -813,9 +753,7 @@ public final class AccessLogValve
 
     }
 
-
     // ------------------------------------------------------ Lifecycle Methods
-
 
     /**
      * Add a lifecycle event listener to this component.
@@ -828,9 +766,8 @@ public final class AccessLogValve
 
     }
 
-
     /**
-     * Get the lifecycle listeners associated with this lifecycle. If this 
+     * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
      */
     public LifecycleListener[] findLifecycleListeners() {
@@ -838,7 +775,6 @@ public final class AccessLogValve
         return lifecycle.findLifecycleListeners();
 
     }
-
 
     /**
      * Remove a lifecycle event listener from this component.
@@ -851,21 +787,21 @@ public final class AccessLogValve
 
     }
 
-
     /**
      * Prepare for the beginning of active use of the public methods of this
-     * component.  This method should be called after <code>configure()</code>,
+     * component. This method should be called after <code>configure()</code>,
      * and before any of the public methods of the component are utilized.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     public void start() throws LifecycleException {
 
         // Validate and update our current component state
         if (started)
-            throw new LifecycleException
-                (sm.getString("accessLogValve.alreadyStarted"));
+            throw new LifecycleException(sm.getString(
+                    "accessLogValve.alreadyStarted"));
         lifecycle.fireLifecycleEvent(START_EVENT, null);
         started = true;
 
@@ -873,8 +809,8 @@ public final class AccessLogValve
         TimeZone tz = TimeZone.getDefault();
         timeZone = "" + (tz.getRawOffset() / (60 * 60 * 10));
         if (timeZone.length() < 5)
-            timeZone = timeZone.substring(0, 1) + "0" +
-                timeZone.substring(1, timeZone.length());
+            timeZone = timeZone.substring(0, 1) + "0" + timeZone.substring(1,
+                    timeZone.length());
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         dateFormatter.setTimeZone(tz);
         dayFormatter = new SimpleDateFormat("dd");
@@ -892,27 +828,25 @@ public final class AccessLogValve
 
     }
 
-
     /**
      * Gracefully terminate the active use of the public methods of this
-     * component.  This method should be the last one called on a given
+     * component. This method should be the last one called on a given
      * instance of this component.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that needs to be reported
+     *                               that needs to be reported
      */
     public void stop() throws LifecycleException {
 
         // Validate and update our current component state
         if (!started)
-            throw new LifecycleException
-                (sm.getString("accessLogValve.notStarted"));
+            throw new LifecycleException(sm.getString(
+                    "accessLogValve.notStarted"));
         lifecycle.fireLifecycleEvent(STOP_EVENT, null);
         started = false;
 
         close();
 
     }
-
 
 }

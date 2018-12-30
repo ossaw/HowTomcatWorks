@@ -1,15 +1,13 @@
 package org.apache.catalina.connector;
 
-
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-
 
 /**
  * Wrapper around the standard <code>java.io.PrintWriter</code> that keeps
  * track of whether or not any characters have ever been written (even if they
  * are still buffered inside the PrintWriter or any other Writer that it uses
- * above the underlying TCP/IP socket).  This is required by the semantics of
+ * above the underlying TCP/IP socket). This is required by the semantics of
  * several calls on ServletResponse, which are required to throw an
  * <code>IllegalStateException</code> if output has ever been written.
  *
@@ -20,9 +18,7 @@ import java.io.PrintWriter;
 
 public class ResponseWriter extends PrintWriter {
 
-
     // ------------------------------------------------------------ Constructor
-
 
     /**
      * Construct a new ResponseWriter, wrapping the specified writer and
@@ -39,18 +35,14 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The response stream to which we are attached.
      */
     protected ResponseStream stream = null;
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Flush this stream, and cause the response to be committed.
@@ -62,7 +54,6 @@ public class ResponseWriter extends PrintWriter {
         stream.setCommit(false);
 
     }
-
 
     /**
      * Print a boolean value.
@@ -76,7 +67,6 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     /**
      * Print a character value.
      *
@@ -88,7 +78,6 @@ public class ResponseWriter extends PrintWriter {
         super.flush();
 
     }
-
 
     /**
      * Print a character array value.
@@ -102,7 +91,6 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     /**
      * Print a double value.
      *
@@ -114,7 +102,6 @@ public class ResponseWriter extends PrintWriter {
         super.flush();
 
     }
-
 
     /**
      * Print a float value.
@@ -128,7 +115,6 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     /**
      * Print an integer value.
      *
@@ -140,8 +126,6 @@ public class ResponseWriter extends PrintWriter {
         super.flush();
 
     }
-
-
 
     /**
      * Print a long value.
@@ -155,7 +139,6 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     /**
      * Print an object value.
      *
@@ -167,7 +150,6 @@ public class ResponseWriter extends PrintWriter {
         super.flush();
 
     }
-
 
     /**
      * Print a String value.
@@ -181,7 +163,6 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     /**
      * Terminate the current line by writing the line separator string.
      */
@@ -191,7 +172,6 @@ public class ResponseWriter extends PrintWriter {
         super.flush();
 
     }
-
 
     /**
      * Print a boolean value and terminate the current line.
@@ -205,7 +185,6 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     /**
      * Print a character value and terminate the current line.
      *
@@ -217,7 +196,6 @@ public class ResponseWriter extends PrintWriter {
         super.flush();
 
     }
-
 
     /**
      * Print a character array value and terminate the current line.
@@ -231,7 +209,6 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     /**
      * Print a double value and terminate the current line.
      *
@@ -243,7 +220,6 @@ public class ResponseWriter extends PrintWriter {
         super.flush();
 
     }
-
 
     /**
      * Print a float value and terminate the current line.
@@ -257,7 +233,6 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     /**
      * Print an integer value and terminate the current line.
      *
@@ -269,8 +244,6 @@ public class ResponseWriter extends PrintWriter {
         super.flush();
 
     }
-
-
 
     /**
      * Print a long value and terminate the current line.
@@ -284,7 +257,6 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     /**
      * Print an object value and terminate the current line.
      *
@@ -296,7 +268,6 @@ public class ResponseWriter extends PrintWriter {
         super.flush();
 
     }
-
 
     /**
      * Print a String value and terminate the current line.
@@ -310,7 +281,6 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     /**
      * Write a single character.
      *
@@ -322,7 +292,6 @@ public class ResponseWriter extends PrintWriter {
         super.flush();
 
     }
-
 
     /**
      * Write an array of characters.
@@ -336,11 +305,10 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     /**
      * Write a portion of an array of characters.
      *
-     * @param ca The array from which to write
+     * @param ca  The array from which to write
      * @param off Starting offset
      * @param len Number of characters to write
      */
@@ -350,7 +318,6 @@ public class ResponseWriter extends PrintWriter {
         super.flush();
 
     }
-
 
     /**
      * Write a String.
@@ -364,11 +331,10 @@ public class ResponseWriter extends PrintWriter {
 
     }
 
-
     /**
      * Write a portion of a String.
      *
-     * @param s The String from which to write
+     * @param s   The String from which to write
      * @param off Starting offset
      * @param len Number of characters to write
      */
@@ -378,6 +344,5 @@ public class ResponseWriter extends PrintWriter {
         super.flush();
 
     }
-
 
 }

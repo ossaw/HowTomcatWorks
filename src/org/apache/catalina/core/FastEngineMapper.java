@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/core/FastEngineMapper.java,v 1.4 2002/06/09 02:19:42 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/core/
+ * FastEngineMapper.java,v 1.4 2002/06/09 02:19:42 remm Exp $
  * $Revision: 1.4 $
  * $Date: 2002/06/09 02:19:42 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2001 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +43,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.core;
-
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -82,77 +69,65 @@ import org.apache.catalina.Request;
 import org.apache.catalina.util.LifecycleSupport;
 import org.apache.catalina.util.StringManager;
 
-
 /**
  * Implementation of <code>Mapper</code> for an <code>Engine</code>,
- * designed to process HTTP requests.  This mapper selects an appropriate
+ * designed to process HTTP requests. This mapper selects an appropriate
  * <code>Host</code> based on the server name included in the request.
  * <p>
- * <b>IMPLEMENTATION NOTE</b>:  This Mapper only works with a
+ * <b>IMPLEMENTATION NOTE</b>: This Mapper only works with a
  * <code>StandardEngine</code>, because it relies on internal APIs.
  *
  * @author Craig R. McClanahan
  * @version $Revision: 1.4 $ $Date: 2002/06/09 02:19:42 $
  */
 
-public final class FastEngineMapper
-    implements ContainerListener, Lifecycle, Mapper, PropertyChangeListener {
-
+public final class FastEngineMapper implements ContainerListener, Lifecycle,
+        Mapper, PropertyChangeListener {
 
     // ----------------------------------------------------- Instance Variables
 
-
     /**
-     * Cache of hostname -> Host mappings.  FIXME - use FastHashMap.
+     * Cache of hostname -> Host mappings. FIXME - use FastHashMap.
      */
     private java.util.HashMap cache = new java.util.HashMap();
-
 
     /**
      * The default host used for unknown host names.
      */
     private Host defaultHost = null;
 
-
     /**
      * The debugging detail level for this component.
      */
     private int debug = 0;
-
 
     /**
      * The Container with which this Mapper is associated.
      */
     private StandardEngine engine = null;
 
-
     /**
      * The lifecycle event support for this component.
      */
     private LifecycleSupport lifecycle = new LifecycleSupport(this);
-
 
     /**
      * The protocol with which this Mapper is associated.
      */
     private String protocol = null;
 
-
     /**
      * The string manager for this package.
      */
-    private static final StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * Has this component been started yet?
      */
     private boolean started = false;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the Container with which this Mapper is associated.
@@ -163,24 +138,22 @@ public final class FastEngineMapper
 
     }
 
-
     /**
      * Set the Container with which this Mapper is associated.
      *
      * @param container The newly associated Container
      *
      * @exception IllegalArgumentException if this Container is not
-     *  acceptable to this Mapper
+     *                                     acceptable to this Mapper
      */
     public void setContainer(Container container) {
 
         if (!(container instanceof StandardEngine))
-            throw new IllegalArgumentException
-                (sm.getString("httpEngineMapper.container"));
+            throw new IllegalArgumentException(sm.getString(
+                    "httpEngineMapper.container"));
         engine = (StandardEngine) container;
 
     }
-
 
     /**
      * Return the protocol for which this Mapper is responsible.
@@ -190,7 +163,6 @@ public final class FastEngineMapper
         return (this.protocol);
 
     }
-
 
     /**
      * Set the protocol for which this Mapper is responsible.
@@ -203,17 +175,15 @@ public final class FastEngineMapper
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return the child Container that should be used to process this Request,
-     * based upon its characteristics.  If no such child Container can be
+     * based upon its characteristics. If no such child Container can be
      * identified, return <code>null</code> instead.
      *
      * @param request Request being processed
-     * @param update Update the Request to reflect the mapping selection?
+     * @param update  Update the Request to reflect the mapping selection?
      */
     public Container map(Request request, boolean update) {
 
@@ -245,14 +215,12 @@ public final class FastEngineMapper
         }
 
         // Update the Request if requested, and return the selected Host
-        ;       // No update to the Request is required
+        ; // No update to the Request is required
         return (host);
 
     }
 
-
     // ---------------------------------------------- ContainerListener Methods
-
 
     /**
      * Acknowledge the occurrence of the specified event.
@@ -277,9 +245,7 @@ public final class FastEngineMapper
 
     }
 
-
     // ------------------------------------------------------ Lifecycle Methods
-
 
     /**
      * Add a lifecycle event listener to this component.
@@ -292,9 +258,8 @@ public final class FastEngineMapper
 
     }
 
-
     /**
-     * Get the lifecycle listeners associated with this lifecycle. If this 
+     * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
      */
     public LifecycleListener[] findLifecycleListeners() {
@@ -302,7 +267,6 @@ public final class FastEngineMapper
         return lifecycle.findLifecycleListeners();
 
     }
-
 
     /**
      * Remove a lifecycle event listener from this component.
@@ -315,20 +279,18 @@ public final class FastEngineMapper
 
     }
 
-
     /**
      * Prepare for active use of the public methods of this Component.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents it from being started
+     *                               that prevents it from being started
      */
     public synchronized void start() throws LifecycleException {
 
         // Validate and update our current component state
         if (started)
-            throw new LifecycleException
-                (sm.getString("fastEngineMapper.alreadyStarted",
-                              engine.getName()));
+            throw new LifecycleException(sm.getString(
+                    "fastEngineMapper.alreadyStarted", engine.getName()));
         started = true;
 
         // Configure based on our associated Engine properties
@@ -347,20 +309,18 @@ public final class FastEngineMapper
 
     }
 
-
     /**
      * Gracefully shut down active use of the public methods of this Component.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that needs to be reported
+     *                               that needs to be reported
      */
     public synchronized void stop() throws LifecycleException {
 
         // Validate and update our current component state
         if (!started)
-            throw new LifecycleException
-                (sm.getString("fastEngineMapper.notStarted",
-                              engine.getName()));
+            throw new LifecycleException(sm.getString(
+                    "fastEngineMapper.notStarted", engine.getName()));
 
         // Notify our interested LifecycleListeners
         lifecycle.fireLifecycleEvent(STOP_EVENT, null);
@@ -376,9 +336,7 @@ public final class FastEngineMapper
 
     }
 
-
     // ----------------------------------------- PropertyChangeListener Methods
-
 
     /**
      * Process a property change event.
@@ -393,25 +351,22 @@ public final class FastEngineMapper
 
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Add an alias for the specified host.
      *
      * @param alias New alias name
-     * @param host Host to resolve to
+     * @param host  Host to resolve to
      */
     private void addAlias(String alias, Host host) {
 
         if (debug >= 3)
-            engine.log("Adding alias '" + alias + "' for host '" +
-                       host.getName() + "'");
+            engine.log("Adding alias '" + alias + "' for host '" + host
+                    .getName() + "'");
         cache.put(alias.toLowerCase(), host);
 
     }
-
 
     /**
      * Add a new child Host to our associated Engine.
@@ -435,7 +390,6 @@ public final class FastEngineMapper
 
     }
 
-
     /**
      * Return the Host that matches the specified name (or alias), if any;
      * otherwise, return <code>null</code>.
@@ -447,7 +401,6 @@ public final class FastEngineMapper
         return ((Host) cache.get(name.toLowerCase()));
 
     }
-
 
     /**
      * Remove the specified alias from our cache.
@@ -461,7 +414,6 @@ public final class FastEngineMapper
         cache.remove(alias.toLowerCase());
 
     }
-
 
     /**
      * Remove an existing child Host from our associated Engine.
@@ -492,7 +444,6 @@ public final class FastEngineMapper
 
     }
 
-
     /**
      * Set the default Host used for resolving unknown host names.
      *
@@ -509,6 +460,5 @@ public final class FastEngineMapper
             defaultHost = (Host) engine.findChild(name);
 
     }
-
 
 }

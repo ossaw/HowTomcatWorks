@@ -1,47 +1,38 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/authenticator/FormAuthenticator.java,v 1.20 2002/03/14 20:58:24 remm Exp $
+ * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/
+ * authenticator/FormAuthenticator.java,v 1.20 2002/03/14 20:58:24 remm Exp $
  * $Revision: 1.20 $
  * $Date: 2002/03/14 20:58:24 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +42,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.authenticator;
-
 
 import java.io.IOException;
 import java.security.Principal;
@@ -80,8 +66,6 @@ import org.apache.catalina.Realm;
 import org.apache.catalina.Session;
 import org.apache.catalina.deploy.LoginConfig;
 
-
-
 /**
  * An <b>Authenticator</b> and <b>Valve</b> implementation of FORM BASED
  * Authentication, as described in the Servlet API Specification, Version 2.2.
@@ -90,22 +74,16 @@ import org.apache.catalina.deploy.LoginConfig;
  * @version $Revision: 1.20 $ $Date: 2002/03/14 20:58:24 $
  */
 
-public class FormAuthenticator
-    extends AuthenticatorBase {
-
+public class FormAuthenticator extends AuthenticatorBase {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Descriptive information about this implementation.
      */
-    protected static final String info =
-        "org.apache.catalina.authenticator.FormAuthenticator/1.0";
-
+    protected static final String info = "org.apache.catalina.authenticator.FormAuthenticator/1.0";
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return descriptive information about this Valve implementation.
@@ -116,41 +94,34 @@ public class FormAuthenticator
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Authenticate the user making this request, based on the specified
-     * login configuration.  Return <code>true</code> if any specified
+     * login configuration. Return <code>true</code> if any specified
      * constraint has been satisfied, or <code>false</code> if we have
      * created a response challenge already.
      *
-     * @param request Request we are processing
+     * @param request  Request we are processing
      * @param response Response we are creating
-     * @param login Login configuration describing how authentication
-     *              should be performed
+     * @param login    Login configuration describing how authentication
+     *                 should be performed
      *
      * @exception IOException if an input/output error occurs
      */
-    public boolean authenticate(HttpRequest request,
-                                HttpResponse response,
-                                LoginConfig config)
-        throws IOException {
+    public boolean authenticate(HttpRequest request, HttpResponse response,
+            LoginConfig config) throws IOException {
 
         // References to objects we will need later
-        HttpServletRequest hreq =
-          (HttpServletRequest) request.getRequest();
-        HttpServletResponse hres =
-          (HttpServletResponse) response.getResponse();
+        HttpServletRequest hreq = (HttpServletRequest) request.getRequest();
+        HttpServletResponse hres = (HttpServletResponse) response.getResponse();
         Session session = null;
 
         // Have we already authenticated someone?
         Principal principal = hreq.getUserPrincipal();
         if (principal != null) {
             if (debug >= 1)
-                log("Already authenticated '" +
-                    principal.getName() + "'");
+                log("Already authenticated '" + principal.getName() + "'");
             String ssoId = (String) request.getNote(Constants.REQ_SSOID_NOTE);
             if (ssoId != null)
                 associate(ssoId, getSession(request, true));
@@ -162,20 +133,18 @@ public class FormAuthenticator
             session = getSession(request, true);
             if (debug >= 1)
                 log("Checking for reauthenticate in session " + session);
-            String username =
-                (String) session.getNote(Constants.SESS_USERNAME_NOTE);
-            String password =
-                (String) session.getNote(Constants.SESS_PASSWORD_NOTE);
+            String username = (String) session.getNote(
+                    Constants.SESS_USERNAME_NOTE);
+            String password = (String) session.getNote(
+                    Constants.SESS_PASSWORD_NOTE);
             if ((username != null) && (password != null)) {
                 if (debug >= 1)
                     log("Reauthenticating username '" + username + "'");
-                principal =
-                    context.getRealm().authenticate(username, password);
+                principal = context.getRealm().authenticate(username, password);
                 if (principal != null) {
                     session.setNote(Constants.FORM_PRINCIPAL_NOTE, principal);
                     register(request, response, principal,
-                             Constants.FORM_METHOD,
-                             username, password);
+                            Constants.FORM_METHOD, username, password);
                     return (true);
                 }
                 if (debug >= 1)
@@ -189,11 +158,11 @@ public class FormAuthenticator
             session = getSession(request, true);
             if (debug >= 1)
                 log("Restore request from session '" + session.getId() + "'");
-            principal = (Principal)
-                session.getNote(Constants.FORM_PRINCIPAL_NOTE);
+            principal = (Principal) session.getNote(
+                    Constants.FORM_PRINCIPAL_NOTE);
             register(request, response, principal, Constants.FORM_METHOD,
-                     (String) session.getNote(Constants.SESS_USERNAME_NOTE),
-                     (String) session.getNote(Constants.SESS_PASSWORD_NOTE));
+                    (String) session.getNote(Constants.SESS_USERNAME_NOTE),
+                    (String) session.getNote(Constants.SESS_PASSWORD_NOTE));
             String ssoId = (String) request.getNote(Constants.REQ_SSOID_NOTE);
             if (ssoId != null)
                 associate(ssoId, session);
@@ -222,7 +191,7 @@ public class FormAuthenticator
         if (requestURI.equals(loginURI)) {
             if (debug >= 1)
                 log("Requesting login page normally");
-            return (true);      // Display the login page in the usual manner
+            return (true); // Display the login page in the usual manner
         }
 
         // Is this a request for the error page itself?  Test here to avoid
@@ -232,13 +201,12 @@ public class FormAuthenticator
         if (requestURI.equals(errorURI)) {
             if (debug >= 1)
                 log("Requesting error page normally");
-            return (true);      // Display the error page in the usual manner
+            return (true); // Display the error page in the usual manner
         }
 
         // Is this the action request from the login page?
-        boolean loginAction =
-            requestURI.startsWith(contextPath) &&
-            requestURI.endsWith(Constants.FORM_ACTION);
+        boolean loginAction = requestURI.startsWith(contextPath) && requestURI
+                .endsWith(Constants.FORM_ACTION);
 
         // No -- Save this request and redirect to the form login page
         if (!loginAction) {
@@ -286,17 +254,15 @@ public class FormAuthenticator
         if (debug >= 1)
             log("Redirecting to original '" + requestURI + "'");
         if (requestURI == null)
-            hres.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                           sm.getString("authenticator.formlogin"));
+            hres.sendError(HttpServletResponse.SC_BAD_REQUEST, sm.getString(
+                    "authenticator.formlogin"));
         else
             hres.sendRedirect(hres.encodeRedirectURL(requestURI));
         return (false);
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Does this request match the saved one (so that it must be the redirect
@@ -306,30 +272,29 @@ public class FormAuthenticator
      */
     protected boolean matchRequest(HttpRequest request) {
 
-      // Has a session been created?
-      Session session = getSession(request, false);
-      if (session == null)
-          return (false);
+        // Has a session been created?
+        Session session = getSession(request, false);
+        if (session == null)
+            return (false);
 
-      // Is there a saved request?
-      SavedRequest sreq = (SavedRequest)
-          session.getNote(Constants.FORM_REQUEST_NOTE);
-      if (sreq == null)
-          return (false);
+        // Is there a saved request?
+        SavedRequest sreq = (SavedRequest) session.getNote(
+                Constants.FORM_REQUEST_NOTE);
+        if (sreq == null)
+            return (false);
 
-      // Is there a saved principal?
-      if (session.getNote(Constants.FORM_PRINCIPAL_NOTE) == null)
-          return (false);
+        // Is there a saved principal?
+        if (session.getNote(Constants.FORM_PRINCIPAL_NOTE) == null)
+            return (false);
 
-      // Does the request URI match?
-      HttpServletRequest hreq = (HttpServletRequest) request.getRequest();
-      String requestURI = hreq.getRequestURI();
-      if (requestURI == null)
-          return (false);
-      return (requestURI.equals(sreq.getRequestURI()));
+        // Does the request URI match?
+        HttpServletRequest hreq = (HttpServletRequest) request.getRequest();
+        String requestURI = hreq.getRequestURI();
+        if (requestURI == null)
+            return (false);
+        return (requestURI.equals(sreq.getRequestURI()));
 
     }
-
 
     /**
      * Restore the original request from information stored in our session.
@@ -343,8 +308,8 @@ public class FormAuthenticator
     protected boolean restoreRequest(HttpRequest request, Session session) {
 
         // Retrieve and remove the SavedRequest object from our session
-        SavedRequest saved = (SavedRequest)
-            session.getNote(Constants.FORM_REQUEST_NOTE);
+        SavedRequest saved = (SavedRequest) session.getNote(
+                Constants.FORM_REQUEST_NOTE);
         session.removeNote(Constants.FORM_REQUEST_NOTE);
         session.removeNote(Constants.FORM_PRINCIPAL_NOTE);
         if (saved == null)
@@ -375,8 +340,8 @@ public class FormAuthenticator
             Iterator paramNames = saved.getParameterNames();
             while (paramNames.hasNext()) {
                 String paramName = (String) paramNames.next();
-                String paramValues[] =
-                    (String[]) saved.getParameterValues(paramName);
+                String paramValues[] = (String[]) saved.getParameterValues(
+                        paramName);
                 request.addParameter(paramName, paramValues);
             }
         }
@@ -386,7 +351,6 @@ public class FormAuthenticator
         return (true);
 
     }
-
 
     /**
      * Save the original request information into our session.
@@ -434,7 +398,6 @@ public class FormAuthenticator
 
     }
 
-
     /**
      * Return the request URI (with the corresponding query string, if any)
      * from the saved request so that we can redirect to it.
@@ -443,8 +406,8 @@ public class FormAuthenticator
      */
     private String savedRequestURL(Session session) {
 
-        SavedRequest saved =
-            (SavedRequest) session.getNote(Constants.FORM_REQUEST_NOTE);
+        SavedRequest saved = (SavedRequest) session.getNote(
+                Constants.FORM_REQUEST_NOTE);
         if (saved == null)
             return (null);
         StringBuffer sb = new StringBuffer(saved.getRequestURI());
@@ -455,6 +418,5 @@ public class FormAuthenticator
         return (sb.toString());
 
     }
-
 
 }

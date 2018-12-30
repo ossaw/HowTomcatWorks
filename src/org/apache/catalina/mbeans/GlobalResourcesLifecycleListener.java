@@ -1,47 +1,40 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/mbeans/GlobalResourcesLifecycleListener.java,v 1.3 2002/02/03 00:56:57 craigmcc Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/mbeans/
+ * GlobalResourcesLifecycleListener.java,v 1.3 2002/02/03 00:56:57 craigmcc Exp
+ * $
  * $Revision: 1.3 $
  * $Date: 2002/02/03 00:56:57 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 2002 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,18 +44,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
 package org.apache.catalina.mbeans;
-
 
 import java.util.Iterator;
 import javax.naming.Binding;
@@ -79,7 +68,6 @@ import org.apache.catalina.User;
 import org.apache.catalina.UserDatabase;
 import org.apache.commons.modeler.Registry;
 
-
 /**
  * Implementation of <code>LifecycleListener</code> that instantiates the
  * set of MBeans associated with global JNDI resources that are subject to
@@ -90,27 +78,21 @@ import org.apache.commons.modeler.Registry;
  * @since 4.1
  */
 
-public class GlobalResourcesLifecycleListener
-    implements LifecycleListener {
-
+public class GlobalResourcesLifecycleListener implements LifecycleListener {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The owning Catalina component that we are attached to.
      */
     protected Lifecycle component = null;
 
-
     /**
      * The configuration information registry for our managed beans.
      */
     protected static Registry registry = MBeanUtils.createRegistry();
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * The debugging detail level for this component.
@@ -125,9 +107,7 @@ public class GlobalResourcesLifecycleListener
         this.debug = debug;
     }
 
-
     // ---------------------------------------------- LifecycleListener Methods
-
 
     /**
      * Primary entry point for startup and shutdown events.
@@ -146,9 +126,7 @@ public class GlobalResourcesLifecycleListener
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Create the MBeans for the interesting global JNDI resources.
@@ -161,8 +139,8 @@ public class GlobalResourcesLifecycleListener
             context = (Context) (new InitialContext()).lookup("java:/");
         } catch (NamingException e) {
             e.printStackTrace();
-            throw new IllegalStateException
-                ("No global naming context defined for server");
+            throw new IllegalStateException(
+                    "No global naming context defined for server");
         }
 
         // Recurse through the defined global JNDI resources context
@@ -174,22 +152,21 @@ public class GlobalResourcesLifecycleListener
 
     }
 
-
     /**
      * Create the MBeans for the interesting global JNDI resources in
      * the specified naming context.
      *
-     * @param prefix Prefix for complete object name paths
+     * @param prefix  Prefix for complete object name paths
      * @param context Context to be scanned
      *
      * @exception NamingException if a JNDI exception occurs
      */
     protected void createMBeans(String prefix, Context context)
-        throws NamingException {
+            throws NamingException {
 
         if (debug >= 1) {
-            log("Creating MBeans for Global JNDI Resources in Context '" +
-                prefix + "'");
+            log("Creating MBeans for Global JNDI Resources in Context '"
+                    + prefix + "'");
         }
 
         NamingEnumeration bindings = context.listBindings("");
@@ -207,24 +184,23 @@ public class GlobalResourcesLifecycleListener
                     createMBeans(name, (UserDatabase) value);
                 } catch (Exception e) {
                     log("Exception creating UserDatabase MBeans for " + name,
-                        e);
+                            e);
                 }
             }
         }
 
     }
 
-
     /**
      * Create the MBeans for the specified UserDatabase and its contents.
      *
-     * @param name Complete resource name of this UserDatabase
+     * @param name     Complete resource name of this UserDatabase
      * @param database The UserDatabase to be processed
      *
      * @exception Exception if an exception occurs while creating MBeans
      */
     protected void createMBeans(String name, UserDatabase database)
-        throws Exception {
+            throws Exception {
 
         // Create the MBean for the UserDatabase itself
         if (debug >= 2) {
@@ -232,8 +208,8 @@ public class GlobalResourcesLifecycleListener
             log("Database=" + database);
         }
         if (MBeanUtils.createMBean(database) == null) {
-            throw new IllegalArgumentException
-                ("Cannot create UserDatabase MBean for resource " + name);
+            throw new IllegalArgumentException(
+                    "Cannot create UserDatabase MBean for resource " + name);
         }
 
         // Create the MBeans for each defined Role
@@ -244,8 +220,8 @@ public class GlobalResourcesLifecycleListener
                 log("  Creating Role MBean for role " + role);
             }
             if (MBeanUtils.createMBean(role) == null) {
-                throw new IllegalArgumentException
-                    ("Cannot create Role MBean for role " + role);
+                throw new IllegalArgumentException(
+                        "Cannot create Role MBean for role " + role);
             }
         }
 
@@ -257,8 +233,8 @@ public class GlobalResourcesLifecycleListener
                 log("  Creating Group MBean for group " + group);
             }
             if (MBeanUtils.createMBean(group) == null) {
-                throw new IllegalArgumentException
-                    ("Cannot create Group MBean for group " + group);
+                throw new IllegalArgumentException(
+                        "Cannot create Group MBean for group " + group);
             }
         }
 
@@ -270,13 +246,12 @@ public class GlobalResourcesLifecycleListener
                 log("  Creating User MBean for user " + user);
             }
             if (MBeanUtils.createMBean(user) == null) {
-                throw new IllegalArgumentException
-                    ("Cannot create User MBean for user " + user);
+                throw new IllegalArgumentException(
+                        "Cannot create User MBean for user " + user);
             }
         }
 
     }
-
 
     /**
      * Destroy the MBeans for the interesting global JNDI resources.
@@ -289,13 +264,10 @@ public class GlobalResourcesLifecycleListener
 
     }
 
-
-
     /**
      * The destination for log messages.
      */
-    protected java.io.PrintStream  stream = System.out;
-
+    protected java.io.PrintStream stream = System.out;
 
     /**
      * Log a message.
@@ -305,26 +277,25 @@ public class GlobalResourcesLifecycleListener
     protected void log(String message) {
 
         /*
-        if (stream == System.out) {
-            try {
-                stream = new java.io.PrintStream
-                             (new java.io.FileOutputStream("grll.log"));
-            } catch (Throwable t) {
-                ;
-            }
-        }
-        */
+         * if (stream == System.out) {
+         * try {
+         * stream = new java.io.PrintStream
+         * (new java.io.FileOutputStream("grll.log"));
+         * } catch (Throwable t) {
+         * ;
+         * }
+         * }
+         */
 
         stream.print("GlobalResourcesLifecycleListener: ");
         stream.println(message);
 
     }
 
-
     /**
      * Log a message and associated exception.
      *
-     * @param message The message to be logged
+     * @param message   The message to be logged
      * @param throwable The exception to be logged
      */
     protected void log(String message, Throwable throwable) {
@@ -333,6 +304,5 @@ public class GlobalResourcesLifecycleListener
         throwable.printStackTrace(stream);
 
     }
-
 
 }

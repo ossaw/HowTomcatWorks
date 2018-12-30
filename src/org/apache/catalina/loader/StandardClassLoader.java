@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/loader/StandardClassLoader.java,v 1.28 2002/08/06 00:16:59 glenn Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/loader/
+ * StandardClassLoader.java,v 1.28 2002/08/06 00:16:59 glenn Exp $
  * $Revision: 1.28 $
  * $Date: 2002/08/06 00:16:59 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,16 +43,12 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
-
 
 package org.apache.catalina.loader;
 
@@ -89,11 +77,10 @@ import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 import org.apache.naming.JndiPermission;
 
-
 /**
  * Subclass implementation of <b>java.net.URLClassLoader</b> that knows how
  * to load classes from disk directories, as well as local and remote JAR
- * files.  It also implements the <code>Reloader</code> interface, to provide
+ * files. It also implements the <code>Reloader</code> interface, to provide
  * automatic reloading support to the associated loader.
  * <p>
  * In all cases, URLs must conform to the contract specified by
@@ -114,13 +101,9 @@ import org.apache.naming.JndiPermission;
  * @version $Revision: 1.28 $ $Date: 2002/08/06 00:16:59 $
  */
 
-public class StandardClassLoader
-    extends URLClassLoader
-    implements Reloader {
-
+public class StandardClassLoader extends URLClassLoader implements Reloader {
 
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a new ClassLoader with no defined repositories and no
@@ -135,7 +118,6 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Construct a new ClassLoader with no defined repositories and no
      * parent ClassLoader, but with a stream handler factory.
@@ -148,7 +130,6 @@ public class StandardClassLoader
         this.factory = factory;
 
     }
-
 
     /**
      * Construct a new ClassLoader with no defined repositories and the
@@ -165,22 +146,20 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Construct a new ClassLoader with no defined repositories and the
      * specified parent ClassLoader.
      *
-     * @param parent The parent ClassLoader
+     * @param parent  The parent ClassLoader
      * @param factory the URLStreamHandlerFactory to use when creating URLs
      */
     public StandardClassLoader(ClassLoader parent,
-                               URLStreamHandlerFactory factory) {
+            URLStreamHandlerFactory factory) {
 
         super((new URL[0]), parent, factory);
         this.factory = factory;
 
     }
-
 
     /**
      * Construct a new ClassLoader with the specified repositories and
@@ -201,13 +180,12 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Construct a new ClassLoader with the specified repositories and
      * parent ClassLoader.
      *
      * @param repositories The initial set of repositories
-     * @param parent The parent ClassLoader
+     * @param parent       The parent ClassLoader
      */
     public StandardClassLoader(String repositories[], ClassLoader parent) {
 
@@ -222,13 +200,12 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Construct a new ClassLoader with the specified repositories and
      * parent ClassLoader.
      *
      * @param repositories The initial set of repositories
-     * @param parent The parent ClassLoader
+     * @param parent       The parent ClassLoader
      */
     public StandardClassLoader(URL repositories[], ClassLoader parent) {
 
@@ -243,9 +220,7 @@ public class StandardClassLoader
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The set of optional packages (formerly standard extensions) that
@@ -255,30 +230,26 @@ public class StandardClassLoader
      */
     protected ArrayList available = new ArrayList();
 
-
     /**
      * The debugging detail level of this component.
      */
     protected int debug = 0;
 
-
     /**
      * Should this class loader delegate to the parent class loader
      * <strong>before</strong> searching its own repositories (i.e. the
-     * usual Java2 delegation model)?  If set to <code>false</code>,
+     * usual Java2 delegation model)? If set to <code>false</code>,
      * this class loader will search its own repositories first, and
      * delegate to the parent only if the class or resource is not
      * found locally.
      */
     protected boolean delegate = false;
 
-
     /**
      * The list of local repositories, in the order they should be searched
      * for locally loaded classes or resources.
      */
     protected String repositories[] = new String[0];
-
 
     /**
      * The set of optional packages (formerly standard extensions) that
@@ -288,13 +259,11 @@ public class StandardClassLoader
      */
     protected ArrayList required = new ArrayList();
 
-
     /**
      * A list of read File and Jndi Permission's required if this loader
      * is for a web application context.
      */
     private ArrayList permissionList = new ArrayList();
-
 
     /**
      * The PermissionCollection for each CodeSource for a web
@@ -302,12 +271,10 @@ public class StandardClassLoader
      */
     private HashMap loaderPC = new HashMap();
 
-
     /**
      * Instance of the SecurityManager installed.
      */
     private SecurityManager securityManager = null;
-
 
     /**
      * Flag that the security policy has been refreshed from file.
@@ -319,21 +286,17 @@ public class StandardClassLoader
      */
     private ClassLoader parent = null;
 
-
     /**
      * The system class loader.
      */
     private ClassLoader system = null;
-
 
     /**
      * URL stream handler for additional protocols.
      */
     protected URLStreamHandlerFactory factory = null;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the debugging detail level for this component.
@@ -343,7 +306,6 @@ public class StandardClassLoader
         return (this.debug);
 
     }
-
 
     /**
      * Set the debugging detail level for this component.
@@ -356,7 +318,6 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Return the "delegate first" flag for this class loader.
      */
@@ -365,7 +326,6 @@ public class StandardClassLoader
         return (this.delegate);
 
     }
-
 
     /**
      * Set the "delegate first" flag for this class loader.
@@ -378,7 +338,6 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * If there is a Java SecurityManager create a read FilePermission
      * or JndiPermission for the file directory path.
@@ -386,15 +345,14 @@ public class StandardClassLoader
      * @param path file directory path
      */
     public void setPermissions(String path) {
-        if( securityManager != null ) {
-            if( path.startsWith("jndi:") || path.startsWith("jar:jndi:") ) {
+        if (securityManager != null) {
+            if (path.startsWith("jndi:") || path.startsWith("jar:jndi:")) {
                 permissionList.add(new JndiPermission(path + "*"));
             } else {
-                permissionList.add(new FilePermission(path + "-","read"));
+                permissionList.add(new FilePermission(path + "-", "read"));
             }
         }
     }
-
 
     /**
      * If there is a Java SecurityManager add a read FilePermission
@@ -406,19 +364,18 @@ public class StandardClassLoader
         setPermissions(url.toString());
     }
 
-
     // ------------------------------------------------------- Reloader Methods
-
 
     /**
      * Add a new repository to the set of places this ClassLoader can look for
      * classes to be loaded.
      *
      * @param repository Name of a source of classes to be loaded, such as a
-     *  directory pathname, a JAR file pathname, or a ZIP file pathname
+     *                   directory pathname, a JAR file pathname, or a ZIP file
+     *                   pathname
      *
      * @exception IllegalArgumentException if the specified repository is
-     *  invalid or does not exist
+     *                                     invalid or does not exist
      */
     public void addRepository(String repository) {
 
@@ -442,7 +399,6 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Return a list of "optional packages" (formerly "standard extensions")
      * that have been declared to be available in the repositories associated
@@ -465,8 +421,8 @@ public class StandardClassLoader
                 break;
             if (!(loader instanceof StandardClassLoader))
                 continue;
-            Extension extensions[] =
-                ((StandardClassLoader) loader).findAvailable();
+            Extension extensions[] = ((StandardClassLoader) loader)
+                    .findAvailable();
             for (int i = 0; i < extensions.length; i++)
                 results.add(extensions[i]);
         }
@@ -477,10 +433,9 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Return a String array of the current repositories for this class
-     * loader.  If there are no repositories, a zero-length array is
+     * loader. If there are no repositories, a zero-length array is
      * returned.
      */
     public String[] findRepositories() {
@@ -488,7 +443,6 @@ public class StandardClassLoader
         return (repositories);
 
     }
-
 
     /**
      * Return a list of "optional packages" (formerly "standard extensions")
@@ -512,8 +466,8 @@ public class StandardClassLoader
                 break;
             if (!(loader instanceof StandardClassLoader))
                 continue;
-            Extension extensions[] =
-                ((StandardClassLoader) loader).findRequired();
+            Extension extensions[] = ((StandardClassLoader) loader)
+                    .findRequired();
             for (int i = 0; i < extensions.length; i++)
                 results.add(extensions[i]);
         }
@@ -524,7 +478,6 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * This class loader doesn't check for reloading.
      */
@@ -533,7 +486,6 @@ public class StandardClassLoader
         return (false);
 
     }
-
 
     /**
      * Render a String representation of this object.
@@ -573,12 +525,10 @@ public class StandardClassLoader
 
     }
 
-
     // ---------------------------------------------------- ClassLoader Methods
 
-
     /**
-     * Find the specified class in our local repositories, if possible.  If
+     * Find the specified class in our local repositories, if possible. If
      * not found, throw <code>ClassNotFoundException</code>.
      *
      * @param name Name of the class to be loaded
@@ -597,7 +547,8 @@ public class StandardClassLoader
                 try {
                     if (debug >= 4)
                         log("      securityManager.checkPackageDefinition");
-                    securityManager.checkPackageDefinition(name.substring(0,i));
+                    securityManager.checkPackageDefinition(name.substring(0,
+                            i));
                 } catch (Exception se) {
                     if (debug >= 4)
                         log("      -->Exception-->ClassNotFoundException", se);
@@ -619,7 +570,7 @@ public class StandardClassLoader
                         return clazz;
                     clazz = super.findClass(name);
                 }
-            } catch(AccessControlException ace) {
+            } catch (AccessControlException ace) {
                 throw new ClassNotFoundException(name);
             } catch (RuntimeException e) {
                 if (debug >= 4)
@@ -646,7 +597,6 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Find the specified resource in our local repository, and return a
      * <code>URL</code> refering to it, or <code>null</code> if this resource
@@ -670,10 +620,9 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Return an enumeration of <code>URLs</code> representing all of the
-     * resources with the given name.  If no resources with this name are
+     * resources with the given name. If no resources with this name are
      * found, return an empty enumeration.
      *
      * @param name Name of the resources to be found
@@ -688,25 +637,24 @@ public class StandardClassLoader
 
     }
 
-
     /**
-     * Find the resource with the given name.  A resource is some data
+     * Find the resource with the given name. A resource is some data
      * (images, audio, text, etc.) that can be accessed by class code in a
-     * way that is independent of the location of the code.  The name of a
+     * way that is independent of the location of the code. The name of a
      * resource is a "/"-separated path name that identifies the resource.
      * If the resource cannot be found, return <code>null</code>.
      * <p>
      * This method searches according to the following algorithm, returning
-     * as soon as it finds the appropriate URL.  If the resource cannot be
+     * as soon as it finds the appropriate URL. If the resource cannot be
      * found, returns <code>null</code>.
      * <ul>
      * <li>If the <code>delegate</code> property is set to <code>true</code>,
-     *     call the <code>getResource()</code> method of the parent class
-     *     loader, if any.</li>
+     * call the <code>getResource()</code> method of the parent class
+     * loader, if any.</li>
      * <li>Call <code>findResource()</code> to find this resource in our
-     *     locally defined repositories.</li>
+     * locally defined repositories.</li>
      * <li>Call the <code>getResource()</code> method of the parent class
-     *     loader, if any.</li>
+     * loader, if any.</li>
      * </ul>
      *
      * @param name Name of the resource to return a URL for
@@ -743,7 +691,7 @@ public class StandardClassLoader
         }
 
         // (3) Delegate to parent unconditionally if not already attempted
-        if( !delegate ) {
+        if (!delegate) {
             ClassLoader loader = parent;
             if (loader == null)
                 loader = system;
@@ -762,12 +710,11 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Find the resource with the given name, and return an input stream
-     * that can be used for reading it.  The search order is as described
+     * that can be used for reading it. The search order is as described
      * for <code>getResource()</code>, after checking to see if the resource
-     * data has been previously cached.  If the resource cannot be found,
+     * data has been previously cached. If the resource cannot be found,
      * return <code>null</code>.
      *
      * @param name Name of the resource to return an input stream for
@@ -811,10 +758,10 @@ public class StandardClassLoader
             if (debug >= 2)
                 log("  --> Returning stream from local");
             try {
-               return (url.openStream());
+                return (url.openStream());
             } catch (IOException e) {
-               log("url.openStream(" + url.toString() + ")", e);
-               return (null);
+                log("url.openStream(" + url.toString() + ")", e);
+                return (null);
             }
         }
 
@@ -841,9 +788,8 @@ public class StandardClassLoader
 
     }
 
-
     /**
-     * Load the class with the specified name.  This method searches for
+     * Load the class with the specified name. This method searches for
      * classes in the same manner as <code>loadClass(String, boolean)</code>
      * with <code>false</code> as the second argument.
      *
@@ -857,34 +803,33 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Load the class with the specified name, searching using the following
-     * algorithm until it finds and returns the class.  If the class cannot
+     * algorithm until it finds and returns the class. If the class cannot
      * be found, returns <code>ClassNotFoundException</code>.
      * <ul>
      * <li>Call <code>findLoadedClass(String)</code> to check if the
-     *     class has already been loaded.  If it has, the same
-     *     <code>Class</code> object is returned.</li>
+     * class has already been loaded. If it has, the same
+     * <code>Class</code> object is returned.</li>
      * <li>If the <code>delegate</code> property is set to <code>true</code>,
-     *     call the <code>loadClass()</code> method of the parent class
-     *     loader, if any.</li>
+     * call the <code>loadClass()</code> method of the parent class
+     * loader, if any.</li>
      * <li>Call <code>findClass()</code> to find this class in our locally
-     *     defined repositories.</li>
+     * defined repositories.</li>
      * <li>Call the <code>loadClass()</code> method of our parent
-     *     class loader, if any.</li>
+     * class loader, if any.</li>
      * </ul>
      * If the class was found using the above steps, and the
      * <code>resolve</code> flag is <code>true</code>, this method will then
      * call <code>resolveClass(Class)</code> on the resulting Class object.
      *
-     * @param name Name of the class to be loaded
+     * @param name    Name of the class to be loaded
      * @param resolve If <code>true</code> then resolve the class
      *
      * @exception ClassNotFoundException if the class was not found
      */
     public Class loadClass(String name, boolean resolve)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
 
         if (debug >= 2)
             log("loadClass(" + name + ", " + resolve + ")");
@@ -901,7 +846,7 @@ public class StandardClassLoader
         }
 
         // If a system class, use system class loader
-        if( name.startsWith("java.") ) {
+        if (name.startsWith("java.")) {
             ClassLoader loader = system;
             clazz = loader.loadClass(name);
             if (clazz != null) {
@@ -917,10 +862,10 @@ public class StandardClassLoader
             int i = name.lastIndexOf('.');
             if (i >= 0) {
                 try {
-                    securityManager.checkPackageAccess(name.substring(0,i));
+                    securityManager.checkPackageAccess(name.substring(0, i));
                 } catch (SecurityException se) {
-                    String error = "Security Violation, attempt to use " +
-                        "Restricted Class: " + name;
+                    String error = "Security Violation, attempt to use "
+                            + "Restricted Class: " + name;
                     System.out.println(error);
                     se.printStackTrace();
                     log(error);
@@ -992,9 +937,8 @@ public class StandardClassLoader
 
     }
 
-
     /**
-     * Get the Permissions for a CodeSource.  If this instance
+     * Get the Permissions for a CodeSource. If this instance
      * of StandardClassLoader is for a web application context,
      * add read FilePermissions for the base directory (if unpacked),
      * the context URL, and jar file resources.
@@ -1011,24 +955,22 @@ public class StandardClassLoader
         }
         String codeUrl = codeSource.getLocation().toString();
         PermissionCollection pc;
-        if ((pc = (PermissionCollection)loaderPC.get(codeUrl)) == null) {
+        if ((pc = (PermissionCollection) loaderPC.get(codeUrl)) == null) {
             pc = super.getPermissions(codeSource);
             if (pc != null) {
                 Iterator perms = permissionList.iterator();
                 while (perms.hasNext()) {
-                    Permission p = (Permission)perms.next();
+                    Permission p = (Permission) perms.next();
                     pc.add(p);
                 }
-                loaderPC.put(codeUrl,pc);
+                loaderPC.put(codeUrl, pc);
             }
         }
         return (pc);
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Parse URL protocol.
@@ -1044,14 +986,13 @@ public class StandardClassLoader
         return spec.substring(0, pos).trim();
     }
 
-
     /**
      * Add a repository to our internal array only.
      *
      * @param repository The new repository
      *
      * @exception IllegalArgumentException if the manifest of a JAR file
-     *  cannot be processed correctly
+     *                                     cannot be processed correctly
      */
     protected void addRepositoryInternal(String repository) {
 
@@ -1061,15 +1002,14 @@ public class StandardClassLoader
             streamHandler = factory.createURLStreamHandler(protocol);
 
         // Validate the manifest of a JAR file repository
-        if (!repository.endsWith(File.separator) &&
-            !repository.endsWith("/")) {
+        if (!repository.endsWith(File.separator) && !repository.endsWith("/")) {
             JarFile jarFile = null;
             try {
                 Manifest manifest = null;
                 if (repository.startsWith("jar:")) {
                     URL url = new URL(null, repository, streamHandler);
-                    JarURLConnection conn =
-                        (JarURLConnection) url.openConnection();
+                    JarURLConnection conn = (JarURLConnection) url
+                            .openConnection();
                     conn.setAllowUserInteraction(false);
                     conn.setDoInput(true);
                     conn.setDoOutput(false);
@@ -1082,37 +1022,37 @@ public class StandardClassLoader
                 } else if (repository.endsWith(".jar")) {
                     URL url = new URL(null, repository, streamHandler);
                     URLConnection conn = url.openConnection();
-                    JarInputStream jis =
-                        new JarInputStream(conn.getInputStream());
+                    JarInputStream jis = new JarInputStream(conn
+                            .getInputStream());
                     manifest = jis.getManifest();
                 } else {
-                    throw new IllegalArgumentException
-                        ("addRepositoryInternal:  Invalid URL '" +
-                         repository + "'");
+                    throw new IllegalArgumentException(
+                            "addRepositoryInternal:  Invalid URL '" + repository
+                                    + "'");
                 }
                 if (!((manifest == null) && (jarFile == null))) {
                     if ((manifest == null) && (jarFile != null))
                         manifest = jarFile.getManifest();
                     if (manifest != null) {
-                        Iterator extensions =
-                            Extension.getAvailable(manifest).iterator();
+                        Iterator extensions = Extension.getAvailable(manifest)
+                                .iterator();
                         while (extensions.hasNext())
                             available.add(extensions.next());
-                        extensions =
-                            Extension.getRequired(manifest).iterator();
+                        extensions = Extension.getRequired(manifest).iterator();
                         while (extensions.hasNext())
                             required.add(extensions.next());
                     }
                 }
             } catch (Throwable t) {
                 t.printStackTrace();
-                throw new IllegalArgumentException
-                    ("addRepositoryInternal: " + t);
+                throw new IllegalArgumentException("addRepositoryInternal: "
+                        + t);
             } finally {
                 if (jarFile != null) {
                     try {
                         jarFile.close();
-                    } catch (Throwable t) {}
+                    } catch (Throwable t) {
+                    }
                 }
             }
         }
@@ -1127,7 +1067,6 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Convert an array of String to an array of URL and return it.
      *
@@ -1137,15 +1076,14 @@ public class StandardClassLoader
         return convert(input, null);
     }
 
-
     /**
      * Convert an array of String to an array of URL and return it.
      *
-     * @param input The array of String to be converted
+     * @param input   The array of String to be converted
      * @param factory Handler factory to use to generate the URLs
      */
     protected static URL[] convert(String input[],
-                                   URLStreamHandlerFactory factory) {
+            URLStreamHandlerFactory factory) {
 
         URLStreamHandler streamHandler = null;
 
@@ -1166,21 +1104,19 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Finds the resource with the given name if it has previously been
      * loaded and cached by this class loader, and return an input stream
-     * to the resource data.  If this resource has not been cached, return
+     * to the resource data. If this resource has not been cached, return
      * <code>null</code>.
      *
      * @param name Name of the resource to return
      */
     protected InputStream findLoadedResource(String name) {
 
-        return (null);  // FIXME - findLoadedResource()
+        return (null); // FIXME - findLoadedResource()
 
     }
-
 
     /**
      * Log a debugging output message.
@@ -1193,11 +1129,10 @@ public class StandardClassLoader
 
     }
 
-
     /**
      * Log a debugging output message with an exception.
      *
-     * @param message Message to be logged
+     * @param message   Message to be logged
      * @param throwable Exception to be logged
      */
     private void log(String message, Throwable throwable) {
@@ -1207,6 +1142,4 @@ public class StandardClassLoader
 
     }
 
-
 }
-

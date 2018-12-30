@@ -1,47 +1,38 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/authenticator/SingleSignOn.java,v 1.11 2002/06/09 02:19:41 remm Exp $
+ * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/
+ * authenticator/SingleSignOn.java,v 1.11 2002/06/09 02:19:41 remm Exp $
  * $Revision: 1.11 $
  * $Date: 2002/06/09 02:19:41 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2001 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +42,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.authenticator;
-
 
 import java.io.IOException;
 import java.security.Principal;
@@ -88,35 +74,31 @@ import org.apache.catalina.valves.ValveBase;
 import org.apache.catalina.util.LifecycleSupport;
 import org.apache.catalina.util.StringManager;
 
-
 /**
  * A <strong>Valve</strong> that supports a "single sign on" user experience,
  * where the security identity of a user who successfully authenticates to one
  * web application is propogated to other web applications in the same
- * security domain.  For successful use, the following requirements must
+ * security domain. For successful use, the following requirements must
  * be met:
  * <ul>
  * <li>This Valve must be configured on the Container that represents a
- *     virtual host (typically an implementation of <code>Host</code>).</li>
+ * virtual host (typically an implementation of <code>Host</code>).</li>
  * <li>The <code>Realm</code> that contains the shared user and role
- *     information must be configured on the same Container (or a higher
- *     one), and not overridden at the web application level.</li>
+ * information must be configured on the same Container (or a higher
+ * one), and not overridden at the web application level.</li>
  * <li>The web applications themselves must use one of the standard
- *     Authenticators found in the
- *     <code>org.apache.catalina.authenticator</code> package.</li>
+ * Authenticators found in the
+ * <code>org.apache.catalina.authenticator</code> package.</li>
  * </ul>
  *
  * @author Craig R. McClanahan
  * @version $Revision: 1.11 $ $Date: 2002/06/09 02:19:41 $
  */
 
-public class SingleSignOn
-    extends ValveBase
-    implements Lifecycle, SessionListener {
-
+public class SingleSignOn extends ValveBase implements Lifecycle,
+        SessionListener {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The cache of SingleSignOnEntry instances for authenticated Principals,
@@ -124,25 +106,20 @@ public class SingleSignOn
      */
     protected HashMap cache = new HashMap();
 
-
     /**
      * The debugging detail level for this component.
      */
     protected int debug = 0;
 
-
     /**
      * Descriptive information about this Valve implementation.
      */
-    protected static String info =
-        "org.apache.catalina.authenticator.SingleSignOn";
-
+    protected static String info = "org.apache.catalina.authenticator.SingleSignOn";
 
     /**
      * The lifecycle event support for this component.
      */
     protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
 
     /**
      * The cache of single sign on identifiers, keyed by the Session that is
@@ -150,22 +127,18 @@ public class SingleSignOn
      */
     protected HashMap reverse = new HashMap();
 
-
     /**
      * The string manager for this package.
      */
-    protected final static StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected final static StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * Component started flag.
      */
     protected boolean started = false;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the debugging detail level.
@@ -175,7 +148,6 @@ public class SingleSignOn
         return (this.debug);
 
     }
-
 
     /**
      * Set the debugging detail level.
@@ -188,9 +160,7 @@ public class SingleSignOn
 
     }
 
-
     // ------------------------------------------------------ Lifecycle Methods
-
 
     /**
      * Add a lifecycle event listener to this component.
@@ -203,9 +173,8 @@ public class SingleSignOn
 
     }
 
-
     /**
-     * Get the lifecycle listeners associated with this lifecycle. If this 
+     * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
      */
     public LifecycleListener[] findLifecycleListeners() {
@@ -213,7 +182,6 @@ public class SingleSignOn
         return lifecycle.findLifecycleListeners();
 
     }
-
 
     /**
      * Remove a lifecycle event listener from this component.
@@ -226,21 +194,21 @@ public class SingleSignOn
 
     }
 
-
     /**
      * Prepare for the beginning of active use of the public methods of this
-     * component.  This method should be called after <code>configure()</code>,
+     * component. This method should be called after <code>configure()</code>,
      * and before any of the public methods of the component are utilized.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     public void start() throws LifecycleException {
 
         // Validate and update our current component state
         if (started)
-            throw new LifecycleException
-                (sm.getString("authenticator.alreadyStarted"));
+            throw new LifecycleException(sm.getString(
+                    "authenticator.alreadyStarted"));
         lifecycle.fireLifecycleEvent(START_EVENT, null);
         started = true;
 
@@ -249,21 +217,20 @@ public class SingleSignOn
 
     }
 
-
     /**
      * Gracefully terminate the active use of the public methods of this
-     * component.  This method should be the last one called on a given
+     * component. This method should be the last one called on a given
      * instance of this component.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that needs to be reported
+     *                               that needs to be reported
      */
     public void stop() throws LifecycleException {
 
         // Validate and update our current component state
         if (!started)
-            throw new LifecycleException
-                (sm.getString("authenticator.notStarted"));
+            throw new LifecycleException(sm.getString(
+                    "authenticator.notStarted"));
         lifecycle.fireLifecycleEvent(STOP_EVENT, null);
         started = false;
 
@@ -272,9 +239,7 @@ public class SingleSignOn
 
     }
 
-
     // ------------------------------------------------ SessionListener Methods
-
 
     /**
      * Acknowledge the occurrence of the specified event.
@@ -303,9 +268,7 @@ public class SingleSignOn
 
     }
 
-
     // ---------------------------------------------------------- Valve Methods
-
 
     /**
      * Return descriptive information about this Valve implementation.
@@ -316,32 +279,28 @@ public class SingleSignOn
 
     }
 
-
     /**
      * Perform single-sign-on support processing for this request.
      *
-     * @param request The servlet request we are processing
+     * @param request  The servlet request we are processing
      * @param response The servlet response we are creating
-     * @param context The valve context used to invoke the next valve
-     *  in the current processing pipeline
+     * @param context  The valve context used to invoke the next valve
+     *                 in the current processing pipeline
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
-    public void invoke(Request request, Response response,
-                       ValveContext context)
-        throws IOException, ServletException {
+    public void invoke(Request request, Response response, ValveContext context)
+            throws IOException, ServletException {
 
         // If this is not an HTTP request and response, just pass them on
-        if (!(request instanceof HttpRequest) ||
-            !(response instanceof HttpResponse)) {
+        if (!(request instanceof HttpRequest)
+                || !(response instanceof HttpResponse)) {
             context.invokeNext(request, response);
             return;
         }
-        HttpServletRequest hreq =
-            (HttpServletRequest) request.getRequest();
-        HttpServletResponse hres =
-            (HttpServletResponse) response.getResponse();
+        HttpServletRequest hreq = (HttpServletRequest) request.getRequest();
+        HttpServletResponse hres = (HttpServletResponse) response.getResponse();
         request.removeNote(Constants.REQ_SSOID_NOTE);
 
         // Has a valid user already been authenticated?
@@ -349,8 +308,8 @@ public class SingleSignOn
             log("Process request for '" + hreq.getRequestURI() + "'");
         if (hreq.getUserPrincipal() != null) {
             if (debug >= 1)
-                log(" Principal '" + hreq.getUserPrincipal().getName() +
-                    "' has already been authenticated");
+                log(" Principal '" + hreq.getUserPrincipal().getName()
+                        + "' has already been authenticated");
             context.invokeNext(request, response);
             return;
         }
@@ -381,9 +340,8 @@ public class SingleSignOn
         SingleSignOnEntry entry = lookup(cookie.getValue());
         if (entry != null) {
             if (debug >= 1)
-                log(" Found cached principal '" +
-                    entry.principal.getName() + "' with auth type '" +
-                    entry.authType + "'");
+                log(" Found cached principal '" + entry.principal.getName()
+                        + "' with auth type '" + entry.authType + "'");
             request.setNote(Constants.REQ_SSOID_NOTE, cookie.getValue());
             ((HttpRequest) request).setAuthType(entry.authType);
             ((HttpRequest) request).setUserPrincipal(entry.principal);
@@ -399,9 +357,7 @@ public class SingleSignOn
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return a String rendering of this object.
@@ -415,15 +371,13 @@ public class SingleSignOn
 
     }
 
-
     // -------------------------------------------------------- Package Methods
-
 
     /**
      * Associate the specified single sign on identifier with the
      * specified Session.
      *
-     * @param ssoId Single sign on identifier
+     * @param ssoId   Single sign on identifier
      * @param session Session to be associated
      */
     void associate(String ssoId, Session session) {
@@ -439,7 +393,6 @@ public class SingleSignOn
         }
 
     }
-
 
     /**
      * Deregister the specified single sign on identifier, and invalidate
@@ -479,35 +432,32 @@ public class SingleSignOn
 
     }
 
-
     /**
      * Register the specified Principal as being associated with the specified
      * value for the single sign on identifier.
      *
-     * @param ssoId Single sign on identifier to register
+     * @param ssoId     Single sign on identifier to register
      * @param principal Associated user principal that is identified
-     * @param authType Authentication type used to authenticate this
-     *  user principal
-     * @param username Username used to authenticate this user
-     * @param password Password used to authenticate this user
+     * @param authType  Authentication type used to authenticate this
+     *                  user principal
+     * @param username  Username used to authenticate this user
+     * @param password  Password used to authenticate this user
      */
     void register(String ssoId, Principal principal, String authType,
-                  String username, String password) {
+            String username, String password) {
 
         if (debug >= 1)
-            log("Registering sso id '" + ssoId + "' for user '" +
-                principal.getName() + "' with auth type '" + authType + "'");
+            log("Registering sso id '" + ssoId + "' for user '" + principal
+                    .getName() + "' with auth type '" + authType + "'");
 
         synchronized (cache) {
             cache.put(ssoId, new SingleSignOnEntry(principal, authType,
-                                                   username, password));
+                    username, password));
         }
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Log a message on the Logger associated with our Container (if any).
@@ -524,11 +474,10 @@ public class SingleSignOn
 
     }
 
-
     /**
      * Log a message on the Logger associated with our Container (if any).
      *
-     * @param message Message to be logged
+     * @param message   Message to be logged
      * @param throwable Associated exception
      */
     protected void log(String message, Throwable throwable) {
@@ -542,7 +491,6 @@ public class SingleSignOn
         }
 
     }
-
 
     /**
      * Look up and return the cached SingleSignOn entry associated with this
@@ -558,12 +506,9 @@ public class SingleSignOn
 
     }
 
-
 }
 
-
 // ------------------------------------------------------------ Private Classes
-
 
 /**
  * A private class representing entries in the cache of authenticated users.
@@ -581,7 +526,7 @@ class SingleSignOnEntry {
     public String username = null;
 
     public SingleSignOnEntry(Principal principal, String authType,
-                             String username, String password) {
+            String username, String password) {
         super();
         this.principal = principal;
         this.authType = authType;

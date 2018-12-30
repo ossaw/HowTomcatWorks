@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/connector/http10/HttpConnector.java,v 1.17 2002/03/18 07:15:40 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/connector
+ * /http10/HttpConnector.java,v 1.17 2002/03/18 07:15:40 remm Exp $
  * $Revision: 1.17 $
  * $Date: 2002/03/18 07:15:40 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +43,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.connector.http10;
-
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -91,91 +78,74 @@ import org.apache.catalina.net.ServerSocketFactory;
 import org.apache.catalina.util.LifecycleSupport;
 import org.apache.catalina.util.StringManager;
 
-
 /**
  * Simple implementation of an HTTP/1.0 Connector, for testing and debugging
- * purposes.  Not intended to be the final solution.
+ * purposes. Not intended to be the final solution.
  *
  * @author Craig R. McClanahan
  * @version $Revision: 1.17 $ $Date: 2002/03/18 07:15:40 $
  * @deprecated
  */
 
-
-public final class HttpConnector
-    implements Connector, Lifecycle, Runnable {
-
+public final class HttpConnector implements Connector, Lifecycle, Runnable {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The accept count for this Connector.
      */
     private int acceptCount = 10;
 
-
     /**
-     * The IP address on which to bind, if any.  If <code>null</code>, all
+     * The IP address on which to bind, if any. If <code>null</code>, all
      * addresses on the server will be bound.
      */
     private String address = null;
-
 
     /**
      * The input buffer size we should create on input streams.
      */
     private int bufferSize = 2048;
 
-
     /**
      * The Container used for processing requests received by this Connector.
      */
     protected Container container = null;
-
 
     /**
      * The set of processors that have ever been created.
      */
     private Vector created = new Vector();
 
-
     /**
      * The current number of processors that have been created.
      */
     private int curProcessors = 0;
-
 
     /**
      * The debugging detail level for this component.
      */
     private int debug = 0;
 
-
     /**
      * The "enable DNS lookups" flag for this Connector.
      */
     private boolean enableLookups = false;
-
 
     /**
      * The server socket factory for this component.
      */
     private ServerSocketFactory factory = null;
 
-
     /**
      * Descriptive information about this Connector implementation.
      */
-    private static final String info =
-        "org.apache.catalina.connector.http10.HttpConnector/1.0";
-
+    private static final String info = "org.apache.catalina.connector.http10.HttpConnector/1.0";
 
     /**
      * The lifecycle event support for this component.
      */
     protected LifecycleSupport lifecycle = new LifecycleSupport(this);
-
 
     /**
      * Timeout value on the incoming connection.
@@ -183,24 +153,20 @@ public final class HttpConnector
      */
     private int connectionTimeout = Constants.DEFAULT_CONNECTION_TIMEOUT;
 
-
     /**
      * The minimum number of processors to start at initialization time.
      */
     protected int minProcessors = 5;
-
 
     /**
      * The maximum number of processors allowed, or <0 for unlimited.
      */
     private int maxProcessors = 20;
 
-
     /**
      * The port number on which we listen for HTTP requests.
      */
     private int port = 8080;
-
 
     /**
      * The set of processors that have been created but are not currently
@@ -208,30 +174,26 @@ public final class HttpConnector
      */
     private Stack processors = new Stack();
 
-
     /**
      * The server name to which we should pretend requests to this Connector
-     * were directed.  This is useful when operating Tomcat behind a proxy
-     * server, so that redirects get constructed accurately.  If not specified,
+     * were directed. This is useful when operating Tomcat behind a proxy
+     * server, so that redirects get constructed accurately. If not specified,
      * the server name included in the <code>Host</code> header is used.
      */
     private String proxyName = null;
 
-
     /**
      * The server port to which we should pretent requests to this Connector
-     * were directed.  This is useful when operating Tomcat behind a proxy
-     * server, so that redirects get constructed accurately.  If not specified,
+     * were directed. This is useful when operating Tomcat behind a proxy
+     * server, so that redirects get constructed accurately. If not specified,
      * the port number specified by the <code>port</code> property is used.
      */
     private int proxyPort = 0;
-
 
     /**
      * The redirect port for non-SSL to SSL redirects.
      */
     private int redirectPort = 443;
-
 
     /**
      * The request scheme that will be set on all requests received
@@ -239,71 +201,58 @@ public final class HttpConnector
      */
     private String scheme = "http";
 
-
     /**
      * The secure connection flag that will be set on all requests received
      * through this connector.
      */
     private boolean secure = false;
 
-
     /**
      * The server socket through which we listen for incoming TCP connections.
      */
     private ServerSocket serverSocket = null;
-
 
     /**
      * The <code>Service</code> we are associated with (if any).
      */
     private Service service = null;
 
-
     /**
      * The string manager for this package.
      */
-    private StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    private StringManager sm = StringManager.getManager(Constants.Package);
 
     /**
      * Has this component been initialized yet?
      */
     private boolean initialized = false;
 
-
     /**
      * Has this component been started yet?
      */
     private boolean started = false;
-
 
     /**
      * The shutdown signal to our background thread
      */
     private boolean stopped = false;
 
-
     /**
      * The background thread.
      */
     private Thread thread = null;
-
 
     /**
      * The name to register for the background thread.
      */
     private String threadName = null;
 
-
     /**
      * The thread synchronization object.
      */
     private Object threadSync = new Object();
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the connection timeout for this Connector.
@@ -313,7 +262,6 @@ public final class HttpConnector
         return (connectionTimeout);
 
     }
-
 
     /**
      * Set the connection timeout for this Connector.
@@ -326,7 +274,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the accept count for this Connector.
      */
@@ -335,7 +282,6 @@ public final class HttpConnector
         return (acceptCount);
 
     }
-
 
     /**
      * Set the accept count for this Connector.
@@ -348,7 +294,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the bind IP address for this Connector.
      */
@@ -357,7 +302,6 @@ public final class HttpConnector
         return (this.address);
 
     }
-
 
     /**
      * Set the bind IP address for this Connector.
@@ -370,7 +314,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Is this connector available for processing requests?
      */
@@ -380,7 +323,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the input buffer size for this Connector.
      */
@@ -389,7 +331,6 @@ public final class HttpConnector
         return (this.bufferSize);
 
     }
-
 
     /**
      * Set the input buffer size for this Connector.
@@ -402,7 +343,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the Container used for processing requests received by this
      * Connector.
@@ -412,7 +352,6 @@ public final class HttpConnector
         return (container);
 
     }
-
 
     /**
      * Set the Container used for processing requests received by this
@@ -426,7 +365,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the current number of processors that have been created.
      */
@@ -436,7 +374,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the debugging detail level for this component.
      */
@@ -445,7 +382,6 @@ public final class HttpConnector
         return (debug);
 
     }
-
 
     /**
      * Set the debugging detail level for this component.
@@ -458,7 +394,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the "enable DNS lookups" flag.
      */
@@ -467,7 +402,6 @@ public final class HttpConnector
         return (this.enableLookups);
 
     }
-
 
     /**
      * Set the "enable DNS lookups" flag.
@@ -479,7 +413,6 @@ public final class HttpConnector
         this.enableLookups = enableLookups;
 
     }
-
 
     /**
      * Return the server socket factory used by this Container.
@@ -495,7 +428,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Set the server socket factory used by this Container.
      *
@@ -507,7 +439,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return descriptive information about this Connector implementation.
      */
@@ -517,7 +448,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the minimum number of processors to start at initialization.
      */
@@ -526,7 +456,6 @@ public final class HttpConnector
         return (minProcessors);
 
     }
-
 
     /**
      * Set the minimum number of processors to start at initialization.
@@ -539,7 +468,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the maximum number of processors allowed, or <0 for unlimited.
      */
@@ -548,7 +476,6 @@ public final class HttpConnector
         return (maxProcessors);
 
     }
-
 
     /**
      * Set the maximum number of processors allowed, or <0 for unlimited.
@@ -561,7 +488,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the port number on which we listen for HTTP requests.
      */
@@ -570,7 +496,6 @@ public final class HttpConnector
         return (this.port);
 
     }
-
 
     /**
      * Set the port number on which we listen for HTTP requests.
@@ -583,7 +508,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the proxy server name for this Connector.
      */
@@ -592,7 +516,6 @@ public final class HttpConnector
         return (this.proxyName);
 
     }
-
 
     /**
      * Set the proxy server name for this Connector.
@@ -605,7 +528,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the proxy server port for this Connector.
      */
@@ -614,7 +536,6 @@ public final class HttpConnector
         return (this.proxyPort);
 
     }
-
 
     /**
      * Set the proxy server port for this Connector.
@@ -627,7 +548,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the port number to which a request should be redirected if
      * it comes in on a non-SSL port and is subject to a security constraint
@@ -638,7 +558,6 @@ public final class HttpConnector
         return (this.redirectPort);
 
     }
-
 
     /**
      * Set the redirect port number.
@@ -651,17 +570,15 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the scheme that will be assigned to requests received
-     * through this connector.  Default value is "http".
+     * through this connector. Default value is "http".
      */
     public String getScheme() {
 
         return (this.scheme);
 
     }
-
 
     /**
      * Set the scheme that will be assigned to requests received through
@@ -675,17 +592,15 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the secure connection flag that will be assigned to requests
-     * received through this connector.  Default value is "false".
+     * received through this connector. Default value is "false".
      */
     public boolean getSecure() {
 
         return (this.secure);
 
     }
-
 
     /**
      * Set the secure connection flag that will be assigned to requests
@@ -699,7 +614,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Return the <code>Service</code> with which we are associated (if any).
      */
@@ -708,7 +622,6 @@ public final class HttpConnector
         return (this.service);
 
     }
-
 
     /**
      * Set the <code>Service</code> with which we are associated (if any).
@@ -721,9 +634,7 @@ public final class HttpConnector
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Create (or allocate) and return a Request object suitable for
@@ -737,7 +648,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Create (or allocate) and return a Response object suitable for
      * receiving the contents of a Response from the responsible Container.
@@ -750,9 +660,7 @@ public final class HttpConnector
 
     }
 
-
     // -------------------------------------------------------- Package Methods
-
 
     /**
      * Recycle the specified Processor so that it can be used again.
@@ -765,13 +673,11 @@ public final class HttpConnector
 
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Create (or allocate) and return an available processor for use in
-     * processing a specific HTTP request, if possible.  If the maximum
+     * processing a specific HTTP request, if possible. If the maximum
      * allowed processors have already been created and are in use, return
      * <code>null</code> instead.
      */
@@ -793,7 +699,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Log a message on the Logger associated with our Container (if any).
      *
@@ -812,11 +717,10 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Log a message on the Logger associated with our Container (if any).
      *
-     * @param message Message to be logged
+     * @param message   Message to be logged
      * @param throwable Associated exception
      */
     private void log(String message, Throwable throwable) {
@@ -833,7 +737,6 @@ public final class HttpConnector
         }
 
     }
-
 
     /**
      * Create and return a new processor suitable for processing HTTP
@@ -855,28 +758,25 @@ public final class HttpConnector
 
     }
 
-
     /**
-     * Open and return the server socket for this Connector.  If an IP
+     * Open and return the server socket for this Connector. If an IP
      * address has been specified, the socket will be opened only on that
      * address; otherwise it will be opened on all addresses.
      *
-     * @exception IOException                input/output or network error
-     * @exception KeyStoreException          error instantiating the
-     *                                       KeyStore from file (SSL only)
-     * @exception NoSuchAlgorithmException   KeyStore algorithm unsupported
-     *                                       by current provider (SSL only)
-     * @exception CertificateException       general certificate error (SSL only)
-     * @exception UnrecoverableKeyException  internal KeyStore problem with
-     *                                       the certificate (SSL only)
-     * @exception KeyManagementException     problem in the key management
-     *                                       layer (SSL only)
+     * @exception IOException               input/output or network error
+     * @exception KeyStoreException         error instantiating the
+     *                                      KeyStore from file (SSL only)
+     * @exception NoSuchAlgorithmException  KeyStore algorithm unsupported
+     *                                      by current provider (SSL only)
+     * @exception CertificateException      general certificate error (SSL only)
+     * @exception UnrecoverableKeyException internal KeyStore problem with
+     *                                      the certificate (SSL only)
+     * @exception KeyManagementException    problem in the key management
+     *                                      layer (SSL only)
      */
-    private ServerSocket open()
-    throws IOException, KeyStoreException, NoSuchAlgorithmException,
-           CertificateException, UnrecoverableKeyException,
-           KeyManagementException
-    {
+    private ServerSocket open() throws IOException, KeyStoreException,
+            NoSuchAlgorithmException, CertificateException,
+            UnrecoverableKeyException, KeyManagementException {
 
         // Acquire the server socket factory for this Connector
         ServerSocketFactory factory = getFactory();
@@ -888,8 +788,8 @@ public final class HttpConnector
         }
 
         // Open a server socket on the specified address
-        InetAddress[] addresses =
-            InetAddress.getAllByName(InetAddress.getLocalHost().getHostName());
+        InetAddress[] addresses = InetAddress.getAllByName(InetAddress
+                .getLocalHost().getHostName());
         int i;
         for (i = 0; i < addresses.length; i++) {
             if (addresses[i].getHostAddress().equals(address))
@@ -905,9 +805,7 @@ public final class HttpConnector
 
     }
 
-
     // ---------------------------------------------- Background Thread Methods
-
 
     /**
      * The background thread that listens for incoming TCP/IP connections and
@@ -957,7 +855,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Start the background processing thread.
      */
@@ -970,7 +867,6 @@ public final class HttpConnector
         thread.start();
 
     }
-
 
     /**
      * Stop the background processing thread.
@@ -991,9 +887,7 @@ public final class HttpConnector
 
     }
 
-
     // ------------------------------------------------------ Lifecycle Methods
-
 
     /**
      * Add a lifecycle event listener to this component.
@@ -1006,9 +900,8 @@ public final class HttpConnector
 
     }
 
-
     /**
-     * Get the lifecycle listeners associated with this lifecycle. If this 
+     * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
      */
     public LifecycleListener[] findLifecycleListeners() {
@@ -1016,7 +909,6 @@ public final class HttpConnector
         return lifecycle.findLifecycleListeners();
 
     }
-
 
     /**
      * Remove a lifecycle event listener from this component.
@@ -1029,17 +921,15 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Initialize this connector (create ServerSocket here!)
      */
-    public void initialize()
-    throws LifecycleException {
+    public void initialize() throws LifecycleException {
         if (initialized)
-            throw new LifecycleException (
-                sm.getString("httpConnector.alreadyInitialized"));
+            throw new LifecycleException(sm.getString(
+                    "httpConnector.alreadyInitialized"));
 
-        this.initialized=true;
+        this.initialized = true;
         Exception eRethrow = null;
 
         // Establish a server socket on the specified port
@@ -1065,7 +955,7 @@ public final class HttpConnector
             eRethrow = kme;
         }
 
-        if ( eRethrow != null )
+        if (eRethrow != null)
             throw new LifecycleException(threadName + ".open", eRethrow);
 
     }
@@ -1079,8 +969,8 @@ public final class HttpConnector
 
         // Validate and update our current state
         if (started)
-            throw new LifecycleException
-                (sm.getString("httpConnector.alreadyStarted"));
+            throw new LifecycleException(sm.getString(
+                    "httpConnector.alreadyStarted"));
         threadName = "HttpConnector[" + port + "]";
         lifecycle.fireLifecycleEvent(START_EVENT, null);
         started = true;
@@ -1098,7 +988,6 @@ public final class HttpConnector
 
     }
 
-
     /**
      * Terminate processing requests via this Connector.
      *
@@ -1108,8 +997,8 @@ public final class HttpConnector
 
         // Validate and update our current state
         if (!started)
-            throw new LifecycleException
-                (sm.getString("httpConnector.notStarted"));
+            throw new LifecycleException(sm.getString(
+                    "httpConnector.notStarted"));
         lifecycle.fireLifecycleEvent(STOP_EVENT, null);
         started = false;
 
@@ -1139,6 +1028,5 @@ public final class HttpConnector
         threadStop();
 
     }
-
 
 }

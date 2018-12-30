@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/util/URL.java,v 1.4 2002/06/16 02:54:03 billbarker Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/util/URL.
+ * java,v 1.4 2002/06/16 02:54:03 billbarker Exp $
  * $Revision: 1.4 $
  * $Date: 2002/06/16 02:54:03 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,41 +43,42 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.util;
-
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
 
-
 /**
- * <p><strong>URL</strong> is designed to provide public APIs for parsing
+ * <p>
+ * <strong>URL</strong> is designed to provide public APIs for parsing
  * and synthesizing Uniform Resource Locators as similar as possible to the
  * APIs of <code>java.net.URL</code>, but without the ability to open a
- * stream or connection.  One of the consequences of this is that you can
+ * stream or connection. One of the consequences of this is that you can
  * construct URLs for protocols for which a URLStreamHandler is not
- * available (such as an "https" URL when JSSE is not installed).</p>
+ * available (such as an "https" URL when JSSE is not installed).
+ * </p>
  *
- * <p><strong>WARNING</strong> - This class assumes that the string
+ * <p>
+ * <strong>WARNING</strong> - This class assumes that the string
  * representation of a URL conforms to the <code>spec</code> argument
  * as described in RFC 2396 "Uniform Resource Identifiers: Generic Syntax":
+ * 
  * <pre>
  *   &lt;scheme&gt;//&lt;authority&gt;&lt;path&gt;?&lt;query&gt;#&lt;fragment&gt;
- * </pre></p>
+ * </pre>
+ * </p>
  *
- * <p><strong>FIXME</strong> - This class really ought to end up in a Commons
- * package someplace.</p>
+ * <p>
+ * <strong>FIXME</strong> - This class really ought to end up in a Commons
+ * package someplace.
+ * </p>
  *
  * @author Craig R. McClanahan
  * @version $Revision: 1.4 $ $Date: 2002/06/16 02:54:03 $
@@ -93,9 +86,7 @@ import java.net.MalformedURLException;
 
 public final class URL implements Serializable {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Create a URL object from the specified String representation.
@@ -103,7 +94,7 @@ public final class URL implements Serializable {
      * @param spec String representation of the URL
      *
      * @exception MalformedURLException if the string representation
-     *  cannot be parsed successfully
+     *                                  cannot be parsed successfully
      */
     public URL(String spec) throws MalformedURLException {
 
@@ -111,18 +102,17 @@ public final class URL implements Serializable {
 
     }
 
-
     /**
      * Create a URL object by parsing a string representation relative
-     * to a specified context.  Based on logic from JDK 1.3.1's
+     * to a specified context. Based on logic from JDK 1.3.1's
      * <code>java.net.URL</code>.
      *
      * @param context URL against which the relative representation
-     *  is resolved
-     * @param spec String representation of the URL (usually relative)
+     *                is resolved
+     * @param spec    String representation of the URL (usually relative)
      *
      * @exception MalformedURLException if the string representation
-     *  cannot be parsed successfully
+     *                                  cannot be parsed successfully
      */
     public URL(URL context, String spec) throws MalformedURLException {
 
@@ -154,8 +144,8 @@ public final class URL implements Serializable {
             }
 
             // Parse out the new protocol
-            for (i = start; !aRef && (i < limit) &&
-                     ((c = spec.charAt(i)) != '/'); i++) {
+            for (i = start; !aRef && (i < limit) && ((c = spec.charAt(
+                    i)) != '/'); i++) {
                 if (c == ':') {
                     String s = spec.substring(start, i).toLowerCase();
                     // Assume all protocols are valid
@@ -167,14 +157,14 @@ public final class URL implements Serializable {
 
             // Only use our context if the protocols match
             protocol = newProtocol;
-            if ((context != null) && ((newProtocol == null) ||
-                 newProtocol.equalsIgnoreCase(context.getProtocol()))) {
+            if ((context != null) && ((newProtocol == null) || newProtocol
+                    .equalsIgnoreCase(context.getProtocol()))) {
                 // If the context is a hierarchical URL scheme and the spec
                 // contains a matching scheme then maintain backwards
                 // compatibility and treat it as if the spec didn't contain
                 // the scheme; see 5.2.3 of RFC2396
-                if ((context.getPath() != null) &&
-                    (context.getPath().startsWith("/")))
+                if ((context.getPath() != null) && (context.getPath()
+                        .startsWith("/")))
                     newProtocol = null;
                 if (newProtocol == null) {
                     protocol = context.getProtocol();
@@ -206,7 +196,6 @@ public final class URL implements Serializable {
             if (context != null)
                 normalize();
 
-
         } catch (MalformedURLException e) {
             throw e;
         } catch (Exception e) {
@@ -215,45 +204,40 @@ public final class URL implements Serializable {
 
     }
 
-
-
-
-
     /**
-     * Create a URL object from the specified components.  The default port
+     * Create a URL object from the specified components. The default port
      * number for the specified protocol will be used.
      *
      * @param protocol Name of the protocol to use
-     * @param host Name of the host addressed by this protocol
-     * @param file Filename on the specified host
+     * @param host     Name of the host addressed by this protocol
+     * @param file     Filename on the specified host
      *
      * @exception MalformedURLException is never thrown, but present for
-     *  compatible APIs
+     *                                  compatible APIs
      */
     public URL(String protocol, String host, String file)
-        throws MalformedURLException {
+            throws MalformedURLException {
 
         this(protocol, host, -1, file);
 
     }
 
-
     /**
-     * Create a URL object from the specified components.  Specifying a port
+     * Create a URL object from the specified components. Specifying a port
      * number of -1 indicates that the URL should use the default port for
-     * that protocol.  Based on logic from JDK 1.3.1's
+     * that protocol. Based on logic from JDK 1.3.1's
      * <code>java.net.URL</code>.
      *
      * @param protocol Name of the protocol to use
-     * @param host Name of the host addressed by this protocol
-     * @param port Port number, or -1 for the default port for this protocol
-     * @param file Filename on the specified host
+     * @param host     Name of the host addressed by this protocol
+     * @param port     Port number, or -1 for the default port for this protocol
+     * @param file     Filename on the specified host
      *
      * @exception MalformedURLException is never thrown, but present for
-     *  compatible APIs
+     *                                  compatible APIs
      */
     public URL(String protocol, String host, int port, String file)
-        throws MalformedURLException {
+            throws MalformedURLException {
 
         this.protocol = protocol;
         this.host = host;
@@ -274,71 +258,59 @@ public final class URL implements Serializable {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The authority part of the URL.
      */
     private String authority = null;
 
-
     /**
      * The filename part of the URL.
      */
     private String file = null;
-
 
     /**
      * The host name part of the URL.
      */
     private String host = null;
 
-
     /**
      * The path part of the URL.
      */
     private String path = null;
-
 
     /**
      * The port number part of the URL.
      */
     private int port = -1;
 
-
     /**
      * The protocol name part of the URL.
      */
     private String protocol = null;
-
 
     /**
      * The query part of the URL.
      */
     private String query = null;
 
-
     /**
      * The reference part of the URL.
      */
     private String ref = null;
-
 
     /**
      * The user info part of the URL.
      */
     private String userInfo = null;
 
-
     // --------------------------------------------------------- Public Methods
 
-
     /**
-     * Compare two URLs for equality.  The result is <code>true</code> if and
+     * Compare two URLs for equality. The result is <code>true</code> if and
      * only if the argument is not null, and is a <code>URL</code> object
-     * that represents the same <code>URL</code> as this object.  Two
+     * that represents the same <code>URL</code> as this object. Two
      * <code>URLs</code> are equal if they have the same protocol and
      * reference the same host, the same port number on the host,
      * and the same file and anchor on the host.
@@ -358,7 +330,6 @@ public final class URL implements Serializable {
 
     }
 
-
     /**
      * Return the authority part of the URL.
      */
@@ -368,11 +339,10 @@ public final class URL implements Serializable {
 
     }
 
-
     /**
-     * Return the filename part of the URL.  <strong>NOTE</strong> - For
+     * Return the filename part of the URL. <strong>NOTE</strong> - For
      * compatibility with <code>java.net.URL</code>, this value includes
-     * the query string if there was one.  For just the path portion,
+     * the query string if there was one. For just the path portion,
      * call <code>getPath()</code> instead.
      */
     public String getFile() {
@@ -383,7 +353,6 @@ public final class URL implements Serializable {
 
     }
 
-
     /**
      * Return the host name part of the URL.
      */
@@ -392,7 +361,6 @@ public final class URL implements Serializable {
         return (this.host);
 
     }
-
 
     /**
      * Return the path part of the URL.
@@ -405,7 +373,6 @@ public final class URL implements Serializable {
 
     }
 
-
     /**
      * Return the port number part of the URL.
      */
@@ -414,7 +381,6 @@ public final class URL implements Serializable {
         return (this.port);
 
     }
-
 
     /**
      * Return the protocol name part of the URL.
@@ -425,7 +391,6 @@ public final class URL implements Serializable {
 
     }
 
-
     /**
      * Return the query part of the URL.
      */
@@ -434,7 +399,6 @@ public final class URL implements Serializable {
         return (this.query);
 
     }
-
 
     /**
      * Return the reference part of the URL.
@@ -445,7 +409,6 @@ public final class URL implements Serializable {
 
     }
 
-
     /**
      * Return the user info part of the URL.
      */
@@ -454,7 +417,6 @@ public final class URL implements Serializable {
         return (this.userInfo);
 
     }
-
 
     /**
      * Normalize the <code>path</code> (and therefore <code>file</code>)
@@ -465,7 +427,8 @@ public final class URL implements Serializable {
      * service of this implementation.
      *
      * @exception MalformedURLException if a normalization error occurs,
-     *  such as trying to move about the hierarchical root
+     *                                  such as trying to move about the
+     *                                  hierarchical root
      */
     public void normalize() throws MalformedURLException {
 
@@ -500,8 +463,8 @@ public final class URL implements Serializable {
             int index = normalized.indexOf("//");
             if (index < 0)
                 break;
-            normalized = normalized.substring(0, index) +
-                normalized.substring(index + 1);
+            normalized = normalized.substring(0, index) + normalized.substring(
+                    index + 1);
         }
 
         // Resolve occurrences of "/./" in the normalized path
@@ -509,8 +472,8 @@ public final class URL implements Serializable {
             int index = normalized.indexOf("/./");
             if (index < 0)
                 break;
-            normalized = normalized.substring(0, index) +
-                normalized.substring(index + 2);
+            normalized = normalized.substring(0, index) + normalized.substring(
+                    index + 2);
         }
 
         // Resolve occurrences of "/../" in the normalized path
@@ -519,11 +482,11 @@ public final class URL implements Serializable {
             if (index < 0)
                 break;
             if (index == 0)
-                throw new MalformedURLException
-                    ("Invalid relative URL reference");
+                throw new MalformedURLException(
+                        "Invalid relative URL reference");
             int index2 = normalized.lastIndexOf('/', index - 1);
-            normalized = normalized.substring(0, index2) +
-                normalized.substring(index + 3);
+            normalized = normalized.substring(0, index2) + normalized.substring(
+                    index + 3);
         }
 
         // Resolve occurrences of "/." at the end of the normalized path
@@ -535,8 +498,8 @@ public final class URL implements Serializable {
             int index = normalized.length() - 3;
             int index2 = normalized.lastIndexOf('/', index - 1);
             if (index2 < 0)
-                throw new MalformedURLException
-                    ("Invalid relative URL reference");
+                throw new MalformedURLException(
+                        "Invalid relative URL reference");
             normalized = normalized.substring(0, index2 + 1);
         }
 
@@ -549,11 +512,10 @@ public final class URL implements Serializable {
 
     }
 
-
     /**
-     * Compare two URLs, excluding the "ref" fields.  Returns <code>true</code>
+     * Compare two URLs, excluding the "ref" fields. Returns <code>true</code>
      * if this <code>URL</code> and the <code>other</code> argument both refer
-     * to the same resource.  The two <code>URLs</code> might not both contain
+     * to the same resource. The two <code>URLs</code> might not both contain
      * the same anchor.
      */
     public boolean sameFile(URL other) {
@@ -570,9 +532,8 @@ public final class URL implements Serializable {
 
     }
 
-
     /**
-     * Return a string representation of this URL.  This follow the rules in
+     * Return a string representation of this URL. This follow the rules in
      * RFC 2396, Section 5.2, Step 7.
      */
     public String toExternalForm() {
@@ -599,7 +560,6 @@ public final class URL implements Serializable {
         return (sb.toString());
 
     }
-
 
     /**
      * Return a string representation of this object.
@@ -630,15 +590,13 @@ public final class URL implements Serializable {
 
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Compare to String values for equality, taking appropriate care if one
      * or both of the values are <code>null</code>.
      *
-     * @param first First string
+     * @param first  First string
      * @param second Second string
      */
     private boolean compare(String first, String second) {
@@ -657,26 +615,27 @@ public final class URL implements Serializable {
 
     }
 
-
     /**
      * Parse the specified portion of the string representation of a URL,
      * assuming that it has a format similar to that for <code>http</code>.
      *
-     * <p><strong>FIXME</strong> - This algorithm can undoubtedly be optimized
-     * for performance.  However, that needs to wait until after sufficient
+     * <p>
+     * <strong>FIXME</strong> - This algorithm can undoubtedly be optimized
+     * for performance. However, that needs to wait until after sufficient
      * unit tests are implemented to guarantee correct behavior with no
-     * regressions.</p>
+     * regressions.
+     * </p>
      *
-     * @param spec String representation being parsed
+     * @param spec  String representation being parsed
      * @param start Starting offset, which will be just after the ':' (if
-     *  there is one) that determined the protocol name
+     *              there is one) that determined the protocol name
      * @param limit Ending position, which will be the position of the '#'
-     *  (if there is one) that delimited the anchor
+     *              (if there is one) that delimited the anchor
      *
      * @exception MalformedURLException if a parsing error occurs
      */
     private void parse(String spec, int start, int limit)
-        throws MalformedURLException {
+            throws MalformedURLException {
 
         // Trim the query string (if any) off the tail end
         int question = spec.lastIndexOf('?', limit - 1);
@@ -699,27 +658,26 @@ public final class URL implements Serializable {
             }
             if (authority.length() > 0) {
                 int at = authority.indexOf('@');
-                if( at >= 0 ) {
-                    userInfo = authority.substring(0,at);
+                if (at >= 0) {
+                    userInfo = authority.substring(0, at);
                 }
-                int colon = authority.indexOf(':',at+1);
+                int colon = authority.indexOf(':', at + 1);
                 if (colon >= 0) {
                     try {
-                        port =
-                            Integer.parseInt(authority.substring(colon + 1));
+                        port = Integer.parseInt(authority.substring(colon + 1));
                     } catch (NumberFormatException e) {
                         throw new MalformedURLException(e.toString());
                     }
-                    host = authority.substring(at+1, colon);
+                    host = authority.substring(at + 1, colon);
                 } else {
-                    host = authority.substring(at+1);
+                    host = authority.substring(at + 1);
                     port = -1;
                 }
             }
         }
 
         // Parse the path section
-        if (spec.indexOf("/", start) == start) {     // Absolute path
+        if (spec.indexOf("/", start) == start) { // Absolute path
             path = spec.substring(start, limit);
             if (query != null)
                 file = path + "?" + query;
@@ -737,8 +695,8 @@ public final class URL implements Serializable {
             return;
         }
         if (!path.startsWith("/"))
-            throw new MalformedURLException
-                ("Base path does not start with '/'");
+            throw new MalformedURLException(
+                    "Base path does not start with '/'");
         if (!path.endsWith("/"))
             path += "/../";
         path += spec.substring(start, limit);
@@ -749,6 +707,5 @@ public final class URL implements Serializable {
         return;
 
     }
-
 
 }

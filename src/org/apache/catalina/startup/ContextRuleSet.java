@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/startup/ContextRuleSet.java,v 1.3 2001/11/08 21:03:15 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/startup/
+ * ContextRuleSet.java,v 1.3 2001/11/08 21:03:15 remm Exp $
  * $Revision: 1.3 $
  * $Date: 2001/11/08 21:03:15 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2001 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,14 +43,11 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  */
-
 
 package org.apache.catalina.startup;
 
@@ -70,11 +59,12 @@ import org.apache.commons.digester.Rule;
 import org.apache.commons.digester.RuleSetBase;
 import org.xml.sax.Attributes;
 
-
 /**
- * <p><strong>RuleSet</strong> for processing the contents of a
- * Context or DefaultContext definition element.  To enable parsing of a
- * DefaultContext, be sure to specify a prefix that ends with "/Default".</p>
+ * <p>
+ * <strong>RuleSet</strong> for processing the contents of a
+ * Context or DefaultContext definition element. To enable parsing of a
+ * DefaultContext, be sure to specify a prefix that ends with "/Default".
+ * </p>
  *
  * @author Craig R. McClanahan
  * @version $Revision: 1.3 $ $Date: 2001/11/08 21:03:15 $
@@ -82,18 +72,14 @@ import org.xml.sax.Attributes;
 
 public class ContextRuleSet extends RuleSetBase {
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The matching pattern prefix to use for recognizing our elements.
      */
     protected String prefix = null;
 
-
     // ------------------------------------------------------------ Constructor
-
 
     /**
      * Construct an instance of this <code>RuleSet</code> with the default
@@ -105,13 +91,12 @@ public class ContextRuleSet extends RuleSetBase {
 
     }
 
-
     /**
      * Construct an instance of this <code>RuleSet</code> with the specified
      * matching pattern prefix.
      *
      * @param prefix Prefix for matching pattern rules (including the
-     *  trailing slash character)
+     *               trailing slash character)
      */
     public ContextRuleSet(String prefix) {
 
@@ -121,142 +106,117 @@ public class ContextRuleSet extends RuleSetBase {
 
     }
 
-
     // --------------------------------------------------------- Public Methods
 
-
     /**
-     * <p>Add the set of Rule instances defined in this RuleSet to the
+     * <p>
+     * Add the set of Rule instances defined in this RuleSet to the
      * specified <code>Digester</code> instance, associating them with
-     * our namespace URI (if any).  This method should only be called
-     * by a Digester instance.</p>
+     * our namespace URI (if any). This method should only be called
+     * by a Digester instance.
+     * </p>
      *
      * @param digester Digester instance to which the new Rule instances
-     *  should be added.
+     *                 should be added.
      */
     public void addRuleInstances(Digester digester) {
 
         if (!isDefaultContext()) {
             digester.addObjectCreate(prefix + "Context",
-                                     "org.apache.catalina.core.StandardContext",
-                                     "className");
+                    "org.apache.catalina.core.StandardContext", "className");
         } else {
             digester.addObjectCreate(prefix + "Context",
-                                     "org.apache.catalina.core.StandardDefaultContext",
-                                     "className");
+                    "org.apache.catalina.core.StandardDefaultContext",
+                    "className");
         }
         digester.addSetProperties(prefix + "Context");
         if (!isDefaultContext()) {
-            digester.addRule(prefix + "Context",
-                             new CopyParentClassLoaderRule(digester));
-            digester.addRule(prefix + "Context",
-                             new LifecycleListenerRule
-                                 (digester,
-                                  "org.apache.catalina.startup.ContextConfig",
-                                  "configClass"));
-            digester.addSetNext(prefix + "Context",
-                                "addChild",
-                                "org.apache.catalina.Container");
+            digester.addRule(prefix + "Context", new CopyParentClassLoaderRule(
+                    digester));
+            digester.addRule(prefix + "Context", new LifecycleListenerRule(
+                    digester, "org.apache.catalina.startup.ContextConfig",
+                    "configClass"));
+            digester.addSetNext(prefix + "Context", "addChild",
+                    "org.apache.catalina.Container");
         } else {
-            digester.addSetNext(prefix + "Context",
-                                "addDefaultContext",
-                                "org.apache.catalina.DefaultContext");
+            digester.addSetNext(prefix + "Context", "addDefaultContext",
+                    "org.apache.catalina.DefaultContext");
         }
 
         digester.addCallMethod(prefix + "Context/InstanceListener",
-                               "addInstanceListener", 0);
+                "addInstanceListener", 0);
 
-        digester.addObjectCreate(prefix + "Context/Listener",
-                                 null, // MUST be specified in the element
-                                 "className");
+        digester.addObjectCreate(prefix + "Context/Listener", null, // MUST be specified in the element
+                "className");
         digester.addSetProperties(prefix + "Context/Listener");
-        digester.addSetNext(prefix + "Context/Listener",
-                            "addLifecycleListener",
-                            "org.apache.catalina.LifecycleListener");
+        digester.addSetNext(prefix + "Context/Listener", "addLifecycleListener",
+                "org.apache.catalina.LifecycleListener");
 
-        digester.addRule(prefix + "Context/Loader",
-                         new CreateLoaderRule
-                             (digester,
-                              "org.apache.catalina.loader.WebappLoader",
-                              "className"));
+        digester.addRule(prefix + "Context/Loader", new CreateLoaderRule(
+                digester, "org.apache.catalina.loader.WebappLoader",
+                "className"));
         digester.addSetProperties(prefix + "Context/Loader");
-        digester.addSetNext(prefix + "Context/Loader",
-                            "setLoader",
-                            "org.apache.catalina.Loader");
+        digester.addSetNext(prefix + "Context/Loader", "setLoader",
+                "org.apache.catalina.Loader");
 
-        digester.addObjectCreate(prefix + "Context/Logger",
-                                 null, // MUST be specified in the element
-                                 "className");
+        digester.addObjectCreate(prefix + "Context/Logger", null, // MUST be specified in the element
+                "className");
         digester.addSetProperties(prefix + "Context/Logger");
-        digester.addSetNext(prefix + "Context/Logger",
-                            "setLogger",
-                            "org.apache.catalina.Logger");
+        digester.addSetNext(prefix + "Context/Logger", "setLogger",
+                "org.apache.catalina.Logger");
 
         digester.addObjectCreate(prefix + "Context/Manager",
-                                 "org.apache.catalina.session.StandardManager",
-                                 "className");
+                "org.apache.catalina.session.StandardManager", "className");
         digester.addSetProperties(prefix + "Context/Manager");
-        digester.addSetNext(prefix + "Context/Manager",
-                            "setManager",
-                            "org.apache.catalina.Manager");
+        digester.addSetNext(prefix + "Context/Manager", "setManager",
+                "org.apache.catalina.Manager");
 
-        digester.addObjectCreate(prefix + "Context/Manager/Store",
-                                 null, // MUST be specified in the element
-                                 "className");
+        digester.addObjectCreate(prefix + "Context/Manager/Store", null, // MUST be specified in the element
+                "className");
         digester.addSetProperties(prefix + "Context/Manager/Store");
-        digester.addSetNext(prefix + "Context/Manager/Store",
-                            "setStore",
-                            "org.apache.catalina.Store");
+        digester.addSetNext(prefix + "Context/Manager/Store", "setStore",
+                "org.apache.catalina.Store");
 
         digester.addObjectCreate(prefix + "Context/Parameter",
-                                 "org.apache.catalina.deploy.ApplicationParameter");
+                "org.apache.catalina.deploy.ApplicationParameter");
         digester.addSetProperties(prefix + "Context/Parameter");
         digester.addSetNext(prefix + "Context/Parameter",
-                            "addApplicationParameter",
-                            "org.apache.catalina.deploy.ApplicationParameter");
+                "addApplicationParameter",
+                "org.apache.catalina.deploy.ApplicationParameter");
 
-        digester.addObjectCreate(prefix + "Context/Realm",
-                                 null, // MUST be specified in the element
-                                 "className");
+        digester.addObjectCreate(prefix + "Context/Realm", null, // MUST be specified in the element
+                "className");
         digester.addSetProperties(prefix + "Context/Realm");
-        digester.addSetNext(prefix + "Context/Realm",
-                            "setRealm",
-                            "org.apache.catalina.Realm");
+        digester.addSetNext(prefix + "Context/Realm", "setRealm",
+                "org.apache.catalina.Realm");
 
         digester.addObjectCreate(prefix + "Context/ResourceLink",
-                                 "org.apache.catalina.deploy.ContextResourceLink");
+                "org.apache.catalina.deploy.ContextResourceLink");
         digester.addSetProperties(prefix + "Context/ResourceLink");
-        digester.addSetNext(prefix + "Context/ResourceLink",
-                            "addResourceLink",
-                            "org.apache.catalina.deploy.ContextResourceLink");
+        digester.addSetNext(prefix + "Context/ResourceLink", "addResourceLink",
+                "org.apache.catalina.deploy.ContextResourceLink");
 
         digester.addObjectCreate(prefix + "Context/Resources",
-                                 "org.apache.naming.resources.FileDirContext",
-                                 "className");
+                "org.apache.naming.resources.FileDirContext", "className");
         digester.addSetProperties(prefix + "Context/Resources");
-        digester.addSetNext(prefix + "Context/Resources",
-                            "setResources",
-                            "javax.naming.directory.DirContext");
+        digester.addSetNext(prefix + "Context/Resources", "setResources",
+                "javax.naming.directory.DirContext");
 
-        digester.addObjectCreate(prefix + "Context/Valve",
-                                 null, // MUST be specified in the element
-                                 "className");
+        digester.addObjectCreate(prefix + "Context/Valve", null, // MUST be specified in the element
+                "className");
         digester.addSetProperties(prefix + "Context/Valve");
-        digester.addSetNext(prefix + "Context/Valve",
-                            "addValve",
-                            "org.apache.catalina.Valve");
+        digester.addSetNext(prefix + "Context/Valve", "addValve",
+                "org.apache.catalina.Valve");
 
         digester.addCallMethod(prefix + "Context/WrapperLifecycle",
-                               "addWrapperLifecycle", 0);
+                "addWrapperLifecycle", 0);
 
         digester.addCallMethod(prefix + "Context/WrapperListener",
-                               "addWrapperListener", 0);
+                "addWrapperListener", 0);
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Are we processing a DefaultContext element?
@@ -267,12 +227,9 @@ public class ContextRuleSet extends RuleSetBase {
 
     }
 
-
 }
 
-
 // ----------------------------------------------------------- Private Classes
-
 
 /**
  * Rule that creates a new <code>Loader</code> instance, with the parent
@@ -283,7 +240,7 @@ public class ContextRuleSet extends RuleSetBase {
 final class CreateLoaderRule extends Rule {
 
     public CreateLoaderRule(Digester digester, String loaderClass,
-                            String attributeName) {
+            String attributeName) {
 
         super(digester);
         this.loaderClass = loaderClass;
@@ -328,6 +285,5 @@ final class CreateLoaderRule extends Rule {
             digester.log("pop " + loader.getClass().getName());
 
     }
-
 
 }

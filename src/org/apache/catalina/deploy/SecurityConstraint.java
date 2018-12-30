@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/deploy/SecurityConstraint.java,v 1.5 2001/07/22 20:25:10 pier Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/deploy/
+ * SecurityConstraint.java,v 1.5 2001/07/22 20:25:10 pier Exp $
  * $Revision: 1.5 $
  * $Date: 2001/07/22 20:25:10 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,29 +43,24 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.deploy;
-
 
 /**
  * Representation of a security constraint element for a web application,
  * as represented in a <code>&lt;security-constraint&gt;</code> element in the
  * deployment descriptor.
  * <p>
- * <b>WARNING</b>:  It is assumed that instances of this class will be created
+ * <b>WARNING</b>: It is assumed that instances of this class will be created
  * and modified only within the context of a single thread, before the instance
- * is made visible to the remainder of the application.  After that, only read
- * access is expected.  Therefore, none of the read and write access within
+ * is made visible to the remainder of the application. After that, only read
+ * access is expected. Therefore, none of the read and write access within
  * this class is synchronized.
  *
  * @author Craig R. McClanahan
@@ -82,9 +69,7 @@ package org.apache.catalina.deploy;
 
 public final class SecurityConstraint {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a new security constraint instance with default values.
@@ -95,16 +80,13 @@ public final class SecurityConstraint {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Was the "all roles" wildcard included in the authorization constraints
      * for this security constraint?
      */
     private boolean allRoles = false;
-
 
     /**
      * Was an authorization constraint included in this security constraint?
@@ -114,13 +96,11 @@ public final class SecurityConstraint {
      */
     private boolean authConstraint = false;
 
-
     /**
      * The set of roles permitted to access resources protected by this
      * security constraint.
      */
     private String authRoles[] = new String[0];
-
 
     /**
      * The set of web resource collections protected by this security
@@ -128,22 +108,18 @@ public final class SecurityConstraint {
      */
     private SecurityCollection collections[] = new SecurityCollection[0];
 
-
     /**
      * The display name of this security constraint.
      */
     private String displayName = null;
 
-
     /**
-     * The user data constraint for this security constraint.  Must be NONE,
+     * The user data constraint for this security constraint. Must be NONE,
      * INTEGRAL, or CONFIDENTIAL.
      */
     private String userConstraint = "NONE";
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Was the "all roles" wildcard included in this authentication
@@ -155,7 +131,6 @@ public final class SecurityConstraint {
 
     }
 
-
     /**
      * Return the authorization constraint present flag for this security
      * constraint.
@@ -165,7 +140,6 @@ public final class SecurityConstraint {
         return (this.authConstraint);
 
     }
-
 
     /**
      * Set the authorization constraint present flag for this security
@@ -177,7 +151,6 @@ public final class SecurityConstraint {
 
     }
 
-
     /**
      * Return the display name of this security constraint.
      */
@@ -186,7 +159,6 @@ public final class SecurityConstraint {
         return (this.displayName);
 
     }
-
 
     /**
      * Set the display name of this security constraint.
@@ -197,7 +169,6 @@ public final class SecurityConstraint {
 
     }
 
-
     /**
      * Return the user data constraint for this security constraint.
      */
@@ -206,7 +177,6 @@ public final class SecurityConstraint {
         return (userConstraint);
 
     }
-
 
     /**
      * Set the user data constraint for this security constraint.
@@ -220,9 +190,7 @@ public final class SecurityConstraint {
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add an authorization role, which is a role name that will be
@@ -247,7 +215,6 @@ public final class SecurityConstraint {
 
     }
 
-
     /**
      * Add a new web resource collection to those protected by this
      * security constraint.
@@ -258,15 +225,14 @@ public final class SecurityConstraint {
 
         if (collection == null)
             return;
-        SecurityCollection results[] =
-            new SecurityCollection[collections.length + 1];
+        SecurityCollection results[] = new SecurityCollection[collections.length
+                + 1];
         for (int i = 0; i < collections.length; i++)
             results[i] = collections[i];
         results[collections.length] = collection;
         collections = results;
 
     }
-
 
     /**
      * Return <code>true</code> if the specified role is permitted access to
@@ -286,10 +252,9 @@ public final class SecurityConstraint {
 
     }
 
-
     /**
      * Return the set of roles that are permitted access to the resources
-     * protected by this security constraint.  If none have been defined,
+     * protected by this security constraint. If none have been defined,
      * a zero-length array is returned (which implies that all authenticated
      * users are permitted access).
      */
@@ -298,7 +263,6 @@ public final class SecurityConstraint {
         return (authRoles);
 
     }
-
 
     /**
      * Return the web resource collection for the specified name, if any;
@@ -318,10 +282,9 @@ public final class SecurityConstraint {
 
     }
 
-
     /**
      * Return all of the web resource collections protected by this
-     * security constraint.  If there are none, a zero-length array is
+     * security constraint. If there are none, a zero-length array is
      * returned.
      */
     public SecurityCollection[] findCollections() {
@@ -330,12 +293,11 @@ public final class SecurityConstraint {
 
     }
 
-
     /**
      * Return <code>true</code> if the specified context-relative URI (and
      * associated HTTP method) are protected by this security constraint.
      *
-     * @param uri Context-relative URI to check
+     * @param uri    Context-relative URI to check
      * @param method Request method being used
      */
     public boolean included(String uri, String method) {
@@ -359,7 +321,6 @@ public final class SecurityConstraint {
         return (false);
 
     }
-
 
     /**
      * Remove the specified role from the set of roles permitted to access
@@ -390,7 +351,6 @@ public final class SecurityConstraint {
 
     }
 
-
     /**
      * Remove the specified web resource collection from those protected by
      * this security constraint.
@@ -410,8 +370,8 @@ public final class SecurityConstraint {
         }
         if (n >= 0) {
             int j = 0;
-            SecurityCollection results[] =
-                new SecurityCollection[collections.length - 1];
+            SecurityCollection results[] = new SecurityCollection[collections.length
+                    - 1];
             for (int i = 0; i < collections.length; i++) {
                 if (i != n)
                     results[j++] = collections[i];
@@ -420,7 +380,6 @@ public final class SecurityConstraint {
         }
 
     }
-
 
     /**
      * Return a String representation of this security constraint.
@@ -438,17 +397,15 @@ public final class SecurityConstraint {
 
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Does the specified request path match the specified URL pattern?
      * This method follows the same rules (in the same order) as those used
      * for mapping requests to servlets.
      *
-     * @param path Context-relative request path to be checked
-     *  (must start with '/')
+     * @param path    Context-relative request path to be checked
+     *                (must start with '/')
      * @param pattern URL pattern to be compared against
      */
     private boolean matchPattern(String path, String pattern) {
@@ -467,7 +424,7 @@ public final class SecurityConstraint {
         if (pattern.startsWith("/") && pattern.endsWith("/*")) {
             pattern = pattern.substring(0, pattern.length() - 2);
             if (pattern.length() == 0)
-                return (true);  // "/*" is the same as "/"
+                return (true); // "/*" is the same as "/"
             if (path.endsWith("/"))
                 path = path.substring(0, path.length() - 1);
             while (true) {
@@ -485,8 +442,8 @@ public final class SecurityConstraint {
         if (pattern.startsWith("*.")) {
             int slash = path.lastIndexOf('/');
             int period = path.lastIndexOf('.');
-            if ((slash >= 0) && (period > slash) &&
-                path.endsWith(pattern.substring(1))) {
+            if ((slash >= 0) && (period > slash) && path.endsWith(pattern
+                    .substring(1))) {
                 return (true);
             }
             return (false);
@@ -499,6 +456,5 @@ public final class SecurityConstraint {
         return (false);
 
     }
-
 
 }

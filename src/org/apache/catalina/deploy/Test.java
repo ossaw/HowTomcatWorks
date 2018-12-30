@@ -17,10 +17,10 @@ public final class Test {
         list = collection.findMethods();
         for (int i = 0; i < list.length; i++)
             System.out.println(" " + list[i]);
-        System.out.println("Is DELETE included? " +
-                           collection.findMethod("DELETE"));
-        System.out.println("Is POST included? " +
-                           collection.findMethod("POST"));
+        System.out.println("Is DELETE included? " + collection.findMethod(
+                "DELETE"));
+        System.out.println("Is POST included? " + collection.findMethod(
+                "POST"));
 
         System.out.println("Removing POST method");
         collection.removeMethod("POST");
@@ -29,10 +29,10 @@ public final class Test {
         list = collection.findMethods();
         for (int i = 0; i < list.length; i++)
             System.out.println(" " + list[i]);
-        System.out.println("Is DELETE included? " +
-                           collection.findMethod("DELETE"));
-        System.out.println("Is POST included? " +
-                           collection.findMethod("POST"));
+        System.out.println("Is DELETE included? " + collection.findMethod(
+                "DELETE"));
+        System.out.println("Is POST included? " + collection.findMethod(
+                "POST"));
 
     }
 

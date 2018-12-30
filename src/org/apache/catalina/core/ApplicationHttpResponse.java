@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/core/ApplicationHttpResponse.java,v 1.8 2002/06/28 12:19:13 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/core/
+ * ApplicationHttpResponse.java,v 1.8 2002/06/28 12:19:13 remm Exp $
  * $Revision: 1.8 $
  * $Date: 2002/06/28 12:19:13 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +43,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.core;
-
 
 import java.io.IOException;
 import java.util.Locale;
@@ -72,7 +59,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import org.apache.catalina.util.StringManager;
 
-
 /**
  * Wrapper around a <code>javax.servlet.http.HttpServletResponse</code>
  * that transforms an application response object (which might be the original
@@ -80,9 +66,9 @@ import org.apache.catalina.util.StringManager;
  * <code>javax.servlet.http.HttpServletResponseWrapper</code> class)
  * back into an internal <code>org.apache.catalina.HttpResponse</code>.
  * <p>
- * <strong>WARNING</strong>:  Due to Java's lack of support for multiple
+ * <strong>WARNING</strong>: Due to Java's lack of support for multiple
  * inheritance, all of the logic in <code>ApplicationResponse</code> is
- * duplicated in <code>ApplicationHttpResponse</code>.  Make sure that you
+ * duplicated in <code>ApplicationHttpResponse</code>. Make sure that you
  * keep these two classes in synchronization when making changes!
  *
  * @author Craig R. McClanahan
@@ -91,9 +77,7 @@ import org.apache.catalina.util.StringManager;
 
 class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a new wrapped response around the specified servlet response.
@@ -106,25 +90,22 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Construct a new wrapped response around the specified servlet response.
      *
      * @param response The servlet response being wrapped
      * @param included <code>true</code> if this response is being processed
-     *  by a <code>RequestDispatcher.include()</code> call
+     *                 by a <code>RequestDispatcher.include()</code> call
      */
     public ApplicationHttpResponse(HttpServletResponse response,
-                                   boolean included) {
+            boolean included) {
 
         super(response);
         setIncluded(included);
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Is this wrapped response the subject of an <code>include()</code>
@@ -132,29 +113,24 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
      */
     protected boolean included = false;
 
-
     /**
      * Descriptive information about this implementation.
      */
-    protected static final String info =
-        "org.apache.catalina.core.ApplicationHttpResponse/1.0";
-
+    protected static final String info = "org.apache.catalina.core.ApplicationHttpResponse/1.0";
 
     /**
      * The string manager for this package.
      */
-    protected static StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected static StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     // ------------------------------------------------ ServletResponse Methods
-
 
     /**
      * Disallow <code>reset()</code> calls on a included response.
      *
      * @exception IllegalStateException if the response has already
-     *  been committed
+     *                                  been committed
      */
     public void reset() {
 
@@ -163,7 +139,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
             getResponse().reset();
 
     }
-
 
     /**
      * Disallow <code>setContentLength()</code> calls on an included response.
@@ -177,7 +152,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setContentType()</code> calls on an included response.
      *
@@ -189,7 +163,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
             getResponse().setContentType(type);
 
     }
-
 
     /**
      * Disallow <code>setLocale()</code> calls on an included response.
@@ -203,9 +176,7 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     // -------------------------------------------- HttpServletResponse Methods
-
 
     /**
      * Disallow <code>addCookie()</code> calls on an included response.
@@ -219,11 +190,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>addDateHeader()</code> calls on an included response.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     public void addDateHeader(String name, long value) {
@@ -233,11 +203,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>addHeader()</code> calls on an included response.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     public void addHeader(String name, String value) {
@@ -247,11 +216,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>addIntHeader()</code> calls on an included response.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     public void addIntHeader(String name, int value) {
@@ -260,7 +228,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
             ((HttpServletResponse) getResponse()).addIntHeader(name, value);
 
     }
-
 
     /**
      * Disallow <code>sendError()</code> calls on an included response.
@@ -276,11 +243,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>sendError()</code> calls on an included response.
      *
-     * @param sc The new status code
+     * @param sc  The new status code
      * @param msg The new message
      *
      * @exception IOException if an input/output error occurs
@@ -291,7 +257,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
             ((HttpServletResponse) getResponse()).sendError(sc, msg);
 
     }
-
 
     /**
      * Disallow <code>sendRedirect()</code> calls on an included response.
@@ -307,11 +272,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setDateHeader()</code> calls on an included response.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     public void setDateHeader(String name, long value) {
@@ -321,11 +285,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setHeader()</code> calls on an included response.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     public void setHeader(String name, String value) {
@@ -335,11 +298,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setIntHeader()</code> calls on an included response.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     public void setIntHeader(String name, int value) {
@@ -348,7 +310,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
             ((HttpServletResponse) getResponse()).setIntHeader(name, value);
 
     }
-
 
     /**
      * Disallow <code>setStatus()</code> calls on an included response.
@@ -362,11 +323,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setStatus()</code> calls on an included response.
      *
-     * @param sc The new status code
+     * @param sc  The new status code
      * @param msg The new message
      */
     public void setStatus(int sc, String msg) {
@@ -376,9 +336,7 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     // -------------------------------------------------------- Package Methods
-
 
     /**
      * Return descriptive information about this implementation.
@@ -389,7 +347,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Return the included flag for this response.
      */
@@ -398,7 +355,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
         return (this.included);
 
     }
-
 
     /**
      * Set the included flag for this response.
@@ -411,7 +367,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Set the response that we are wrapping.
      *
@@ -422,6 +377,5 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
         super.setResponse(response);
 
     }
-
 
 }

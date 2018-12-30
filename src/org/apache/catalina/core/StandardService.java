@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/core/StandardService.java,v 1.11 2002/06/09 02:19:42 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/core/
+ * StandardService.java,v 1.11 2002/06/09 02:19:42 remm Exp $
  * $Revision: 1.11 $
  * $Date: 2002/06/09 02:19:42 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999-2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2002 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +43,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.core;
-
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -78,9 +65,8 @@ import org.apache.catalina.Service;
 import org.apache.catalina.util.LifecycleSupport;
 import org.apache.catalina.util.StringManager;
 
-
 /**
- * Standard implementation of the <code>Service</code> interface.  The
+ * Standard implementation of the <code>Service</code> interface. The
  * associated Container is generally an instance of Engine, but this is
  * not required.
  *
@@ -88,61 +74,50 @@ import org.apache.catalina.util.StringManager;
  * @version $Revision: 1.11 $ $Date: 2002/06/09 02:19:42 $
  */
 
-public final class StandardService
-    implements Lifecycle, Service {
-
+public final class StandardService implements Lifecycle, Service {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The set of Connectors associated with this Service.
      */
     private Connector connectors[] = new Connector[0];
 
-
     /**
      * The Container associated with this Service.
      */
     private Container container = null;
-
 
     /**
      * The debugging detail level for this component.
      */
     private int debug = 0;
 
-
     /**
      * Descriptive information about this component implementation.
      */
-    private static final String info =
-        "org.apache.catalina.core.StandardService/1.0";
-
+    private static final String info = "org.apache.catalina.core.StandardService/1.0";
 
     /**
      * Has this component been initialized?
      */
     private boolean initialized = false;
 
-
     /**
      * The name of this service.
      */
     private String name = null;
-
 
     /**
      * The lifecycle event support for this component.
      */
     private LifecycleSupport lifecycle = new LifecycleSupport(this);
 
-
     /**
      * The string manager for this package.
      */
-    private static final StringManager sm =
-        StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The <code>Server</code> that owns this Service, if any.
@@ -154,15 +129,12 @@ public final class StandardService
      */
     private boolean started = false;
 
-
     /**
      * The property change support for this component.
      */
     protected PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the <code>Container</code> that handles requests for all
@@ -173,7 +145,6 @@ public final class StandardService
         return (this.container);
 
     }
-
 
     /**
      * Set the <code>Container</code> that handles requests for all
@@ -189,8 +160,8 @@ public final class StandardService
         this.container = container;
         if ((this.container != null) && (this.container instanceof Engine))
             ((Engine) this.container).setService(this);
-        if (started && (this.container != null) &&
-            (this.container instanceof Lifecycle)) {
+        if (started && (this.container != null)
+                && (this.container instanceof Lifecycle)) {
             try {
                 ((Lifecycle) this.container).start();
             } catch (LifecycleException e) {
@@ -201,8 +172,8 @@ public final class StandardService
             for (int i = 0; i < connectors.length; i++)
                 connectors[i].setContainer(this.container);
         }
-        if (started && (oldContainer != null) &&
-            (oldContainer instanceof Lifecycle)) {
+        if (started && (oldContainer != null)
+                && (oldContainer instanceof Lifecycle)) {
             try {
                 ((Lifecycle) oldContainer).stop();
             } catch (LifecycleException e) {
@@ -215,7 +186,6 @@ public final class StandardService
 
     }
 
-
     /**
      * Return the debugging detail level of this component.
      */
@@ -224,7 +194,6 @@ public final class StandardService
         return (this.debug);
 
     }
-
 
     /**
      * Set the debugging detail level of this component.
@@ -237,7 +206,6 @@ public final class StandardService
 
     }
 
-
     /**
      * Return descriptive information about this Service implementation and
      * the corresponding version number, in the format
@@ -249,7 +217,6 @@ public final class StandardService
 
     }
 
-
     /**
      * Return the name of this Service.
      */
@@ -258,7 +225,6 @@ public final class StandardService
         return (this.name);
 
     }
-
 
     /**
      * Set the name of this Service.
@@ -271,7 +237,6 @@ public final class StandardService
 
     }
 
-
     /**
      * Return the <code>Server</code> with which we are associated (if any).
      */
@@ -280,7 +245,6 @@ public final class StandardService
         return (this.server);
 
     }
-
 
     /**
      * Set the <code>Server</code> with which we are associated (if any).
@@ -293,9 +257,7 @@ public final class StandardService
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add a new Connector to the set of defined Connectors, and associate it
@@ -335,7 +297,6 @@ public final class StandardService
 
     }
 
-
     /**
      * Add a property change listener to this component.
      *
@@ -347,7 +308,6 @@ public final class StandardService
 
     }
 
-
     /**
      * Find and return the set of Connectors associated with this Service.
      */
@@ -357,10 +317,9 @@ public final class StandardService
 
     }
 
-
     /**
      * Remove the specified Connector from the set associated from this
-     * Service.  The removed Connector will also be disassociated from our
+     * Service. The removed Connector will also be disassociated from our
      * Container.
      *
      * @param connector The Connector to be removed
@@ -400,7 +359,6 @@ public final class StandardService
 
     }
 
-
     /**
      * Remove a property change listener from this component.
      *
@@ -411,7 +369,6 @@ public final class StandardService
         support.removePropertyChangeListener(listener);
 
     }
-
 
     /**
      * Return a String representation of this component.
@@ -425,9 +382,7 @@ public final class StandardService
 
     }
 
-
     // ------------------------------------------------------ Lifecycle Methods
-
 
     /**
      * Add a LifecycleEvent listener to this component.
@@ -440,9 +395,8 @@ public final class StandardService
 
     }
 
-
     /**
-     * Get the lifecycle listeners associated with this lifecycle. If this 
+     * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
      */
     public LifecycleListener[] findLifecycleListeners() {
@@ -450,7 +404,6 @@ public final class StandardService
         return lifecycle.findLifecycleListeners();
 
     }
-
 
     /**
      * Remove a LifecycleEvent listener from this component.
@@ -463,29 +416,29 @@ public final class StandardService
 
     }
 
-
     /**
      * Prepare for the beginning of active use of the public methods of this
-     * component.  This method should be called before any of the public
-     * methods of this component are utilized.  It should also send a
+     * component. This method should be called before any of the public
+     * methods of this component are utilized. It should also send a
      * LifecycleEvent of type START_EVENT to any registered listeners.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     public void start() throws LifecycleException {
 
         // Validate and update our current component state
         if (started) {
-            throw new LifecycleException
-                (sm.getString("standardService.start.started"));
+            throw new LifecycleException(sm.getString(
+                    "standardService.start.started"));
         }
 
         // Notify our interested LifecycleListeners
         lifecycle.fireLifecycleEvent(BEFORE_START_EVENT, null);
 
-        System.out.println
-            (sm.getString("standardService.start.name", this.name));
+        System.out.println(sm.getString("standardService.start.name",
+                this.name));
         lifecycle.fireLifecycleEvent(START_EVENT, null);
         started = true;
 
@@ -511,22 +464,21 @@ public final class StandardService
 
     }
 
-
     /**
      * Gracefully terminate the active use of the public methods of this
-     * component.  This method should be the last one called on a given
-     * instance of this component.  It should also send a LifecycleEvent
+     * component. This method should be the last one called on a given
+     * instance of this component. It should also send a LifecycleEvent
      * of type STOP_EVENT to any registered listeners.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that needs to be reported
+     *                               that needs to be reported
      */
     public void stop() throws LifecycleException {
 
         // Validate and update our current component state
         if (!started) {
-            throw new LifecycleException
-                (sm.getString("standardService.stop.notStarted"));
+            throw new LifecycleException(sm.getString(
+                    "standardService.stop.notStarted"));
         }
 
         // Notify our interested LifecycleListeners
@@ -534,8 +486,8 @@ public final class StandardService
 
         lifecycle.fireLifecycleEvent(STOP_EVENT, null);
 
-        System.out.println
-            (sm.getString("standardService.stop.name", this.name));
+        System.out.println(sm.getString("standardService.stop.name",
+                this.name));
         started = false;
 
         // Stop our defined Connectors first
@@ -560,23 +512,21 @@ public final class StandardService
 
     }
 
-
     /**
      * Invoke a pre-startup initialization. This is used to allow connectors
      * to bind to restricted ports under Unix operating environments.
      */
-    public void initialize()
-    throws LifecycleException {
+    public void initialize() throws LifecycleException {
         if (initialized)
-            throw new LifecycleException (
-                sm.getString("standardService.initialize.initialized"));
+            throw new LifecycleException(sm.getString(
+                    "standardService.initialize.initialized"));
         initialized = true;
 
         // Initialize our defined Connectors
         synchronized (connectors) {
-                for (int i = 0; i < connectors.length; i++) {
-                    connectors[i].initialize();
-                }
+            for (int i = 0; i < connectors.length; i++) {
+                connectors[i].initialize();
+            }
         }
     }
 

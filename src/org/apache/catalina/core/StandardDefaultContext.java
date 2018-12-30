@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/core/StandardDefaultContext.java,v 1.8 2002/09/19 22:55:48 amyroh Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/core/
+ * StandardDefaultContext.java,v 1.8 2002/09/19 22:55:48 amyroh Exp $
  * $Revision: 1.8 $
  * $Date: 2002/09/19 22:55:48 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,16 +43,12 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
-
 
 package org.apache.catalina.core;
 
@@ -89,7 +77,7 @@ import org.apache.catalina.util.StringManager;
 
 /**
  * Used to store the default configuration a Host will use
- * when creating a Context.  A Context configured in server.xml
+ * when creating a Context. A Context configured in server.xml
  * can override these defaults by setting the Context attribute
  * <CODE>override="true"</CODE>.
  *
@@ -97,12 +85,10 @@ import org.apache.catalina.util.StringManager;
  * @version $Revision: 1.8 $ $Date: 2002/09/19 22:55:48 $
  */
 
-public class StandardDefaultContext 
-    implements DefaultContext, LifecycleListener {
-
+public class StandardDefaultContext implements DefaultContext,
+        LifecycleListener {
 
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Create the DefaultContext
@@ -113,15 +99,12 @@ public class StandardDefaultContext
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Contexts we are currently associated with.
      */
     private Hashtable contexts = new Hashtable();
-
 
     /**
      * The set of application listener class names configured for this
@@ -129,19 +112,15 @@ public class StandardDefaultContext
      */
     private String applicationListeners[] = new String[0];
 
-
     /**
      * The set of application parameters defined for this application.
      */
-    private ApplicationParameter applicationParameters[] =
-        new ApplicationParameter[0];
-
+    private ApplicationParameter applicationParameters[] = new ApplicationParameter[0];
 
     /**
      * Should we attempt to use cookies for session id communication?
      */
     private boolean cookies = true;
-
 
     /**
      * Should we allow the <code>ServletContext.getContext()</code> method
@@ -149,13 +128,10 @@ public class StandardDefaultContext
      */
     private boolean crossContext = true;
 
-
     /**
      * The descriptive information string for this implementation.
      */
-    private static final String info =
-        "org.apache.catalina.core.DefaultContext/1.0";
-
+    private static final String info = "org.apache.catalina.core.DefaultContext/1.0";
 
     /**
      * The set of classnames of InstanceListeners that will be added
@@ -163,19 +139,15 @@ public class StandardDefaultContext
      */
     private String instanceListeners[] = new String[0];
 
-
     /**
      * The Java class name of the default Mapper class for this Container.
      */
-    private String mapperClass =
-        "org.apache.catalina.core.StandardContextMapper";
-
+    private String mapperClass = "org.apache.catalina.core.StandardContextMapper";
 
     /**
      * The associated naming resources.
      */
     private NamingResources namingResources = new NamingResources();
-
 
     /**
      * The context initialization parameters for this web application,
@@ -183,18 +155,15 @@ public class StandardDefaultContext
      */
     private HashMap parameters = new HashMap();
 
-
     /**
      * The reloadable flag for this web application.
      */
     private boolean reloadable = false;
 
-
     /**
      * The swallowOutput flag for this web application.
      */
     private boolean swallowOutput = false;
-
 
     /**
      * The set of classnames of LifecycleListeners that will be added
@@ -202,25 +171,21 @@ public class StandardDefaultContext
      */
     private String wrapperLifecycles[] = new String[0];
 
-
     /**
      * The set of classnames of ContainerListeners that will be added
      * to each newly created Wrapper by <code>createWrapper()</code>.
      */
     private String wrapperListeners[] = new String[0];
 
-
     /**
      * Java class name of the Wrapper class implementation we use.
      */
     private String wrapperClass = "org.apache.catalina.core.StandardWrapper";
 
-
     /**
      * JNDI use flag.
      */
     private boolean useNaming = true;
-
 
     /**
      * The resources DirContext object with which this Container is
@@ -229,46 +194,38 @@ public class StandardDefaultContext
      */
     DirContext dirContext = null;
 
-
     /**
      * The human-readable name of this Container.
      */
     protected String name = "defaultContext";
-
 
     /**
      * The parent Container to which this Container is a child.
      */
     protected Container parent = null;
 
-
     /**
      * The Loader implementation with which this Container is associated.
      */
     protected Loader loader = null;
-
 
     /**
      * The Manager implementation with which this Container is associated.
      */
     protected Manager manager = null;
 
-
     /**
      * The string manager for this package.
      */
-    protected static StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected static StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The property change support for this component.
      */
     protected PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-
     // ----------------------------------------------------- Context Properties
-
 
     /**
      * Returns true if the internal naming support is used.
@@ -279,14 +236,12 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Enables or disables naming.
      */
     public void setUseNaming(boolean useNaming) {
         this.useNaming = useNaming;
     }
-
 
     /**
      * Return the "use cookies for session ids" flag.
@@ -296,7 +251,6 @@ public class StandardDefaultContext
         return (this.cookies);
 
     }
-
 
     /**
      * Set the "use cookies for session ids" flag.
@@ -309,7 +263,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the "allow crossing servlet contexts" flag.
      */
@@ -318,7 +271,6 @@ public class StandardDefaultContext
         return (this.crossContext);
 
     }
-
 
     /**
      * Set the "allow crossing servlet contexts" flag.
@@ -331,7 +283,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return descriptive information about this Container implementation and
      * the corresponding version number, in the format
@@ -343,7 +294,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the reloadable flag for this web application.
      */
@@ -352,7 +302,6 @@ public class StandardDefaultContext
         return (this.reloadable);
 
     }
-
 
     /**
      * Set the reloadable flag for this web application.
@@ -365,7 +314,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the swallowOutput flag for this web application.
      */
@@ -374,7 +322,6 @@ public class StandardDefaultContext
         return (this.swallowOutput);
 
     }
-
 
     /**
      * Set the swallowOutput flag for this web application.
@@ -387,7 +334,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the Java class name of the Wrapper implementation used
      * for servlets registered in this Context.
@@ -397,7 +343,6 @@ public class StandardDefaultContext
         return (this.wrapperClass);
 
     }
-
 
     /**
      * Set the Java class name of the Wrapper implementation used
@@ -409,7 +354,6 @@ public class StandardDefaultContext
         this.wrapperClass = wrapperClass;
 
     }
-
 
     /**
      * Set the resources DirContext object with which this Container is
@@ -434,9 +378,8 @@ public class StandardDefaultContext
 
     }
 
-
     /**
-     * Return the Loader with which this Container is associated.  If there is
+     * Return the Loader with which this Container is associated. If there is
      * no associated Loader return <code>null</code>.
      */
     public Loader getLoader() {
@@ -444,7 +387,6 @@ public class StandardDefaultContext
         return loader;
 
     }
-
 
     /**
      * Set the Loader with which this Context is associated.
@@ -454,14 +396,13 @@ public class StandardDefaultContext
     public void setLoader(Loader loader) {
         Loader oldLoader = this.loader;
         this.loader = loader;
-        
+
         // Report this property change to interested listeners
         support.firePropertyChange("loader", oldLoader, this.loader);
     }
 
-
     /**
-     * Return the Manager with which this Container is associated.  If there is
+     * Return the Manager with which this Container is associated. If there is
      * no associated Manager return <code>null</code>.
      */
     public Manager getManager() {
@@ -469,7 +410,6 @@ public class StandardDefaultContext
         return manager;
 
     }
-
 
     /**
      * Set the Manager with which this Container is associated.
@@ -479,11 +419,10 @@ public class StandardDefaultContext
     public void setManager(Manager manager) {
         Manager oldManager = this.manager;
         this.manager = manager;
-        
+
         // Report this property change to interested listeners
         support.firePropertyChange("manager", oldManager, this.manager);
     }
-
 
     // ------------------------------------------------------ Public Properties
 
@@ -499,10 +438,9 @@ public class StandardDefaultContext
         this.name = name;
     }
 
-
     /**
      * Return the Container for which this Container is a child, if there is
-     * one.  If there is no defined parent, return <code>null</code>.
+     * one. If there is no defined parent, return <code>null</code>.
      */
     public Container getParent() {
 
@@ -510,17 +448,16 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Set the parent Container to which this Container is being added as a
-     * child.  This Container may refuse to become attached to the specified
+     * child. This Container may refuse to become attached to the specified
      * Container by throwing an exception.
      *
      * @param container Container to which this Container is being added
-     *  as a child
+     *                  as a child
      *
      * @exception IllegalArgumentException if this Container refuses to become
-     *  attached to the specified Container
+     *                                     attached to the specified Container
      */
     public void setParent(Container container) {
         Container oldParent = this.parent;
@@ -531,7 +468,6 @@ public class StandardDefaultContext
 
     // -------------------------------------------------------- Context Methods
 
-
     /**
      * Add a new Listener class name to the set of Listeners
      * configured for this application.
@@ -541,7 +477,7 @@ public class StandardDefaultContext
     public void addApplicationListener(String listener) {
 
         synchronized (applicationListeners) {
-            String results[] =new String[applicationListeners.length + 1];
+            String results[] = new String[applicationListeners.length + 1];
             for (int i = 0; i < applicationListeners.length; i++)
                 results[i] = applicationListeners[i];
             results[applicationListeners.length] = listener;
@@ -549,7 +485,6 @@ public class StandardDefaultContext
         }
 
     }
-
 
     /**
      * Add a new application parameter for this application.
@@ -559,16 +494,15 @@ public class StandardDefaultContext
     public void addApplicationParameter(ApplicationParameter parameter) {
 
         synchronized (applicationParameters) {
-            ApplicationParameter results[] =
-                new ApplicationParameter[applicationParameters.length + 1];
+            ApplicationParameter results[] = new ApplicationParameter[applicationParameters.length
+                    + 1];
             System.arraycopy(applicationParameters, 0, results, 0,
-                             applicationParameters.length);
+                    applicationParameters.length);
             results[applicationParameters.length] = parameter;
             applicationParameters = results;
         }
 
     }
-
 
     /**
      * Add an EJB resource reference for this web application.
@@ -581,7 +515,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Add an environment entry for this web application.
      *
@@ -592,7 +525,6 @@ public class StandardDefaultContext
         namingResources.addEnvironment(environment);
 
     }
-
 
     /**
      * Add resource parameters for this web application.
@@ -605,7 +537,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Add the classname of an InstanceListener to be added to each
      * Wrapper appended to this Context.
@@ -615,7 +546,7 @@ public class StandardDefaultContext
     public void addInstanceListener(String listener) {
 
         synchronized (instanceListeners) {
-            String results[] =new String[instanceListeners.length + 1];
+            String results[] = new String[instanceListeners.length + 1];
             for (int i = 0; i < instanceListeners.length; i++)
                 results[i] = instanceListeners[i];
             results[instanceListeners.length] = listener;
@@ -624,26 +555,26 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Add a new context initialization parameter, replacing any existing
      * value for the specified name.
      *
-     * @param name Name of the new parameter
-     * @param value Value of the new  parameter
+     * @param name  Name of the new parameter
+     * @param value Value of the new parameter
      *
      * @exception IllegalArgumentException if the name or value is missing,
-     *  or if this context initialization parameter has already been
-     *  registered
+     *                                     or if this context initialization
+     *                                     parameter has already been
+     *                                     registered
      */
     public void addParameter(String name, String value) {
         // Validate the proposed context initialization parameter
         if ((name == null) || (value == null))
-            throw new IllegalArgumentException
-                (sm.getString("standardContext.parameter.required"));
+            throw new IllegalArgumentException(sm.getString(
+                    "standardContext.parameter.required"));
         if (parameters.get(name) != null)
-            throw new IllegalArgumentException
-                (sm.getString("standardContext.parameter.duplicate", name));
+            throw new IllegalArgumentException(sm.getString(
+                    "standardContext.parameter.duplicate", name));
 
         // Add this parameter to our defined set
         synchronized (parameters) {
@@ -651,8 +582,7 @@ public class StandardDefaultContext
         }
 
     }
-    
-    
+
     /**
      * Add a property change listener to this component.
      *
@@ -664,7 +594,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Add a resource reference for this web application.
      *
@@ -675,7 +604,6 @@ public class StandardDefaultContext
         namingResources.addResource(resource);
 
     }
-
 
     /**
      * Add a resource environment reference for this web application.
@@ -689,7 +617,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Add a resource link for this web application.
      *
@@ -701,7 +628,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Add the classname of a LifecycleListener to be added to each
      * Wrapper appended to this Context.
@@ -711,7 +637,7 @@ public class StandardDefaultContext
     public void addWrapperLifecycle(String listener) {
 
         synchronized (wrapperLifecycles) {
-            String results[] =new String[wrapperLifecycles.length + 1];
+            String results[] = new String[wrapperLifecycles.length + 1];
             for (int i = 0; i < wrapperLifecycles.length; i++)
                 results[i] = wrapperLifecycles[i];
             results[wrapperLifecycles.length] = listener;
@@ -719,7 +645,6 @@ public class StandardDefaultContext
         }
 
     }
-
 
     /**
      * Add the classname of a ContainerListener to be added to each
@@ -730,7 +655,7 @@ public class StandardDefaultContext
     public void addWrapperListener(String listener) {
 
         synchronized (wrapperListeners) {
-            String results[] =new String[wrapperListeners.length + 1];
+            String results[] = new String[wrapperListeners.length + 1];
             for (int i = 0; i < wrapperListeners.length; i++)
                 results[i] = wrapperListeners[i];
             results[wrapperListeners.length] = listener;
@@ -738,7 +663,6 @@ public class StandardDefaultContext
         }
 
     }
-
 
     /**
      * Return the set of application listener class names configured
@@ -750,7 +674,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the set of application parameters for this application.
      */
@@ -759,7 +682,6 @@ public class StandardDefaultContext
         return (applicationParameters);
 
     }
-
 
     /**
      * Return the EJB resource reference with the specified name, if any;
@@ -773,7 +695,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the defined EJB resource references for this application.
      * If there are none, a zero-length array is returned.
@@ -783,7 +704,6 @@ public class StandardDefaultContext
         return namingResources.findEjbs();
 
     }
-
 
     /**
      * Return the environment entry with the specified name, if any;
@@ -797,10 +717,9 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the set of defined environment entries for this web
-     * application.  If none have been defined, a zero-length array
+     * application. If none have been defined, a zero-length array
      * is returned.
      */
     public ContextEnvironment[] findEnvironments() {
@@ -809,10 +728,9 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the set of defined resource parameters for this web
-     * application.  If none have been defined, a zero-length array
+     * application. If none have been defined, a zero-length array
      * is returned.
      */
     public ResourceParams[] findResourceParams() {
@@ -820,7 +738,6 @@ public class StandardDefaultContext
         return namingResources.findResourceParams();
 
     }
-
 
     /**
      * Return the set of InstanceListener classes that will be added to
@@ -831,7 +748,6 @@ public class StandardDefaultContext
         return (instanceListeners);
 
     }
-
 
     /**
      * Return the value for the specified context initialization
@@ -847,10 +763,9 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the names of all defined context initialization parameters
-     * for this Context.  If no parameters are defined, a zero-length
+     * for this Context. If no parameters are defined, a zero-length
      * array is returned.
      */
     public String[] findParameters() {
@@ -861,7 +776,6 @@ public class StandardDefaultContext
         }
 
     }
-
 
     /**
      * Return the resource reference with the specified name, if any;
@@ -875,7 +789,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the resource environment reference type for the specified
      * name, if any; otherwise return <code>null</code>.
@@ -888,10 +801,9 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the set of resource environment reference names for this
-     * web application.  If none have been specified, a zero-length
+     * web application. If none have been specified, a zero-length
      * array is returned.
      */
     public String[] findResourceEnvRefs() {
@@ -899,7 +811,6 @@ public class StandardDefaultContext
         return namingResources.findResourceEnvRefs();
 
     }
-
 
     /**
      * Return the resource link with the specified name, if any;
@@ -913,9 +824,8 @@ public class StandardDefaultContext
 
     }
 
-
     /**
-     * Return the defined resource links for this application.  If
+     * Return the defined resource links for this application. If
      * none have been defined, a zero-length array is returned.
      */
     public ContextResourceLink[] findResourceLinks() {
@@ -924,9 +834,8 @@ public class StandardDefaultContext
 
     }
 
-
     /**
-     * Return the defined resource references for this application.  If
+     * Return the defined resource references for this application. If
      * none have been defined, a zero-length array is returned.
      */
     public ContextResource[] findResources() {
@@ -934,7 +843,6 @@ public class StandardDefaultContext
         return namingResources.findResources();
 
     }
-
 
     /**
      * Return the set of LifecycleListener classes that will be added to
@@ -946,7 +854,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the set of ContainerListener classes that will be added to
      * newly created Wrappers automatically.
@@ -957,7 +864,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Return the naming resources associated with this web application.
      */
@@ -966,7 +872,6 @@ public class StandardDefaultContext
         return (this.namingResources);
 
     }
-
 
     /**
      * Remove the specified application listener class from the set of
@@ -1000,9 +905,7 @@ public class StandardDefaultContext
 
         }
 
-
     }
-
 
     /**
      * Remove the application parameter with the specified name from
@@ -1027,8 +930,8 @@ public class StandardDefaultContext
 
             // Remove the specified parameter
             int j = 0;
-            ApplicationParameter results[] =
-                new ApplicationParameter[applicationParameters.length - 1];
+            ApplicationParameter results[] = new ApplicationParameter[applicationParameters.length
+                    - 1];
             for (int i = 0; i < applicationParameters.length; i++) {
                 if (i != n)
                     results[j++] = applicationParameters[i];
@@ -1038,7 +941,6 @@ public class StandardDefaultContext
         }
 
     }
-
 
     /**
      * Remove any EJB resource reference with the specified name.
@@ -1051,7 +953,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Remove any environment entry with the specified name.
      *
@@ -1062,7 +963,6 @@ public class StandardDefaultContext
         namingResources.removeEnvironment(name);
 
     }
-
 
     /**
      * Remove a class name from the set of InstanceListener classes that
@@ -1098,7 +998,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Remove the context initialization parameter with the specified
      * name, if it exists; otherwise, no action is taken.
@@ -1112,8 +1011,7 @@ public class StandardDefaultContext
         }
 
     }
-    
-    
+
     /**
      * Remove a property change listener from this component.
      *
@@ -1124,7 +1022,6 @@ public class StandardDefaultContext
         support.removePropertyChangeListener(listener);
 
     }
-
 
     /**
      * Remove any resource reference with the specified name.
@@ -1137,7 +1034,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Remove any resource environment reference with the specified name.
      *
@@ -1148,7 +1044,6 @@ public class StandardDefaultContext
         namingResources.removeResourceEnvRef(name);
 
     }
-
 
     /**
      * Remove any resource link with the specified name.
@@ -1161,7 +1056,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Remove a class name from the set of LifecycleListener classes that
      * will be added to newly created Wrappers.
@@ -1169,7 +1063,6 @@ public class StandardDefaultContext
      * @param listener Class name of a LifecycleListener class to be removed
      */
     public void removeWrapperLifecycle(String listener) {
-
 
         synchronized (wrapperLifecycles) {
 
@@ -1197,7 +1090,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Remove a class name from the set of ContainerListener classes that
      * will be added to newly created Wrappers.
@@ -1205,7 +1097,6 @@ public class StandardDefaultContext
      * @param listener Class name of a ContainerListener class to be removed
      */
     public void removeWrapperListener(String listener) {
-
 
         synchronized (wrapperListeners) {
 
@@ -1233,9 +1124,7 @@ public class StandardDefaultContext
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Process the START event for an associated Context.
@@ -1274,7 +1163,7 @@ public class StandardDefaultContext
 
             // Send notifications to the listener to add the appropriate 
             // resources
-            ContextEjb [] contextEjb = findEjbs();
+            ContextEjb[] contextEjb = findEjbs();
             for (int i = 0; i < contextEjb.length; i++) {
                 ContextEjb contextEntry = contextEjb[i];
                 if (contextResources.exists(contextEntry.getName())) {
@@ -1282,7 +1171,7 @@ public class StandardDefaultContext
                 }
                 listener.addEjb(contextEntry);
             }
-            ContextEnvironment [] contextEnv = findEnvironments();
+            ContextEnvironment[] contextEnv = findEnvironments();
             for (int i = 0; i < contextEnv.length; i++) {
                 ContextEnvironment contextEntry = contextEnv[i];
                 if (contextResources.exists(contextEntry.getName())) {
@@ -1290,7 +1179,7 @@ public class StandardDefaultContext
                 }
                 listener.addEnvironment(contextEntry);
             }
-            ContextResource [] resources = findResources();
+            ContextResource[] resources = findResources();
             for (int i = 0; i < resources.length; i++) {
                 ContextResource contextEntry = resources[i];
                 if (contextResources.exists(contextEntry.getName())) {
@@ -1298,13 +1187,13 @@ public class StandardDefaultContext
                 }
                 listener.addResource(contextEntry);
             }
-            String [] envRefs = findResourceEnvRefs();
+            String[] envRefs = findResourceEnvRefs();
             for (int i = 0; i < envRefs.length; i++) {
                 if (contextResources.exists(envRefs[i])) {
                     listener.removeResourceEnvRef(envRefs[i]);
                 }
-                listener.addResourceEnvRef
-                    (envRefs[i], findResourceEnvRef(envRefs[i]));
+                listener.addResourceEnvRef(envRefs[i], findResourceEnvRef(
+                        envRefs[i]));
             }
 
             // Setting the context in read only mode
@@ -1328,7 +1217,6 @@ public class StandardDefaultContext
 
     }
 
-
     /**
      * Import the configuration from the DefaultContext into
      * current Context.
@@ -1338,8 +1226,8 @@ public class StandardDefaultContext
     public void importDefaultContext(Context context) {
 
         if (context instanceof StandardContext) {
-            ((StandardContext)context).setUseNaming(isUseNaming());
-            ((StandardContext)context).setSwallowOutput(getSwallowOutput());
+            ((StandardContext) context).setUseNaming(isUseNaming());
+            ((StandardContext) context).setSwallowOutput(getSwallowOutput());
             if (!contexts.containsKey(context)) {
                 ((StandardContext) context).addLifecycleListener(this);
             }
@@ -1349,57 +1237,57 @@ public class StandardDefaultContext
         context.setCrossContext(getCrossContext());
         context.setReloadable(getReloadable());
 
-        String [] listeners = findApplicationListeners();
-        for( int i = 0; i < listeners.length; i++ ) {
+        String[] listeners = findApplicationListeners();
+        for (int i = 0; i < listeners.length; i++) {
             context.addApplicationListener(listeners[i]);
         }
         listeners = findInstanceListeners();
-        for( int i = 0; i < listeners.length; i++ ) {
+        for (int i = 0; i < listeners.length; i++) {
             context.addInstanceListener(listeners[i]);
         }
-        String [] wrapper = findWrapperListeners();
-        for( int i = 0; i < wrapper.length; i++ ) {
+        String[] wrapper = findWrapperListeners();
+        for (int i = 0; i < wrapper.length; i++) {
             context.addWrapperListener(wrapper[i]);
         }
         wrapper = findWrapperLifecycles();
-        for( int i = 0; i < wrapper.length; i++ ) {
+        for (int i = 0; i < wrapper.length; i++) {
             context.addWrapperLifecycle(wrapper[i]);
         }
-        String [] parameters = findParameters();
-        for( int i = 0; i < parameters.length; i++ ) {
-            context.addParameter(parameters[i],findParameter(parameters[i]));
+        String[] parameters = findParameters();
+        for (int i = 0; i < parameters.length; i++) {
+            context.addParameter(parameters[i], findParameter(parameters[i]));
         }
-        ApplicationParameter [] appParam = findApplicationParameters();
-        for( int i = 0; i < appParam.length; i++ ) {
+        ApplicationParameter[] appParam = findApplicationParameters();
+        for (int i = 0; i < appParam.length; i++) {
             context.addApplicationParameter(appParam[i]);
         }
 
         if (!(context instanceof StandardContext)) {
-            ContextEjb [] contextEjb = findEjbs();
-            for( int i = 0; i < contextEjb.length; i++ ) {
+            ContextEjb[] contextEjb = findEjbs();
+            for (int i = 0; i < contextEjb.length; i++) {
                 context.addEjb(contextEjb[i]);
             }
-            ContextEnvironment [] contextEnv = findEnvironments();
-            for( int i = 0; i < contextEnv.length; i++ ) {
+            ContextEnvironment[] contextEnv = findEnvironments();
+            for (int i = 0; i < contextEnv.length; i++) {
                 context.addEnvironment(contextEnv[i]);
             }
             /*
-            if (context instanceof StandardContext) {
-                ResourceParams [] resourceParams = findResourceParams();
-                for( int i = 0; i < resourceParams.length; i++ ) {
-                    ((StandardContext)context).addResourceParams
-                        (resourceParams[i]);
-                }
-            }
-            */
-            ContextResource [] resources = findResources();
-            for( int i = 0; i < resources.length; i++ ) {
+             * if (context instanceof StandardContext) {
+             * ResourceParams [] resourceParams = findResourceParams();
+             * for( int i = 0; i < resourceParams.length; i++ ) {
+             * ((StandardContext)context).addResourceParams
+             * (resourceParams[i]);
+             * }
+             * }
+             */
+            ContextResource[] resources = findResources();
+            for (int i = 0; i < resources.length; i++) {
                 context.addResource(resources[i]);
             }
-            String [] envRefs = findResourceEnvRefs();
-            for( int i = 0; i < envRefs.length; i++ ) {
-                context.addResourceEnvRef
-                    (envRefs[i],findResourceEnvRef(envRefs[i]));
+            String[] envRefs = findResourceEnvRefs();
+            for (int i = 0; i < envRefs.length; i++) {
+                context.addResourceEnvRef(envRefs[i], findResourceEnvRef(
+                        envRefs[i]));
             }
         }
 
@@ -1420,6 +1308,5 @@ public class StandardDefaultContext
         return (sb.toString());
 
     }
-
 
 }

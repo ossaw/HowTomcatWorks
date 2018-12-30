@@ -11,25 +11,23 @@ import org.apache.catalina.connector.RequestStream;
  */
 public class HttpRequestStream extends RequestStream {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a servlet input stream associated with the specified Request.
      *
-     * @param request The associated request
+     * @param request  The associated request
      * @param response The associated response
      */
     public HttpRequestStream(HttpRequestImpl request,
-                             HttpResponseImpl response) {
+            HttpResponseImpl response) {
 
         super(request);
         String transferEncoding = request.getHeader("Transfer-Encoding");
 
         http11 = request.getProtocol().equals("HTTP/1.1");
-        chunk = ((transferEncoding != null)
-                 && (transferEncoding.indexOf("chunked") != -1));
+        chunk = ((transferEncoding != null) && (transferEncoding.indexOf(
+                "chunked") != -1));
 
         if ((!chunk) && (length == -1)) {
             // Ask for connection close
@@ -38,57 +36,47 @@ public class HttpRequestStream extends RequestStream {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Use chunking ?
      */
     protected boolean chunk = false;
 
-
     /**
      * True if the final chunk was found.
      */
     protected boolean endChunk = false;
-
 
     /**
      * Chunk buffer.
      */
     protected byte[] chunkBuffer = null;
 
-
     /**
      * Chunk length.
      */
     protected int chunkLength = 0;
-
 
     /**
      * Chunk buffer position.
      */
     protected int chunkPos = 0;
 
-
     /**
      * HTTP/1.1 flag.
      */
     protected boolean http11 = false;
 
-
     // --------------------------------------------------------- Public Methods
 
-
     /**
-     * Close this input stream.  No physical level I-O is performed, but
+     * Close this input stream. No physical level I-O is performed, but
      * any further attempt to read from this stream will throw an IOException.
      * If a content length has been set but not all of the bytes have yet been
      * consumed, the remaining bytes will be swallowed.
      */
-    public void close()
-        throws IOException {
+    public void close() throws IOException {
 
         if (closed)
             throw new IOException(sm.getString("requestStream.close.closed"));
@@ -117,15 +105,13 @@ public class HttpRequestStream extends RequestStream {
 
     }
 
-
     /**
      * Read and return a single byte from this input stream, or -1 if end of
      * file has been encountered.
      *
      * @exception IOException if an input/output error occurs
      */
-    public int read()
-        throws IOException {
+    public int read() throws IOException {
 
         // Has this stream been closed?
         if (closed)
@@ -136,8 +122,7 @@ public class HttpRequestStream extends RequestStream {
             if (endChunk)
                 return (-1);
 
-            if ((chunkBuffer == null)
-                || (chunkPos >= chunkLength)) {
+            if ((chunkBuffer == null) || (chunkPos >= chunkLength)) {
                 if (!fillChunkBuffer())
                     return (-1);
             }
@@ -152,18 +137,17 @@ public class HttpRequestStream extends RequestStream {
 
     }
 
-
     /**
      * Read up to <code>len</code> bytes of data from the input stream
-     * into an array of bytes.  An attempt is made to read as many as
+     * into an array of bytes. An attempt is made to read as many as
      * <code>len</code> bytes, but a smaller number may be read,
-     * possibly zero.  The number of bytes actually read is returned as
-     * an integer.  This method blocks until input data is available,
+     * possibly zero. The number of bytes actually read is returned as
+     * an integer. This method blocks until input data is available,
      * end of file is detected, or an exception is thrown.
      *
-     * @param b The buffer into which the data is read
+     * @param b   The buffer into which the data is read
      * @param off The start offset into array <code>b</code> at which
-     *  the data is written
+     *            the data is written
      * @param len The maximum number of bytes to read
      *
      * @exception IOException if an input/output error occurs
@@ -190,15 +174,12 @@ public class HttpRequestStream extends RequestStream {
         }
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Fill the chunk buffer.
      */
-    private synchronized boolean fillChunkBuffer()
-        throws IOException {
+    private synchronized boolean fillChunkBuffer() throws IOException {
 
         chunkPos = 0;
 
@@ -206,8 +187,7 @@ public class HttpRequestStream extends RequestStream {
             String numberValue = readLineFromStream();
             if (numberValue != null)
                 numberValue = numberValue.trim();
-            chunkLength =
-                Integer.parseInt(numberValue, 16);
+            chunkLength = Integer.parseInt(numberValue, 16);
         } catch (NumberFormatException e) {
             // Critical error, unable to parse the chunk length
             chunkLength = 0;
@@ -228,8 +208,7 @@ public class HttpRequestStream extends RequestStream {
 
         } else {
 
-            if ((chunkBuffer == null)
-                || (chunkLength > chunkBuffer.length))
+            if ((chunkBuffer == null) || (chunkLength > chunkBuffer.length))
                 chunkBuffer = new byte[chunkLength];
 
             // Now read the whole chunk into the buffer
@@ -239,16 +218,15 @@ public class HttpRequestStream extends RequestStream {
 
             while (nbRead < chunkLength) {
                 try {
-                    currentRead =
-                        stream.read(chunkBuffer, nbRead,
-                                    chunkLength - nbRead);
+                    currentRead = stream.read(chunkBuffer, nbRead, chunkLength
+                            - nbRead);
                 } catch (Throwable t) {
                     t.printStackTrace();
                     throw new IOException();
                 }
                 if (currentRead < 0) {
-                    throw new IOException
-                        (sm.getString("requestStream.read.error"));
+                    throw new IOException(sm.getString(
+                            "requestStream.read.error"));
                 }
                 nbRead += currentRead;
             }
@@ -262,7 +240,6 @@ public class HttpRequestStream extends RequestStream {
 
     }
 
-
     /**
      * Reads the input stream, one line at a time. Reads bytes into an array,
      * until it reads a certain number of bytes or reaches a newline character,
@@ -270,11 +247,10 @@ public class HttpRequestStream extends RequestStream {
      *
      * @param input Input stream on which the bytes are read
      * @return The line that was read, or <code>null</code> if end-of-file
-     *  was encountered
-     * @exception IOException   if an input or output exception has occurred
+     *         was encountered
+     * @exception IOException if an input or output exception has occurred
      */
-    private String readLineFromStream()
-        throws IOException {
+    private String readLineFromStream() throws IOException {
 
         StringBuffer sb = new StringBuffer();
         while (true) {
@@ -295,6 +271,5 @@ public class HttpRequestStream extends RequestStream {
         return (sb.toString());
 
     }
-
 
 }

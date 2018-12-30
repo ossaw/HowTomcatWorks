@@ -1,12 +1,10 @@
 package org.apache.catalina.connector.http;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.catalina.connector.HttpResponseBase;
-
 
 /**
  * Implementation of <b>HttpResponse</b> specific to the HTTP connector.
@@ -17,34 +15,26 @@ import org.apache.catalina.connector.HttpResponseBase;
  * @deprecated
  */
 
-final class HttpResponseImpl
-    extends HttpResponseBase {
-
+final class HttpResponseImpl extends HttpResponseBase {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Descriptive information about this Response implementation.
      */
-    protected static final String info =
-        "org.apache.catalina.connector.http.HttpResponseImpl/1.0";
-
+    protected static final String info = "org.apache.catalina.connector.http.HttpResponseImpl/1.0";
 
     /**
      * True if chunking is allowed.
      */
     protected boolean allowChunking;
 
-
     /**
      * Associated HTTP response stream.
      */
     protected HttpResponseStream responseStream;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return descriptive information about this Response implementation and
@@ -57,7 +47,6 @@ final class HttpResponseImpl
 
     }
 
-
     /**
      * Set the chunking flag.
      */
@@ -65,14 +54,12 @@ final class HttpResponseImpl
         this.allowChunking = allowChunking;
     }
 
-
     /**
      * True if chunking is allowed.
      */
     public boolean isChunkingAllowed() {
         return allowChunking;
     }
-
 
     // ------------------------------------------------------ Protected Methods
 
@@ -83,9 +70,8 @@ final class HttpResponseImpl
      * @return The &quot;HTTP/1.1&quot; string.
      */
     protected String getProtocol() {
-        return("HTTP/1.1");
+        return ("HTTP/1.1");
     }
-
 
     // --------------------------------------------------------- Public Methods
 
@@ -101,16 +87,15 @@ final class HttpResponseImpl
 
     }
 
-
     /**
      * Send an error response with the specified status and message.
      *
-     * @param status HTTP status code to send
+     * @param status  HTTP status code to send
      * @param message Corresponding message to send
      *
      * @exception IllegalStateException if this response has
-     *  already been committed
-     * @exception IOException if an input/output error occurs
+     *                                  already been committed
+     * @exception IOException           if an input/output error occurs
      */
     public void sendError(int status, String message) throws IOException {
 
@@ -119,21 +104,18 @@ final class HttpResponseImpl
 
     }
 
-
     /**
-     * Clear any content written to the buffer.  In addition, all cookies
+     * Clear any content written to the buffer. In addition, all cookies
      * and headers are cleared, and the status is reset.
      *
      * @exception IllegalStateException if this response has already
-     *  been committed
+     *                                  been committed
      */
     public void reset() {
 
         // Saving important HTTP/1.1 specific headers
-        String connectionValue =
-            (String) getHeader("Connection");
-        String transferEncodingValue =
-            (String) getHeader("Transfer-Encoding");
+        String connectionValue = (String) getHeader("Connection");
+        String transferEncodingValue = (String) getHeader("Transfer-Encoding");
         super.reset();
         if (connectionValue != null)
             addHeader("Connection", connectionValue);
@@ -141,7 +123,6 @@ final class HttpResponseImpl
             addHeader("Transfer-Encoding", transferEncodingValue);
 
     }
-
 
     /**
      * Create and return a ServletOutputStream to write the content
@@ -156,22 +137,19 @@ final class HttpResponseImpl
 
     }
 
-
     /**
      * Tests is the connection will be closed after the processing of the
      * request.
      */
     public boolean isCloseConnection() {
         String connectionValue = (String) getHeader("Connection");
-        return (connectionValue != null
-                && connectionValue.equals("close"));
+        return (connectionValue != null && connectionValue.equals("close"));
     }
-
 
     /**
      * Removes the specified header.
      *
-     * @param name Name of the header to remove
+     * @param name  Name of the header to remove
      * @param value Value to remove
      */
     public void removeHeader(String name, String value) {
@@ -180,7 +158,7 @@ final class HttpResponseImpl
             return;
 
         if (included)
-            return;     // Ignore any call from an included servlet
+            return; // Ignore any call from an included servlet
 
         synchronized (headers) {
             ArrayList values = (ArrayList) headers.get(name);
@@ -193,14 +171,12 @@ final class HttpResponseImpl
 
     }
 
-
     /**
      * Has stream been created ?
      */
     public boolean isStreamInitialized() {
         return (responseStream != null);
     }
-
 
     /**
      * Perform whatever actions are required to flush and close the output
@@ -212,9 +188,8 @@ final class HttpResponseImpl
 
         if (getStatus() < HttpServletResponse.SC_BAD_REQUEST) {
             if ((!isStreamInitialized()) && (getContentLength() == -1)
-                && (getStatus() >= 200)
-                && (getStatus() != SC_NOT_MODIFIED)
-                && (getStatus() != SC_NO_CONTENT))
+                    && (getStatus() >= 200) && (getStatus() != SC_NOT_MODIFIED)
+                    && (getStatus() != SC_NO_CONTENT))
                 setContentLength(0);
         } else {
             setHeader("Connection", "close");
@@ -223,9 +198,7 @@ final class HttpResponseImpl
 
     }
 
-
     // -------------------------------------------- HttpServletResponse Methods
-
 
     /**
      * Set the HTTP status to be returned with this response.
@@ -241,7 +214,6 @@ final class HttpResponseImpl
 
     }
 
-
     /**
      * Set the content length (in bytes) for this Response.
      *
@@ -253,7 +225,7 @@ final class HttpResponseImpl
             return;
 
         if (included)
-            return;     // Ignore any call from an included servlet
+            return; // Ignore any call from an included servlet
 
         super.setContentLength(length);
 
@@ -261,6 +233,5 @@ final class HttpResponseImpl
             responseStream.checkChunking(this);
 
     }
-
 
 }

@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/servlets/InvokerServlet.java,v 1.16 2002/09/21 16:22:16 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/servlets/
+ * InvokerServlet.java,v 1.16 2002/09/21 16:22:16 remm Exp $
  * $Revision: 1.16 $
  * $Date: 2002/09/21 16:22:16 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +43,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.servlets;
-
 
 import java.io.IOException;
 import javax.servlet.Servlet;
@@ -78,7 +65,6 @@ import org.apache.catalina.Globals;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.util.StringManager;
 
-
 /**
  * The default servlet-invoking servlet for most web applications,
  * used to serve requests to servlets that have not been registered
@@ -88,40 +74,33 @@ import org.apache.catalina.util.StringManager;
  * @version $Revision: 1.16 $ $Date: 2002/09/21 16:22:16 $
  */
 
-public final class InvokerServlet
-    extends HttpServlet implements ContainerServlet {
-
+public final class InvokerServlet extends HttpServlet implements
+        ContainerServlet {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The Context container associated with our web application.
      */
     private Context context = null;
 
-
     /**
      * The debugging detail level for this servlet.
      */
     private int debug = 0;
 
-
     /**
      * The string manager for this package.
      */
-    private static StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    private static StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The Wrapper container associated with this servlet.
      */
     private Wrapper wrapper = null;
 
-
     // ----------------------------------------------- ContainerServlet Methods
-
 
     /**
      * Return the Wrapper with which we are associated.
@@ -131,7 +110,6 @@ public final class InvokerServlet
         return (this.wrapper);
 
     }
-
 
     /**
      * Set the Wrapper with which we are associated.
@@ -148,73 +126,64 @@ public final class InvokerServlet
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Finalize this servlet.
      */
     public void destroy() {
 
-        ;       // No actions necessary
+        ; // No actions necessary
 
     }
-
 
     /**
      * Process a GET request for the specified resource.
      *
-     * @param request The servlet request we are processing
+     * @param request  The servlet request we are processing
      * @param response The servlet response we are creating
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet-specified error occurs
      */
-    public void doGet(HttpServletRequest request,
-                      HttpServletResponse response)
-        throws IOException, ServletException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
 
         serveRequest(request, response);
 
     }
-
 
     /**
      * Process a HEAD request for the specified resource.
      *
-     * @param request The servlet request we are processing
+     * @param request  The servlet request we are processing
      * @param response The servlet response we are creating
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet-specified error occurs
      */
-    public void doHead(HttpServletRequest request,
-                       HttpServletResponse response)
-        throws IOException, ServletException {
+    public void doHead(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
 
         serveRequest(request, response);
 
     }
-
 
     /**
      * Process a POST request for the specified resource.
      *
-     * @param request The servlet request we are processing
+     * @param request  The servlet request we are processing
      * @param response The servlet response we are creating
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet-specified error occurs
      */
-    public void doPost(HttpServletRequest request,
-                       HttpServletResponse response)
-        throws IOException, ServletException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
 
         serveRequest(request, response);
 
     }
-
 
     /**
      * Initialize this servlet.
@@ -223,8 +192,8 @@ public final class InvokerServlet
 
         // Ensure that our ContainerServlet properties have been set
         if ((wrapper == null) || (context == null))
-            throw new UnavailableException
-                (sm.getString("invokerServlet.noWrapper"));
+            throw new UnavailableException(sm.getString(
+                    "invokerServlet.noWrapper"));
 
         // Set our properties from the initialization parameters
         String value = null;
@@ -239,10 +208,7 @@ public final class InvokerServlet
 
     }
 
-
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Serve the specified request, creating the corresponding response.
@@ -250,45 +216,42 @@ public final class InvokerServlet
      * be served directly (like any registered servlet) because it will have
      * been registered and mapped in our associated Context.
      *
-     * @param request The servlet request we are processing
+     * @param request  The servlet request we are processing
      * @param response The servlet response we are creating
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet-specified error occurs
      */
     public void serveRequest(HttpServletRequest request,
-                             HttpServletResponse response)
-        throws IOException, ServletException {
+            HttpServletResponse response) throws IOException, ServletException {
 
         // Disallow calling this servlet via a named dispatcher
         if (request.getAttribute(Globals.NAMED_DISPATCHER_ATTR) != null)
-            throw new ServletException
-                (sm.getString("invokerServlet.notNamed"));
+            throw new ServletException(sm.getString("invokerServlet.notNamed"));
 
         // Identify the input parameters and our "included" state
         String inRequestURI = null;
         String inServletPath = null;
         String inPathInfo = null;
-        boolean included =
-            (request.getAttribute(Globals.REQUEST_URI_ATTR) != null);
+        boolean included = (request.getAttribute(
+                Globals.REQUEST_URI_ATTR) != null);
 
         if (included) {
-            inRequestURI =
-                (String) request.getAttribute(Globals.REQUEST_URI_ATTR);
-            inServletPath =
-                (String) request.getAttribute(Globals.SERVLET_PATH_ATTR);
-            inPathInfo =
-                (String) request.getAttribute(Globals.PATH_INFO_ATTR);
+            inRequestURI = (String) request.getAttribute(
+                    Globals.REQUEST_URI_ATTR);
+            inServletPath = (String) request.getAttribute(
+                    Globals.SERVLET_PATH_ATTR);
+            inPathInfo = (String) request.getAttribute(Globals.PATH_INFO_ATTR);
         } else {
             inRequestURI = request.getRequestURI();
             inServletPath = request.getServletPath();
             inPathInfo = request.getPathInfo();
         }
         if (debug >= 1) {
-            log("included='" + included + "', requestURI='" +
-                inRequestURI + "'");
-            log("  servletPath='" + inServletPath + "', pathInfo='" +
-                inPathInfo + "'");
+            log("included='" + included + "', requestURI='" + inRequestURI
+                    + "'");
+            log("  servletPath='" + inServletPath + "', pathInfo='" + inPathInfo
+                    + "'");
         }
 
         // Make sure a servlet name or class name was specified
@@ -296,11 +259,11 @@ public final class InvokerServlet
             if (debug >= 1)
                 log("Invalid pathInfo '" + inPathInfo + "'");
             if (included)
-                throw new ServletException
-                    (sm.getString("invokerServlet.invalidPath", inRequestURI));
+                throw new ServletException(sm.getString(
+                        "invokerServlet.invalidPath", inRequestURI));
             else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND,
-                                   inRequestURI);
+                        inRequestURI);
                 return;
             }
         }
@@ -320,14 +283,13 @@ public final class InvokerServlet
         }
 
         if (servletClass.startsWith("org.apache.catalina")) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND,
-                               inRequestURI);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, inRequestURI);
             return;
         }
 
         if (debug >= 1)
-            log("Processing servlet '" + servletClass +
-                "' with path info '" + pathInfo + "'");
+            log("Processing servlet '" + servletClass + "' with path info '"
+                    + pathInfo + "'");
         String name = "org.apache.catalina.INVOKER." + servletClass;
         String pattern = inServletPath + "/" + servletClass + "/*";
         Wrapper wrapper = null;
@@ -342,9 +304,8 @@ public final class InvokerServlet
                 wrapper = (Wrapper) context.findChild(name);
             if (wrapper != null) {
                 if (debug >= 1)
-                    log("Using wrapper for servlet '" +
-                        wrapper.getName() + "' with mapping '" +
-                        pattern + "'");
+                    log("Using wrapper for servlet '" + wrapper.getName()
+                            + "' with mapping '" + pattern + "'");
                 context.addServletMapping(pattern, wrapper.getName());
             }
 
@@ -352,8 +313,8 @@ public final class InvokerServlet
             else {
 
                 if (debug >= 1)
-                    log("Creating wrapper for '" + servletClass +
-                        "' with mapping '" + pattern + "'");
+                    log("Creating wrapper for '" + servletClass
+                            + "' with mapping '" + pattern + "'");
 
                 try {
                     wrapper = context.createWrapper();
@@ -364,16 +325,16 @@ public final class InvokerServlet
                     context.addServletMapping(pattern, name);
                 } catch (Throwable t) {
                     log(sm.getString("invokerServlet.cannotCreate",
-                                     inRequestURI), t);
+                            inRequestURI), t);
                     context.removeServletMapping(pattern);
                     context.removeChild(wrapper);
                     if (included)
-                        throw new ServletException
-                            (sm.getString("invokerServlet.cannotCreate",
-                                          inRequestURI), t);
+                        throw new ServletException(sm.getString(
+                                "invokerServlet.cannotCreate", inRequestURI),
+                                t);
                     else {
                         response.sendError(HttpServletResponse.SC_NOT_FOUND,
-                                           inRequestURI);
+                                inRequestURI);
                         return;
                     }
                 }
@@ -382,8 +343,7 @@ public final class InvokerServlet
         }
 
         // Create a request wrapper to pass on to the invoked servlet
-        InvokerHttpRequest wrequest =
-            new InvokerHttpRequest(request);
+        InvokerHttpRequest wrequest = new InvokerHttpRequest(request);
         wrequest.setRequestURI(inRequestURI);
         StringBuffer sb = new StringBuffer(inServletPath);
         sb.append("/");
@@ -394,8 +354,8 @@ public final class InvokerServlet
             wrequest.setPathTranslated(null);
         } else {
             wrequest.setPathInfo(pathInfo);
-            wrequest.setPathTranslated
-                (getServletContext().getRealPath(pathInfo));
+            wrequest.setPathTranslated(getServletContext().getRealPath(
+                    pathInfo));
         }
 
         // Allocate a servlet instance to perform this request
@@ -413,7 +373,7 @@ public final class InvokerServlet
                 rootCause = e;
             if (rootCause instanceof ClassNotFoundException) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND,
-                                   inRequestURI);
+                        inRequestURI);
                 return;
             } else if (rootCause instanceof IOException) {
                 throw (IOException) rootCause;
@@ -422,16 +382,15 @@ public final class InvokerServlet
             } else if (rootCause instanceof ServletException) {
                 throw (ServletException) rootCause;
             } else {
-                throw new ServletException
-                    (sm.getString("invokerServlet.allocate", inRequestURI),
-                     rootCause);
+                throw new ServletException(sm.getString(
+                        "invokerServlet.allocate", inRequestURI), rootCause);
             }
         } catch (Throwable e) {
             log(sm.getString("invokerServlet.allocate", inRequestURI), e);
             context.removeServletMapping(pattern);
             context.removeChild(wrapper);
-            throw new ServletException
-                (sm.getString("invokerServlet.allocate", inRequestURI), e);
+            throw new ServletException(sm.getString("invokerServlet.allocate",
+                    inRequestURI), e);
         }
 
         // After loading the wrapper, restore some of the fields when including
@@ -448,8 +407,8 @@ public final class InvokerServlet
                 request.setAttribute(Globals.JSP_FILE_ATTR, jspFile);
             else
                 request.removeAttribute(Globals.JSP_FILE_ATTR);
-            request.setAttribute(Globals.INVOKED_ATTR,
-                                 request.getServletPath());
+            request.setAttribute(Globals.INVOKED_ATTR, request
+                    .getServletPath());
             //            if (debug >= 2)
             //                log("  Calling service() method, jspFile=" +
             //                    jspFile);
@@ -524,11 +483,10 @@ public final class InvokerServlet
             throw e;
         } catch (Throwable e) {
             log(sm.getString("invokerServlet.deallocate", inRequestURI), e);
-            throw new ServletException
-                (sm.getString("invokerServlet.deallocate", inRequestURI), e);
+            throw new ServletException(sm.getString("invokerServlet.deallocate",
+                    inRequestURI), e);
         }
 
     }
-
 
 }

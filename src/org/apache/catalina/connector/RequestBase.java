@@ -1,6 +1,5 @@
 package org.apache.catalina.connector;
 
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,10 +25,9 @@ import org.apache.catalina.util.Enumerator;
 import org.apache.catalina.util.RequestUtil;
 import org.apache.catalina.util.StringManager;
 
-
 /**
  * Convenience base implementation of the <b>Request</b> interface, which can
- * be used for the Request implementation required by most Connectors.  Only
+ * be used for the Request implementation required by most Connectors. Only
  * the connector-specific methods need to be implemented.
  *
  * @author Craig R. McClanahan
@@ -37,85 +35,69 @@ import org.apache.catalina.util.StringManager;
  * @deprecated
  */
 
-public abstract class RequestBase
-    implements ServletRequest, Request {
-
+public abstract class RequestBase implements ServletRequest, Request {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The attributes associated with this Request, keyed by attribute name.
      */
     protected HashMap attributes = new HashMap();
 
-
     /**
      * The authorization credentials sent with this Request.
      */
     protected String authorization = null;
-
 
     /**
      * The character encoding for this Request.
      */
     protected String characterEncoding = null;
 
-
     /**
      * The Connector through which this Request was received.
      */
     protected Connector connector = null;
-
 
     /**
      * The content length associated with this request.
      */
     protected int contentLength = -1;
 
-
     /**
      * The content type associated with this request.
      */
     protected String contentType = null;
-
 
     /**
      * The Context within which this Request is being processed.
      */
     protected Context context = null;
 
-
     /**
      * The default Locale if none are specified.
      */
     protected static Locale defaultLocale = Locale.getDefault();
-
 
     /**
      * The facade associated with this request.
      */
     protected RequestFacade facade = new RequestFacade(this);
 
-
     /**
      * Descriptive information about this Request implementation.
      */
-    protected static final String info =
-        "org.apache.catalina.connector.RequestBase/1.0";
-
+    protected static final String info = "org.apache.catalina.connector.RequestBase/1.0";
 
     /**
      * The input stream associated with this Request.
      */
     protected InputStream input = null;
 
-
     /**
      * The preferred Locales assocaited with this Request.
      */
     protected ArrayList locales = new ArrayList();
-
 
     /**
      * Internal notes associated with this request by Catalina components
@@ -123,73 +105,61 @@ public abstract class RequestBase
      */
     private transient HashMap notes = new HashMap();
 
-
     /**
      * The protocol name and version associated with this Request.
      */
     protected String protocol = null;
-
 
     /**
      * The reader that has been returned by <code>getReader</code>, if any.
      */
     protected BufferedReader reader = null;
 
-
     /**
      * The remote address associated with this request.
      */
     protected String remoteAddr = null;
-
 
     /**
      * The fully qualified name of the remote host.
      */
     protected String remoteHost = null;
 
-
     /**
      * The response with which this request is associated.
      */
     protected Response response = null;
-
 
     /**
      * The scheme associated with this Request.
      */
     protected String scheme = null;
 
-
     /**
      * Was this request received on a secure connection?
      */
     protected boolean secure = false;
-
 
     /**
      * The server name associated with this Request.
      */
     protected String serverName = null;
 
-
     /**
      * The server port associated with this Request.
      */
     protected int serverPort = -1;
 
-
     /**
      * The string manager for this package.
      */
-    protected static StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected static StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The socket through which this Request was received.
      */
     protected Socket socket = null;
-
 
     /**
      * The ServletInputStream that has been returned by
@@ -197,15 +167,12 @@ public abstract class RequestBase
      */
     protected ServletInputStream stream = null;
 
-
     /**
      * The Wrapper within which this Request is being processed.
      */
     protected Wrapper wrapper = null;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the authorization credentials sent with this request.
@@ -215,7 +182,6 @@ public abstract class RequestBase
         return (this.authorization);
 
     }
-
 
     /**
      * Set the authorization credentials sent with this request.
@@ -228,7 +194,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the Connector through which this Request was received.
      */
@@ -237,7 +202,6 @@ public abstract class RequestBase
         return (this.connector);
 
     }
-
 
     /**
      * Set the Connector through which this Request was received.
@@ -250,7 +214,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the Context within which this Request is being processed.
      */
@@ -260,9 +223,8 @@ public abstract class RequestBase
 
     }
 
-
     /**
-     * Set the Context within which this Request is being processed.  This
+     * Set the Context within which this Request is being processed. This
      * must be called as soon as the appropriate Context is identified, because
      * it identifies the value to be returned by <code>getContextPath()</code>,
      * and thus enables parsing of the request URI.
@@ -272,7 +234,6 @@ public abstract class RequestBase
     public void setContext(Context context) {
         this.context = context;
     }
-
 
     /**
      * Return descriptive information about this Request implementation and
@@ -285,17 +246,15 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the <code>ServletRequest</code> for which this object
-     * is the facade.  This method must be implemented by a subclass.
+     * is the facade. This method must be implemented by a subclass.
      */
     public ServletRequest getRequest() {
 
         return (facade);
 
     }
-
 
     /**
      * Return the Response with which this Request is associated.
@@ -305,7 +264,6 @@ public abstract class RequestBase
         return (this.response);
 
     }
-
 
     /**
      * Set the Response with which this Request is associated.
@@ -317,7 +275,6 @@ public abstract class RequestBase
         this.response = response;
 
     }
-
 
     /**
      * Return the Socket (if any) through which this Request was received.
@@ -331,7 +288,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Set the Socket (if any) through which this Request was received.
      *
@@ -343,7 +299,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the input stream associated with this Request.
      */
@@ -352,7 +307,6 @@ public abstract class RequestBase
         return (this.input);
 
     }
-
 
     /**
      * Set the input stream associated with this Request.
@@ -365,7 +319,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the Wrapper within which this Request is being processed.
      */
@@ -375,9 +328,8 @@ public abstract class RequestBase
 
     }
 
-
     /**
-     * Set the Wrapper within which this Request is being processed.  This
+     * Set the Wrapper within which this Request is being processed. This
      * must be called as soon as the appropriate Wrapper is identified, and
      * before the Request is ultimately passed to an application servlet.
      *
@@ -389,12 +341,10 @@ public abstract class RequestBase
 
     }
 
-
     // --------------------------------------------------------- Public Methods
 
-
     /**
-     * Add a Locale to the set of preferred Locales for this Request.  The
+     * Add a Locale to the set of preferred Locales for this Request. The
      * first added Locale will be the first one returned by getLocales().
      *
      * @param locale The new preferred Locale
@@ -407,10 +357,9 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Create and return a ServletInputStream to read the content
-     * associated with this Request.  The default implementation creates an
+     * associated with this Request. The default implementation creates an
      * instance of RequestStream associated with this request, but this can
      * be overridden if necessary.
      *
@@ -421,7 +370,6 @@ public abstract class RequestBase
         return (new RequestStream(this));
 
     }
-
 
     /**
      * Perform whatever actions are required to flush and close the input
@@ -454,7 +402,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the object bound with the specified name to the internal notes
      * for this request, or <code>null</code> if no such binding exists.
@@ -469,7 +416,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return an Iterator containing the String names of all notes bindings
      * that exist for this request.
@@ -481,7 +427,6 @@ public abstract class RequestBase
         }
 
     }
-
 
     /**
      * Release all object references, and initialize instance variables, in
@@ -514,7 +459,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Remove any object bound to the specified name in the internal notes
      * for this request.
@@ -529,7 +473,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Set the content length associated with this Request.
      *
@@ -541,10 +484,9 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Set the content type (and optionally the character encoding)
-     * associated with this Request.  For example,
+     * associated with this Request. For example,
      * <code>text/html; charset=ISO-8859-4</code>.
      *
      * @param type The new content type
@@ -557,12 +499,11 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Bind an object to a specified name in the internal notes associated
      * with this request, replacing any existing binding for this name.
      *
-     * @param name Name to which the object should be bound
+     * @param name  Name to which the object should be bound
      * @param value Object to be bound to the specified name
      */
     public void setNote(String name, Object value) {
@@ -572,7 +513,6 @@ public abstract class RequestBase
         }
 
     }
-
 
     /**
      * Set the protocol name and version associated with this Request.
@@ -585,7 +525,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Set the IP address of the remote client associated with this Request.
      *
@@ -596,7 +535,6 @@ public abstract class RequestBase
         this.remoteAddr = remoteAddr;
 
     }
-
 
     /**
      * Set the fully qualified name of the remote client associated with this
@@ -610,9 +548,8 @@ public abstract class RequestBase
 
     }
 
-
     /**
-     * Set the name of the scheme associated with this request.  Typical values
+     * Set the name of the scheme associated with this request. Typical values
      * are <code>http</code>, <code>https</code>, and <code>ftp</code>.
      *
      * @param scheme The scheme
@@ -622,7 +559,6 @@ public abstract class RequestBase
         this.scheme = scheme;
 
     }
-
 
     /**
      * Set the value to be returned by <code>isSecure()</code>
@@ -636,7 +572,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Set the name of the server (virtual host) to process this request.
      *
@@ -647,7 +582,6 @@ public abstract class RequestBase
         this.serverName = name;
 
     }
-
 
     /**
      * Set the port number of the server to process this request.
@@ -660,9 +594,7 @@ public abstract class RequestBase
 
     }
 
-
     // ------------------------------------------------- ServletRequest Methods
-
 
     /**
      * Return the specified request attribute if it exists; otherwise, return
@@ -678,7 +610,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the names of all request attributes for this Request, or an
      * empty <code>Enumeration</code> if there are none.
@@ -691,16 +622,14 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the character encoding for this Request.
      */
     public String getCharacterEncoding() {
 
-      return (this.characterEncoding);
+        return (this.characterEncoding);
 
     }
-
 
     /**
      * Return the content length for this Request.
@@ -711,7 +640,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the content type for this Request.
      */
@@ -721,21 +649,20 @@ public abstract class RequestBase
 
     }
 
-
     /**
-     * Return the servlet input stream for this Request.  The default
+     * Return the servlet input stream for this Request. The default
      * implementation returns a servlet input stream created by
      * <code>createInputStream()</code>.
      *
      * @exception IllegalStateException if <code>getReader()</code> has
-     *  already been called for this request
-     * @exception IOException if an input/output error occurs
+     *                                  already been called for this request
+     * @exception IOException           if an input/output error occurs
      */
     public ServletInputStream getInputStream() throws IOException {
 
         if (reader != null)
-            throw new IllegalStateException
-                (sm.getString("requestBase.getInputStream.ise"));
+            throw new IllegalStateException(sm.getString(
+                    "requestBase.getInputStream.ise"));
 
         if (stream == null)
             stream = createInputStream();
@@ -743,11 +670,10 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the preferred Locale that the client will accept content in,
      * based on the value for the first <code>Accept-Language</code> header
-     * that was encountered.  If the request did not specify a preferred
+     * that was encountered. If the request did not specify a preferred
      * language, the server's default Locale is returned.
      */
     public Locale getLocale() {
@@ -761,11 +687,10 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the set of preferred Locales that the client will accept
      * content in, based on the values for any <code>Accept-Language</code>
-     * headers that were encountered.  If the request did not specify a
+     * headers that were encountered. If the request did not specify a
      * preferred language, the server's default Locale is returned.
      */
     public Enumeration getLocales() {
@@ -780,16 +705,14 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the value of the specified request parameter, if any; otherwise,
-     * return <code>null</code>.  If there is more than one value defined,
+     * return <code>null</code>. If there is more than one value defined,
      * return only the first one.
      *
      * @param name Name of the desired request parameter
      */
     public abstract String getParameter(String name);
-
 
     /**
      * Returns a <code>Map</code> of the parameters of this request.
@@ -798,16 +721,14 @@ public abstract class RequestBase
      * or posted form data.
      *
      * @return A <code>Map</code> containing parameter names as keys
-     *  and parameter values as map values.
+     *         and parameter values as map values.
      */
     public abstract Map getParameterMap();
-
 
     /**
      * Return the names of all defined request parameters for this request.
      */
     public abstract Enumeration getParameterNames();
-
 
     /**
      * Return the defined values for the specified request parameter, if any;
@@ -816,7 +737,6 @@ public abstract class RequestBase
      * @param name Name of the desired request parameter
      */
     public abstract String[] getParameterValues(String name);
-
 
     /**
      * Return the protocol and version used to make this Request.
@@ -827,34 +747,32 @@ public abstract class RequestBase
 
     }
 
-
     /**
-     * Read the Reader wrapping the input stream for this Request.  The
+     * Read the Reader wrapping the input stream for this Request. The
      * default implementation wraps a <code>BufferedReader</code> around the
      * servlet input stream returned by <code>createInputStream()</code>.
      *
      * @exception IllegalStateException if <code>getInputStream()</code>
-     *  has already been called for this request
-     * @exception IOException if an input/output error occurs
+     *                                  has already been called for this request
+     * @exception IOException           if an input/output error occurs
      */
     public BufferedReader getReader() throws IOException {
 
         if (stream != null)
-            throw new IllegalStateException
-                (sm.getString("requestBase.getReader.ise"));
+            throw new IllegalStateException(sm.getString(
+                    "requestBase.getReader.ise"));
 
         if (reader == null) {
             String encoding = getCharacterEncoding();
             if (encoding == null)
                 encoding = "ISO-8859-1";
-            InputStreamReader isr =
-                new InputStreamReader(createInputStream(), encoding);
+            InputStreamReader isr = new InputStreamReader(createInputStream(),
+                    encoding);
             reader = new BufferedReader(isr);
         }
         return (reader);
 
     }
-
 
     /**
      * Return the real path of the specified virtual path.
@@ -862,7 +780,7 @@ public abstract class RequestBase
      * @param path Path to be translated
      *
      * @deprecated As of version 2.1 of the Java Servlet API, use
-     *  <code>ServletContext.getRealPath()</code>.
+     *             <code>ServletContext.getRealPath()</code>.
      */
     public String getRealPath(String path) {
 
@@ -881,7 +799,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the remote IP address making this Request.
      */
@@ -890,7 +807,6 @@ public abstract class RequestBase
         return (this.remoteAddr);
 
     }
-
 
     /**
      * Return the remote host name making this Request.
@@ -901,7 +817,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return a RequestDispatcher that wraps the resource at the specified
      * path, which may be interpreted as relative to the current request path.
@@ -909,7 +824,6 @@ public abstract class RequestBase
      * @param path Path of the resource to be wrapped
      */
     public abstract RequestDispatcher getRequestDispatcher(String path);
-
 
     /**
      * Return the scheme used to make this Request.
@@ -920,7 +834,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Return the server name responding to this Request.
      */
@@ -929,7 +842,6 @@ public abstract class RequestBase
         return (this.serverName);
 
     }
-
 
     /**
      * Return the server port responding to this Request.
@@ -940,7 +852,6 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Was this request received on a secure connection?
      */
@@ -949,7 +860,6 @@ public abstract class RequestBase
         return (this.secure);
 
     }
-
 
     /**
      * Remove the specified request attribute if it exists.
@@ -964,19 +874,18 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Set the specified request attribute to the specified value.
      *
-     * @param name Name of the request attribute to set
+     * @param name  Name of the request attribute to set
      * @param value The associated value
      */
     public void setAttribute(String name, Object value) {
 
         // Name cannot be null
         if (name == null)
-            throw new IllegalArgumentException
-                (sm.getString("requestBase.setAttribute.namenull"));
+            throw new IllegalArgumentException(sm.getString(
+                    "requestBase.setAttribute.namenull"));
 
         // Null value is the same as removeAttribute()
         if (value == null) {
@@ -990,21 +899,20 @@ public abstract class RequestBase
 
     }
 
-
     /**
      * Overrides the name of the character encoding used in the body of
-     * this request.  This method must be called prior to reading request
+     * this request. This method must be called prior to reading request
      * parameters or reading input using <code>getReader()</code>.
      *
      * @param enc The character encoding to be used
      *
      * @exception UnsupportedEncodingException if the specified encoding
-     *  is not supported
+     *                                         is not supported
      *
      * @since Servlet 2.3
      */
     public void setCharacterEncoding(String enc)
-        throws UnsupportedEncodingException {
+            throws UnsupportedEncodingException {
 
         // Ensure that the specified encoding is valid
         byte buffer[] = new byte[1];
@@ -1015,6 +923,5 @@ public abstract class RequestBase
         this.characterEncoding = enc;
 
     }
-
 
 }

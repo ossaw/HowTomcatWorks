@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/core/ApplicationFilterConfig.java,v 1.7 2001/07/22 20:25:08 pier Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/core/
+ * ApplicationFilterConfig.java,v 1.7 2001/07/22 20:25:08 pier Exp $
  * $Revision: 1.7 $
  * $Date: 2001/07/22 20:25:08 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +43,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.core;
-
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -76,7 +63,6 @@ import org.apache.catalina.Context;
 import org.apache.catalina.deploy.FilterDef;
 import org.apache.catalina.util.Enumerator;
 
-
 /**
  * Implementation of a <code>javax.servlet.FilterConfig</code> useful in
  * managing the filter instances instantiated when a web application
@@ -88,31 +74,30 @@ import org.apache.catalina.util.Enumerator;
 
 final class ApplicationFilterConfig implements FilterConfig {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a new ApplicationFilterConfig for the specified filter
      * definition.
      *
-     * @param context The context with which we are associated
+     * @param context   The context with which we are associated
      * @param filterDef Filter definition for which a FilterConfig is to be
-     *  constructed
+     *                  constructed
      *
-     * @exception ClassCastException if the specified class does not implement
-     *  the <code>javax.servlet.Filter</code> interface
+     * @exception ClassCastException     if the specified class does not
+     *                                   implement
+     *                                   the <code>javax.servlet.Filter</code>
+     *                                   interface
      * @exception ClassNotFoundException if the filter class cannot be found
      * @exception IllegalAccessException if the filter class cannot be
-     *  publicly instantiated
+     *                                   publicly instantiated
      * @exception InstantiationException if an exception occurs while
-     *  instantiating the filter object
-     * @exception ServletException if thrown by the filter's init() method
+     *                                   instantiating the filter object
+     * @exception ServletException       if thrown by the filter's init() method
      */
     public ApplicationFilterConfig(Context context, FilterDef filterDef)
-        throws ClassCastException, ClassNotFoundException,
-               IllegalAccessException, InstantiationException,
-               ServletException {
+            throws ClassCastException, ClassNotFoundException,
+            IllegalAccessException, InstantiationException, ServletException {
 
         super();
         this.context = context;
@@ -120,30 +105,24 @@ final class ApplicationFilterConfig implements FilterConfig {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The Context with which we are associated.
      */
     private Context context = null;
 
-
     /**
      * The application Filter we are configured for.
      */
     private Filter filter = null;
-
 
     /**
      * The <code>FilterDef</code> that defines our associated Filter.
      */
     private FilterDef filterDef = null;
 
-
     // --------------------------------------------------- FilterConfig Methods
-
 
     /**
      * Return the name of the filter we are configuring.
@@ -153,7 +132,6 @@ final class ApplicationFilterConfig implements FilterConfig {
         return (filterDef.getFilterName());
 
     }
-
 
     /**
      * Return a <code>String</code> containing the value of the named
@@ -172,7 +150,6 @@ final class ApplicationFilterConfig implements FilterConfig {
 
     }
 
-
     /**
      * Return an <code>Enumeration</code> of the names of the initialization
      * parameters for this Filter.
@@ -187,7 +164,6 @@ final class ApplicationFilterConfig implements FilterConfig {
 
     }
 
-
     /**
      * Return the ServletContext of our associated web application.
      */
@@ -196,7 +172,6 @@ final class ApplicationFilterConfig implements FilterConfig {
         return (this.context.getServletContext());
 
     }
-
 
     /**
      * Return a String representation of this object.
@@ -213,24 +188,24 @@ final class ApplicationFilterConfig implements FilterConfig {
 
     }
 
-
     // -------------------------------------------------------- Package Methods
-
 
     /**
      * Return the application Filter we are configured for.
      *
-     * @exception ClassCastException if the specified class does not implement
-     *  the <code>javax.servlet.Filter</code> interface
+     * @exception ClassCastException     if the specified class does not
+     *                                   implement
+     *                                   the <code>javax.servlet.Filter</code>
+     *                                   interface
      * @exception ClassNotFoundException if the filter class cannot be found
      * @exception IllegalAccessException if the filter class cannot be
-     *  publicly instantiated
+     *                                   publicly instantiated
      * @exception InstantiationException if an exception occurs while
-     *  instantiating the filter object
-     * @exception ServletException if thrown by the filter's init() method
+     *                                   instantiating the filter object
+     * @exception ServletException       if thrown by the filter's init() method
      */
     Filter getFilter() throws ClassCastException, ClassNotFoundException,
-        IllegalAccessException, InstantiationException, ServletException {
+            IllegalAccessException, InstantiationException, ServletException {
 
         // Return the existing filter instance, if any
         if (this.filter != null)
@@ -244,8 +219,8 @@ final class ApplicationFilterConfig implements FilterConfig {
         else
             classLoader = context.getLoader().getClassLoader();
 
-        ClassLoader oldCtxClassLoader =
-            Thread.currentThread().getContextClassLoader();
+        ClassLoader oldCtxClassLoader = Thread.currentThread()
+                .getContextClassLoader();
 
         // Instantiate a new instance of this filter and return it
         Class clazz = classLoader.loadClass(filterClass);
@@ -255,7 +230,6 @@ final class ApplicationFilterConfig implements FilterConfig {
 
     }
 
-
     /**
      * Return the filter definition we are configured for.
      */
@@ -264,7 +238,6 @@ final class ApplicationFilterConfig implements FilterConfig {
         return (this.filterDef);
 
     }
-
 
     /**
      * Release the Filter instance associated with this FilterConfig,
@@ -276,28 +249,28 @@ final class ApplicationFilterConfig implements FilterConfig {
             filter.destroy();
         this.filter = null;
 
-     }
-
+    }
 
     /**
-     * Set the filter definition we are configured for.  This has the side
+     * Set the filter definition we are configured for. This has the side
      * effect of instantiating an instance of the corresponding filter class.
      *
      * @param filterDef The new filter definition
      *
-     * @exception ClassCastException if the specified class does not implement
-     *  the <code>javax.servlet.Filter</code> interface
+     * @exception ClassCastException     if the specified class does not
+     *                                   implement
+     *                                   the <code>javax.servlet.Filter</code>
+     *                                   interface
      * @exception ClassNotFoundException if the filter class cannot be found
      * @exception IllegalAccessException if the filter class cannot be
-     *  publicly instantiated
+     *                                   publicly instantiated
      * @exception InstantiationException if an exception occurs while
-     *  instantiating the filter object
-     * @exception ServletException if thrown by the filter's init() method
+     *                                   instantiating the filter object
+     * @exception ServletException       if thrown by the filter's init() method
      */
-    void setFilterDef(FilterDef filterDef)
-        throws ClassCastException, ClassNotFoundException,
-               IllegalAccessException, InstantiationException,
-               ServletException {
+    void setFilterDef(FilterDef filterDef) throws ClassCastException,
+            ClassNotFoundException, IllegalAccessException,
+            InstantiationException, ServletException {
 
         this.filterDef = filterDef;
         if (filterDef == null) {
@@ -316,8 +289,6 @@ final class ApplicationFilterConfig implements FilterConfig {
 
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
 }

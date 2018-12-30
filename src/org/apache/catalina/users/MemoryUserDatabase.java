@@ -1,46 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/users/MemoryUserDatabase.java,v 1.7 2002/08/13 08:08:17 amyroh Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/users/
+ * MemoryUserDatabase.java,v 1.7 2002/08/13 08:08:17 amyroh Exp $
  * $Revision: 1.7 $
  * $Date: 2002/08/13 08:08:17 $
- *
  * ====================================================================
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 2002 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -50,19 +43,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.users;
-
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -81,11 +69,12 @@ import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.ObjectCreationFactory;
 import org.xml.sax.Attributes;
 
-
 /**
- * <p>Concrete implementation of {@link UserDatabase} that loads all
+ * <p>
+ * Concrete implementation of {@link UserDatabase} that loads all
  * defined users, groups, and roles into an in-memory data structure,
- * and uses a specified XML file for its persistent storage.</p>
+ * and uses a specified XML file for its persistent storage.
+ * </p>
  *
  * @author Craig R. McClanahan
  * @version $Revision: 1.7 $ $Date: 2002/08/13 08:08:17 $
@@ -94,9 +83,7 @@ import org.xml.sax.Attributes;
 
 public class MemoryUserDatabase implements UserDatabase {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Create a new instance with default values.
@@ -106,7 +93,6 @@ public class MemoryUserDatabase implements UserDatabase {
         super();
 
     }
-
 
     /**
      * Create a new instance with the specified values.
@@ -120,9 +106,7 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The set of {@link Group}s defined in this database, keyed by
@@ -130,12 +114,10 @@ public class MemoryUserDatabase implements UserDatabase {
      */
     protected HashMap groups = new HashMap();
 
-
     /**
      * The unique global identifier of this user database.
      */
     protected String id = null;
-
 
     /**
      * The relative (to <code>catalina.base</code>) or absolute pathname to
@@ -143,13 +125,11 @@ public class MemoryUserDatabase implements UserDatabase {
      */
     protected String pathname = "conf/tomcat-users.xml";
 
-
     /**
      * The relative or absolute pathname to the file in which our old
      * information is stored while renaming is in progress.
      */
     protected String pathnameOld = pathname + ".old";
-
 
     /**
      * The relative or absolute pathname ot the file in which we write
@@ -157,20 +137,17 @@ public class MemoryUserDatabase implements UserDatabase {
      */
     protected String pathnameNew = pathname + ".new";
 
-
     /**
      * The set of {@link Role}s defined in this database, keyed by
      * role name.
      */
     protected HashMap roles = new HashMap();
 
-
     /**
      * The string manager for this package.
      */
-    private static StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    private static StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The set of {@link User}s defined in this database, keyed by
@@ -178,9 +155,7 @@ public class MemoryUserDatabase implements UserDatabase {
      */
     protected HashMap users = new HashMap();
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the set of {@link Group}s defined in this user database.
@@ -193,7 +168,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Return the unique global identifier of this user database.
      */
@@ -203,7 +177,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Return the relative or absolute pathname to the persistent storage file.
      */
@@ -212,7 +185,6 @@ public class MemoryUserDatabase implements UserDatabase {
         return (this.pathname);
 
     }
-
 
     /**
      * Set the relative or absolute pathname to the persistent storage file.
@@ -227,7 +199,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Return the set of {@link Role}s defined in this user database.
      */
@@ -238,7 +209,6 @@ public class MemoryUserDatabase implements UserDatabase {
         }
 
     }
-
 
     /**
      * Return the set of {@link User}s defined in this user database.
@@ -251,10 +221,7 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Finalize access to this user database.
@@ -274,11 +241,10 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Create and return a new {@link Group} defined in this user database.
      *
-     * @param groupname The group name of the new group (must be unique)
+     * @param groupname   The group name of the new group (must be unique)
      * @param description The description of this group
      */
     public Group createGroup(String groupname, String description) {
@@ -291,11 +257,10 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Create and return a new {@link Role} defined in this user database.
      *
-     * @param rolename The role name of the new group (must be unique)
+     * @param rolename    The role name of the new group (must be unique)
      * @param description The description of this group
      */
     public Role createRole(String rolename, String description) {
@@ -308,7 +273,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Create and return a new {@link User} defined in this user database.
      *
@@ -316,8 +280,7 @@ public class MemoryUserDatabase implements UserDatabase {
      * @param password The logon password of the new user
      * @param fullName The full name of the new user
      */
-    public User createUser(String username, String password,
-                           String fullName) {
+    public User createUser(String username, String password, String fullName) {
 
         MemoryUser user = new MemoryUser(this, username, password, fullName);
         synchronized (users) {
@@ -326,7 +289,6 @@ public class MemoryUserDatabase implements UserDatabase {
         return (user);
 
     }
-
 
     /**
      * Return the {@link Group} with the specified group name, if any;
@@ -342,7 +304,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Return the {@link Role} with the specified role name, if any;
      * otherwise return <code>null</code>.
@@ -357,7 +318,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Return the {@link User} with the specified user name, if any;
      * otherwise return <code>null</code>.
@@ -371,7 +331,6 @@ public class MemoryUserDatabase implements UserDatabase {
         }
 
     }
-
 
     /**
      * Initialize access to this user database.
@@ -392,7 +351,7 @@ public class MemoryUserDatabase implements UserDatabase {
                 File file = new File(pathname);
                 if (!file.isAbsolute()) {
                     file = new File(System.getProperty("catalina.base"),
-                                    pathname);
+                            pathname);
                 }
                 if (!file.exists()) {
                     return;
@@ -401,15 +360,12 @@ public class MemoryUserDatabase implements UserDatabase {
 
                 // Construct a digester to read the XML input file
                 Digester digester = new Digester();
-                digester.addFactoryCreate
-                    ("tomcat-users/group",
-                     new MemoryGroupCreationFactory(this));
-                digester.addFactoryCreate
-                    ("tomcat-users/role",
-                     new MemoryRoleCreationFactory(this));
-                digester.addFactoryCreate
-                    ("tomcat-users/user",
-                     new MemoryUserCreationFactory(this));
+                digester.addFactoryCreate("tomcat-users/group",
+                        new MemoryGroupCreationFactory(this));
+                digester.addFactoryCreate("tomcat-users/role",
+                        new MemoryRoleCreationFactory(this));
+                digester.addFactoryCreate("tomcat-users/user",
+                        new MemoryUserCreationFactory(this));
 
                 // Parse the XML input file to load this database
                 try {
@@ -429,7 +385,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Remove the specified {@link Group} from this user database.
      *
@@ -447,7 +402,6 @@ public class MemoryUserDatabase implements UserDatabase {
         }
 
     }
-
 
     /**
      * Remove the specified {@link Role} from this user database.
@@ -472,7 +426,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Remove the specified {@link User} from this user database.
      *
@@ -486,7 +439,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Save any updated information to the persistent storage location for
      * this user database.
@@ -498,8 +450,8 @@ public class MemoryUserDatabase implements UserDatabase {
         // Write out contents to a temporary file
         File fileNew = new File(pathnameNew);
         if (!fileNew.isAbsolute()) {
-            fileNew =
-                new File(System.getProperty("catalina.base"), pathnameNew);
+            fileNew = new File(System.getProperty("catalina.base"),
+                    pathnameNew);
         }
         PrintWriter writer = null;
         try {
@@ -538,9 +490,9 @@ public class MemoryUserDatabase implements UserDatabase {
             if (writer.checkError()) {
                 writer.close();
                 fileNew.delete();
-                throw new IOException
-                    (sm.getString("memoryUserDatabase.writeException",
-                                  fileNew.getAbsolutePath()));
+                throw new IOException(sm.getString(
+                        "memoryUserDatabase.writeException", fileNew
+                                .getAbsolutePath()));
             }
             writer.close();
         } catch (IOException e) {
@@ -554,35 +506,32 @@ public class MemoryUserDatabase implements UserDatabase {
         // Perform the required renames to permanently save this file
         File fileOld = new File(pathnameNew);
         if (!fileOld.isAbsolute()) {
-            fileOld =
-                new File(System.getProperty("catalina.base"), pathnameOld);
+            fileOld = new File(System.getProperty("catalina.base"),
+                    pathnameOld);
         }
         fileOld.delete();
         File fileOrig = new File(pathname);
         if (!fileOrig.isAbsolute()) {
-            fileOrig =
-                new File(System.getProperty("catalina.base"), pathname);
+            fileOrig = new File(System.getProperty("catalina.base"), pathname);
         }
         if (fileOrig.exists()) {
             fileOld.delete();
             if (!fileOrig.renameTo(fileOld)) {
-                throw new IOException
-                    (sm.getString("memoryUserDatabase.renameOld",
-                                  fileOld.getAbsolutePath()));
+                throw new IOException(sm.getString(
+                        "memoryUserDatabase.renameOld", fileOld
+                                .getAbsolutePath()));
             }
         }
         if (!fileNew.renameTo(fileOrig)) {
             if (fileOld.exists()) {
                 fileOld.renameTo(fileOrig);
             }
-            throw new IOException
-                (sm.getString("memoryUserDatabase.renameNew",
-                              fileOrig.getAbsolutePath()));
+            throw new IOException(sm.getString("memoryUserDatabase.renameNew",
+                    fileOrig.getAbsolutePath()));
         }
         fileOld.delete();
 
     }
-
 
     /**
      * Return a String representation of this UserDatabase.
@@ -604,9 +553,7 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     // -------------------------------------------------------- Package Methods
-
 
     /**
      * Return the <code>StringManager</code> for use in looking up messages.
@@ -617,10 +564,7 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
 }
-
-
 
 /**
  * Digester object creation factory for group instances.
@@ -676,7 +620,6 @@ class MemoryGroupCreationFactory implements ObjectCreationFactory {
 
 }
 
-
 /**
  * Digester object creation factory for role instances.
  */
@@ -709,7 +652,6 @@ class MemoryRoleCreationFactory implements ObjectCreationFactory {
     }
 
 }
-
 
 /**
  * Digester object creation factory for user instances.

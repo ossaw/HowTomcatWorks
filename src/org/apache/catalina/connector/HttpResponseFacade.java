@@ -1,28 +1,23 @@
 package org.apache.catalina.connector;
 
-
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;
 import org.apache.catalina.HttpResponse;
 
-
 /**
  * Facade class that wraps a Catalina-internal <b>HttpResponse</b>
- * object.  All methods are delegated to the wrapped response.
+ * object. All methods are delegated to the wrapped response.
  *
  * @author Remy Maucherat
  * @author Craig R. McClanahan
  * @version $Revision: 1.5 $ $Date: 2001/09/28 16:53:49 $
  */
 
-public final class HttpResponseFacade
-    extends ResponseFacade
-    implements HttpServletResponse {
-
+public final class HttpResponseFacade extends ResponseFacade implements
+        HttpServletResponse {
 
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a wrapper for the specified response.
@@ -33,9 +28,7 @@ public final class HttpResponseFacade
         super(response);
     }
 
-
     // -------------------------------------------- HttpServletResponse Methods
-
 
     public void addCookie(Cookie cookie) {
 
@@ -46,38 +39,33 @@ public final class HttpResponseFacade
 
     }
 
-
     public boolean containsHeader(String name) {
         return ((HttpServletResponse) response).containsHeader(name);
     }
-
 
     public String encodeURL(String url) {
         return ((HttpServletResponse) response).encodeURL(url);
     }
 
-
     public String encodeRedirectURL(String url) {
         return ((HttpServletResponse) response).encodeRedirectURL(url);
     }
-
 
     public String encodeUrl(String url) {
         return ((HttpServletResponse) response).encodeURL(url);
     }
 
-
     public String encodeRedirectUrl(String url) {
         return ((HttpServletResponse) response).encodeRedirectURL(url);
     }
 
-
-    public void sendError(int sc, String msg)
-        throws IOException {
+    public void sendError(int sc, String msg) throws IOException {
 
         if (isCommitted())
-            throw new IllegalStateException
-                (/*sm.getString("responseBase.reset.ise")*/);
+            throw new IllegalStateException(/*
+                                             * sm.getString(
+                                             * "responseBase.reset.ise")
+                                             */);
 
         resp.setAppCommitted(true);
 
@@ -85,13 +73,13 @@ public final class HttpResponseFacade
 
     }
 
-
-    public void sendError(int sc)
-        throws IOException {
+    public void sendError(int sc) throws IOException {
 
         if (isCommitted())
-            throw new IllegalStateException
-                (/*sm.getString("responseBase.reset.ise")*/);
+            throw new IllegalStateException(/*
+                                             * sm.getString(
+                                             * "responseBase.reset.ise")
+                                             */);
 
         resp.setAppCommitted(true);
 
@@ -99,20 +87,19 @@ public final class HttpResponseFacade
 
     }
 
-
-    public void sendRedirect(String location)
-        throws IOException {
+    public void sendRedirect(String location) throws IOException {
 
         if (isCommitted())
-            throw new IllegalStateException
-                (/*sm.getString("responseBase.reset.ise")*/);
+            throw new IllegalStateException(/*
+                                             * sm.getString(
+                                             * "responseBase.reset.ise")
+                                             */);
 
         resp.setAppCommitted(true);
 
         ((HttpServletResponse) response).sendRedirect(location);
 
     }
-
 
     public void setDateHeader(String name, long date) {
 
@@ -123,7 +110,6 @@ public final class HttpResponseFacade
 
     }
 
-
     public void addDateHeader(String name, long date) {
 
         if (isCommitted())
@@ -132,7 +118,6 @@ public final class HttpResponseFacade
         ((HttpServletResponse) response).addDateHeader(name, date);
 
     }
-
 
     public void setHeader(String name, String value) {
 
@@ -143,7 +128,6 @@ public final class HttpResponseFacade
 
     }
 
-
     public void addHeader(String name, String value) {
 
         if (isCommitted())
@@ -152,7 +136,6 @@ public final class HttpResponseFacade
         ((HttpServletResponse) response).addHeader(name, value);
 
     }
-
 
     public void setIntHeader(String name, int value) {
 
@@ -163,7 +146,6 @@ public final class HttpResponseFacade
 
     }
 
-
     public void addIntHeader(String name, int value) {
 
         if (isCommitted())
@@ -172,7 +154,6 @@ public final class HttpResponseFacade
         ((HttpServletResponse) response).addIntHeader(name, value);
 
     }
-
 
     public void setStatus(int sc) {
 
@@ -183,7 +164,6 @@ public final class HttpResponseFacade
 
     }
 
-
     public void setStatus(int sc, String sm) {
 
         if (isCommitted())
@@ -192,6 +172,5 @@ public final class HttpResponseFacade
         ((HttpServletResponse) response).setStatus(sc, sm);
 
     }
-
 
 }

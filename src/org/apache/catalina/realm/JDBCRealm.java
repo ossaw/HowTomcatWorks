@@ -1,65 +1,54 @@
 /*
-* $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/realm/JDBCRealm.java,v 1.21 2002/06/09 02:19:43 remm Exp $
-* $Revision: 1.21 $
-* $Date: 2002/06/09 02:19:43 $
-*
-* ====================================================================
-* The Apache Software License, Version 1.1
-*
-* Copyright (c) 1999 The Apache Software Foundation.  All rights
-* reserved.
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions
-* are met:
-*
-* 1. Redistributions of source code must retain the above copyright
-*    notice, this list of conditions and the following disclaimer.
-*
-* 2. Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in
-*    the documentation and/or other materials provided with the
-*    distribution.
-*
-* 3. The end-user documentation included with the redistribution, if
-*    any, must include the following acknowlegement:
-*       "This product includes software developed by the
-*        Apache Software Foundation (http://www.apache.org/)."
-*    Alternately, this acknowlegement may appear in the software itself,
-*    if and wherever such third-party acknowlegements normally appear.
-*
-* 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
-*    Foundation" must not be used to endorse or promote products derived
-*    from this software without prior written permission. For written
-*    permission, please contact apache@apache.org.
-*
-* 5. Products derived from this software may not be called "Apache"
-*    nor may "Apache" appear in their names without prior written
-*    permission of the Apache Group.
-*
-* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
-* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-* DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
-* ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
-* USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-* OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
-* OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-* SUCH DAMAGE.
-* ====================================================================
-*
-* This software consists of voluntary contributions made by many
-* individuals on behalf of the Apache Software Foundation.  For more
-* information on the Apache Software Foundation, please see
-* <http://www.apache.org/>.
-*
-* [Additional notices, if required by prior licensing conditions]
-*
-*/
-
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/realm/
+ * JDBCRealm.java,v 1.21 2002/06/09 02:19:43 remm Exp $
+ * $Revision: 1.21 $
+ * $Date: 2002/06/09 02:19:43 $
+ * ====================================================================
+ * The Apache Software License, Version 1.1
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
+ * reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ * 3. The end-user documentation included with the redistribution, if
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
+ * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
+ * 5. Products derived from this software may not be called "Apache"
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ * ====================================================================
+ * This software consists of voluntary contributions made by many
+ * individuals on behalf of the Apache Software Foundation. For more
+ * information on the Apache Software Foundation, please see
+ * <http://www.apache.org/>.
+ * [Additional notices, if required by prior licensing conditions]
+ */
 
 package org.apache.catalina.realm;
 
@@ -74,84 +63,72 @@ import java.util.Properties;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.util.StringManager;
 
-
 /**
-*
-* Implmentation of <b>Realm</b> that works with any JDBC supported database.
-* See the JDBCRealm.howto for more details on how to set up the database and
-* for configuration options.
-*
-* <p><strong>TODO</strong> - Support connection pooling (including message
-* format objects) so that <code>authenticate()</code> does not have to be
-* synchronized.</p>
-*
-* @author Craig R. McClanahan
-* @author Carson McDonald
-* @author Ignacio Ortega
-* @version $Revision: 1.21 $ $Date: 2002/06/09 02:19:43 $
-*/
+ *
+ * Implmentation of <b>Realm</b> that works with any JDBC supported database.
+ * See the JDBCRealm.howto for more details on how to set up the database and
+ * for configuration options.
+ *
+ * <p>
+ * <strong>TODO</strong> - Support connection pooling (including message
+ * format objects) so that <code>authenticate()</code> does not have to be
+ * synchronized.
+ * </p>
+ *
+ * @author Craig R. McClanahan
+ * @author Carson McDonald
+ * @author Ignacio Ortega
+ * @version $Revision: 1.21 $ $Date: 2002/06/09 02:19:43 $
+ */
 
-public class JDBCRealm
-    extends RealmBase {
-
+public class JDBCRealm extends RealmBase {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The connection username to use when trying to connect to the database.
      */
     protected String connectionName = null;
 
-
     /**
      * The connection URL to use when trying to connect to the database.
      */
     protected String connectionPassword = null;
-
 
     /**
      * The connection URL to use when trying to connect to the database.
      */
     protected String connectionURL = null;
 
-
     /**
      * The connection to the database.
      */
     protected Connection dbConnection = null;
-
 
     /**
      * Instance of the JDBC Driver class we use as a connection factory.
      */
     protected Driver driver = null;
 
-
     /**
      * The JDBC driver to use.
      */
     protected String driverName = null;
 
-
     /**
      * Descriptive information about this Realm implementation.
      */
-    protected static final String info =
-        "org.apache.catalina.realm.JDBCRealm/1.0";
-
+    protected static final String info = "org.apache.catalina.realm.JDBCRealm/1.0";
 
     /**
      * Descriptive information about this Realm implementation.
      */
     protected static final String name = "JDBCRealm";
 
-
     /**
      * The PreparedStatement to use for authenticating users.
      */
     protected PreparedStatement preparedCredentials = null;
-
 
     /**
      * The PreparedStatement to use for identifying the roles for
@@ -159,43 +136,36 @@ public class JDBCRealm
      */
     protected PreparedStatement preparedRoles = null;
 
-
     /**
      * The column in the user role table that names a role
      */
     protected String roleNameCol = null;
 
-
     /**
      * The string manager for this package.
      */
-    protected static final StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The column in the user table that holds the user's credintials
      */
     protected String userCredCol = null;
 
-
     /**
      * The column in the user table that holds the user's name
      */
     protected String userNameCol = null;
-
 
     /**
      * The table that holds the relation between user's and roles
      */
     protected String userRoleTable = null;
 
-
     /**
      * The table that holds user data.
      */
     protected String userTable = null;
-
 
     // ------------------------------------------------------------- Properties
 
@@ -246,8 +216,8 @@ public class JDBCRealm
      *
      * @param connectionURL The new connection URL
      */
-    public void setConnectionURL( String connectionURL ) {
-      this.connectionURL = connectionURL;
+    public void setConnectionURL(String connectionURL) {
+        this.connectionURL = connectionURL;
     }
 
     /**
@@ -263,8 +233,8 @@ public class JDBCRealm
      *
      * @param driverName The driver name
      */
-    public void setDriverName( String driverName ) {
-      this.driverName = driverName;
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
     }
 
     /**
@@ -280,7 +250,7 @@ public class JDBCRealm
      *
      * @param roleNameCol The column name
      */
-    public void setRoleNameCol( String roleNameCol ) {
+    public void setRoleNameCol(String roleNameCol) {
         this.roleNameCol = roleNameCol;
     }
 
@@ -297,8 +267,8 @@ public class JDBCRealm
      *
      * @param userCredCol The column name
      */
-    public void setUserCredCol( String userCredCol ) {
-       this.userCredCol = userCredCol;
+    public void setUserCredCol(String userCredCol) {
+        this.userCredCol = userCredCol;
     }
 
     /**
@@ -314,8 +284,8 @@ public class JDBCRealm
      *
      * @param userNameCol The column name
      */
-    public void setUserNameCol( String userNameCol ) {
-       this.userNameCol = userNameCol;
+    public void setUserNameCol(String userNameCol) {
+        this.userNameCol = userNameCol;
     }
 
     /**
@@ -331,7 +301,7 @@ public class JDBCRealm
      *
      * @param userRoleTable The table name
      */
-    public void setUserRoleTable( String userRoleTable ) {
+    public void setUserRoleTable(String userRoleTable) {
         this.userRoleTable = userRoleTable;
     }
 
@@ -348,13 +318,11 @@ public class JDBCRealm
      *
      * @param userTable The table name
      */
-    public void setUserTable( String userTable ) {
-      this.userTable = userTable;
+    public void setUserTable(String userTable) {
+        this.userTable = userTable;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return the Principal associated with the specified username and
@@ -365,9 +333,9 @@ public class JDBCRealm
      * event is also logged, and the connection will be closed so that
      * a subsequent request will automatically re-open it.
      *
-     * @param username Username of the Principal to look up
+     * @param username    Username of the Principal to look up
      * @param credentials Password or other credentials to use in
-     *  authenticating this username
+     *                    authenticating this username
      */
     public Principal authenticate(String username, String credentials) {
 
@@ -379,8 +347,8 @@ public class JDBCRealm
             dbConnection = open();
 
             // Acquire a Principal object for this user
-            Principal principal = authenticate(dbConnection,
-                                               username, credentials);
+            Principal principal = authenticate(dbConnection, username,
+                    credentials);
 
             // Release the database connection we just used
             release(dbConnection);
@@ -404,28 +372,23 @@ public class JDBCRealm
 
     }
 
-
     // -------------------------------------------------------- Package Methods
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Return the Principal associated with the specified username and
      * credentials, if there is one; otherwise return <code>null</code>.
      *
      * @param dbConnection The database connection to be used
-     * @param username Username of the Principal to look up
-     * @param credentials Password or other credentials to use in
-     *  authenticating this username
+     * @param username     Username of the Principal to look up
+     * @param credentials  Password or other credentials to use in
+     *                     authenticating this username
      *
      * @exception SQLException if a database error occurs
      */
     public synchronized Principal authenticate(Connection dbConnection,
-                                               String username,
-                                               String credentials)
-        throws SQLException {
+            String username, String credentials) throws SQLException {
 
         // Look up the user's credentials
         String dbCredentials = null;
@@ -449,12 +412,10 @@ public class JDBCRealm
 
         if (validated) {
             if (debug >= 2)
-                log(sm.getString("jdbcRealm.authenticateSuccess",
-                                 username));
+                log(sm.getString("jdbcRealm.authenticateSuccess", username));
         } else {
             if (debug >= 2)
-                log(sm.getString("jdbcRealm.authenticateFailure",
-                                 username));
+                log(sm.getString("jdbcRealm.authenticateFailure", username));
             return (null);
         }
 
@@ -472,7 +433,6 @@ public class JDBCRealm
         return (new GenericPrincipal(this, username, credentials, list));
 
     }
-
 
     /**
      * Close the specified database connection.
@@ -511,19 +471,17 @@ public class JDBCRealm
 
     }
 
-
     /**
      * Return a PreparedStatement configured to perform the SELECT required
      * to retrieve user credentials for the specified username.
      *
      * @param dbConnection The database connection to be used
-     * @param username Username for which credentials should be retrieved
+     * @param username     Username for which credentials should be retrieved
      *
      * @exception SQLException if a database error occurs
      */
     protected PreparedStatement credentials(Connection dbConnection,
-                                            String username)
-        throws SQLException {
+            String username) throws SQLException {
 
         if (preparedCredentials == null) {
             StringBuffer sb = new StringBuffer("SELECT ");
@@ -533,15 +491,13 @@ public class JDBCRealm
             sb.append(" WHERE ");
             sb.append(userNameCol);
             sb.append(" = ?");
-            preparedCredentials =
-                dbConnection.prepareStatement(sb.toString());
+            preparedCredentials = dbConnection.prepareStatement(sb.toString());
         }
 
         preparedCredentials.setString(1, username);
         return (preparedCredentials);
 
     }
-
 
     /**
      * Return a short name for this Realm implementation.
@@ -552,7 +508,6 @@ public class JDBCRealm
 
     }
 
-
     /**
      * Return the password associated with the given principal's user name.
      */
@@ -562,7 +517,6 @@ public class JDBCRealm
 
     }
 
-
     /**
      * Return the Principal associated with the given user name.
      */
@@ -571,7 +525,6 @@ public class JDBCRealm
         return (null);
 
     }
-
 
     /**
      * Open (if necessary) and return a database connection for use by
@@ -607,7 +560,6 @@ public class JDBCRealm
 
     }
 
-
     /**
      * Release our use of this connection so that it can be recycled.
      *
@@ -619,18 +571,17 @@ public class JDBCRealm
 
     }
 
-
     /**
      * Return a PreparedStatement configured to perform the SELECT required
      * to retrieve user roles for the specified username.
      *
      * @param dbConnection The database connection to be used
-     * @param username Username for which roles should be retrieved
+     * @param username     Username for which roles should be retrieved
      *
      * @exception SQLException if a database error occurs
      */
     protected PreparedStatement roles(Connection dbConnection, String username)
-        throws SQLException {
+            throws SQLException {
 
         if (preparedRoles == null) {
             StringBuffer sb = new StringBuffer("SELECT ");
@@ -640,8 +591,7 @@ public class JDBCRealm
             sb.append(" WHERE ");
             sb.append(userNameCol);
             sb.append(" = ?");
-            preparedRoles =
-                dbConnection.prepareStatement(sb.toString());
+            preparedRoles = dbConnection.prepareStatement(sb.toString());
         }
 
         preparedRoles.setString(1, username);
@@ -649,16 +599,14 @@ public class JDBCRealm
 
     }
 
-
     // ------------------------------------------------------ Lifecycle Methods
-
 
     /**
      *
      * Prepare for active use of the public methods of this Component.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents it from being started
+     *                               that prevents it from being started
      */
     public void start() throws LifecycleException {
 
@@ -674,12 +622,11 @@ public class JDBCRealm
 
     }
 
-
     /**
      * Gracefully shut down active use of the public methods of this Component.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that needs to be reported
+     *                               that needs to be reported
      */
     public void stop() throws LifecycleException {
 
@@ -690,6 +637,5 @@ public class JDBCRealm
         close(this.dbConnection);
 
     }
-
 
 }

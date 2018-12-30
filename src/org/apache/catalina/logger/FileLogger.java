@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/logger/FileLogger.java,v 1.8 2002/06/09 02:19:43 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/logger/
+ * FileLogger.java,v 1.8 2002/06/09 02:19:43 remm Exp $
  * $Revision: 1.8 $
  * $Date: 2002/06/09 02:19:43 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +43,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.logger;
-
 
 import java.io.File;
 import java.io.FileWriter;
@@ -76,7 +63,6 @@ import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.util.LifecycleSupport;
 import org.apache.catalina.util.StringManager;
 
-
 /**
  * Implementation of <b>Logger</b> that appends log messages to a file
  * named {prefix}.{date}.{suffix} in a configured directory, with an
@@ -86,13 +72,9 @@ import org.apache.catalina.util.StringManager;
  * @version $Revision: 1.8 $ $Date: 2002/06/09 02:19:43 $
  */
 
-public class FileLogger
-    extends LoggerBase
-    implements Lifecycle {
-
+public class FileLogger extends LoggerBase implements Lifecycle {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The as-of date for the currently open log file, or a zero-length
@@ -100,65 +82,52 @@ public class FileLogger
      */
     private String date = "";
 
-
     /**
      * The directory in which log files are created.
      */
     private String directory = "logs";
 
-
     /**
      * The descriptive information about this implementation.
      */
-    protected static final String info =
-        "org.apache.catalina.logger.FileLogger/1.0";
-
+    protected static final String info = "org.apache.catalina.logger.FileLogger/1.0";
 
     /**
      * The lifecycle event support for this component.
      */
     protected LifecycleSupport lifecycle = new LifecycleSupport(this);
 
-
     /**
      * The prefix that is added to log file filenames.
      */
     private String prefix = "catalina.";
 
-
     /**
      * The string manager for this package.
      */
-    private StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    private StringManager sm = StringManager.getManager(Constants.Package);
 
     /**
      * Has this component been started?
      */
     private boolean started = false;
 
-
     /**
      * The suffix that is added to log file filenames.
      */
     private String suffix = ".log";
-
 
     /**
      * Should logged messages be date/time stamped?
      */
     private boolean timestamp = false;
 
-
     /**
      * The PrintWriter to which we are currently logging, if any.
      */
     private PrintWriter writer = null;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the directory in which we create log files.
@@ -168,7 +137,6 @@ public class FileLogger
         return (directory);
 
     }
-
 
     /**
      * Set the directory in which we create log files.
@@ -183,7 +151,6 @@ public class FileLogger
 
     }
 
-
     /**
      * Return the log file prefix.
      */
@@ -192,7 +159,6 @@ public class FileLogger
         return (prefix);
 
     }
-
 
     /**
      * Set the log file prefix.
@@ -207,7 +173,6 @@ public class FileLogger
 
     }
 
-
     /**
      * Return the log file suffix.
      */
@@ -216,7 +181,6 @@ public class FileLogger
         return (suffix);
 
     }
-
 
     /**
      * Set the log file suffix.
@@ -231,7 +195,6 @@ public class FileLogger
 
     }
 
-
     /**
      * Return the timestamp flag.
      */
@@ -240,7 +203,6 @@ public class FileLogger
         return (timestamp);
 
     }
-
 
     /**
      * Set the timestamp flag.
@@ -252,21 +214,19 @@ public class FileLogger
         boolean oldTimestamp = this.timestamp;
         this.timestamp = timestamp;
         support.firePropertyChange("timestamp", new Boolean(oldTimestamp),
-                                   new Boolean(this.timestamp));
+                new Boolean(this.timestamp));
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Writes the specified message to a servlet log file, usually an event
-     * log.  The name and type of the servlet log is specific to the
+     * log. The name and type of the servlet log is specific to the
      * servlet container.
      *
      * @param msg A <code>String</code> specifying the message to be written
-     *  to the log file
+     *            to the log file
      */
     public void log(String msg) {
 
@@ -297,9 +257,7 @@ public class FileLogger
 
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Close the currently open log file (if any)
@@ -315,7 +273,6 @@ public class FileLogger
 
     }
 
-
     /**
      * Open the new log file for the date specified by <code>date</code>.
      */
@@ -329,8 +286,8 @@ public class FileLogger
 
         // Open the current log file
         try {
-            String pathname = dir.getAbsolutePath() + File.separator +
-                prefix + date + suffix;
+            String pathname = dir.getAbsolutePath() + File.separator + prefix
+                    + date + suffix;
             writer = new PrintWriter(new FileWriter(pathname, true), true);
         } catch (IOException e) {
             writer = null;
@@ -338,9 +295,7 @@ public class FileLogger
 
     }
 
-
     // ------------------------------------------------------ Lifecycle Methods
-
 
     /**
      * Add a lifecycle event listener to this component.
@@ -353,7 +308,6 @@ public class FileLogger
 
     }
 
-
     /**
      * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
@@ -363,7 +317,6 @@ public class FileLogger
         return lifecycle.findLifecycleListeners();
 
     }
-
 
     /**
      * Remove a lifecycle event listener from this component.
@@ -376,41 +329,39 @@ public class FileLogger
 
     }
 
-
     /**
      * Prepare for the beginning of active use of the public methods of this
-     * component.  This method should be called after <code>configure()</code>,
+     * component. This method should be called after <code>configure()</code>,
      * and before any of the public methods of the component are utilized.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     public void start() throws LifecycleException {
 
         // Validate and update our current component state
         if (started)
-            throw new LifecycleException
-                (sm.getString("fileLogger.alreadyStarted"));
+            throw new LifecycleException(sm.getString(
+                    "fileLogger.alreadyStarted"));
         lifecycle.fireLifecycleEvent(START_EVENT, null);
         started = true;
 
     }
 
-
     /**
      * Gracefully terminate the active use of the public methods of this
-     * component.  This method should be the last one called on a given
+     * component. This method should be the last one called on a given
      * instance of this component.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that needs to be reported
+     *                               that needs to be reported
      */
     public void stop() throws LifecycleException {
 
         // Validate and update our current component state
         if (!started)
-            throw new LifecycleException
-                (sm.getString("fileLogger.notStarted"));
+            throw new LifecycleException(sm.getString("fileLogger.notStarted"));
         lifecycle.fireLifecycleEvent(STOP_EVENT, null);
         started = false;
 
@@ -418,6 +369,4 @@ public class FileLogger
 
     }
 
-
 }
-

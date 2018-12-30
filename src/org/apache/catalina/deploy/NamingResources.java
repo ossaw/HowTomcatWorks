@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/deploy/NamingResources.java,v 1.10 2002/06/19 21:17:19 amyroh Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/deploy/
+ * NamingResources.java,v 1.10 2002/06/19 21:17:19 amyroh Exp $
  * $Revision: 1.10 $
  * $Date: 2002/06/19 21:17:19 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,28 +43,22 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.deploy;
-
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Hashtable;
 
-
 /**
- * Holds and manages the naming resources defined in the J2EE Enterprise 
+ * Holds and manages the naming resources defined in the J2EE Enterprise
  * Naming Context and their associated JNDI context.
  *
  * @author Remy Maucherat
@@ -81,25 +67,19 @@ import java.util.Hashtable;
 
 public final class NamingResources {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Create a new NamingResources instance.
      */
-    public NamingResources() {
-    }
-
+    public NamingResources() {}
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Associated container object.
      */
     private Object container = null;
-
 
     /**
      * List of naming entries, keyed by name. The value is the entry type, as
@@ -107,25 +87,21 @@ public final class NamingResources {
      */
     private Hashtable entries = new Hashtable();
 
-
     /**
      * The EJB resource references for this web application, keyed by name.
      */
     private HashMap ejbs = new HashMap();
-
 
     /**
      * The environment entries for this web application, keyed by name.
      */
     private HashMap envs = new HashMap();
 
-
     /**
-     * The local  EJB resource references for this web application, keyed by
+     * The local EJB resource references for this web application, keyed by
      * name.
      */
     private HashMap localEjbs = new HashMap();
-
 
     /**
      * The resource environment references for this web application,
@@ -133,33 +109,27 @@ public final class NamingResources {
      */
     private HashMap resourceEnvRefs = new HashMap();
 
-
     /**
      * The resource references for this web application, keyed by name.
      */
     private HashMap resources = new HashMap();
-
 
     /**
      * The resource links for this web application, keyed by name.
      */
     private HashMap resourceLinks = new HashMap();
 
-
     /**
      * The resource parameters for this web application, keyed by name.
      */
     private HashMap resourceParams = new HashMap();
-
 
     /**
      * The property change support for this component.
      */
     protected PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Get the container with which the naming resources are associated.
@@ -168,14 +138,12 @@ public final class NamingResources {
         return container;
     }
 
-
     /**
      * Set the container with which the naming resources are associated.
      */
     public void setContainer(Object container) {
         this.container = container;
     }
-
 
     /**
      * Add an EJB resource reference for this web application.
@@ -198,7 +166,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Add an environment entry for this web application.
      *
@@ -220,7 +187,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Add resource parameters for this web application.
      *
@@ -234,12 +200,11 @@ public final class NamingResources {
             }
             resourceParameters.setNamingResources(this);
             resourceParams.put(resourceParameters.getName(),
-                               resourceParameters);
+                    resourceParameters);
         }
         support.firePropertyChange("resourceParams", null, resourceParameters);
 
     }
-
 
     /**
      * Add a local EJB resource reference for this web application.
@@ -262,7 +227,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Add a property change listener to this component.
      *
@@ -273,7 +237,6 @@ public final class NamingResources {
         support.addPropertyChangeListener(listener);
 
     }
-
 
     /**
      * Add a resource reference for this web application.
@@ -296,7 +259,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Add a resource environment reference for this web application.
      *
@@ -314,11 +276,9 @@ public final class NamingResources {
         synchronized (resourceEnvRefs) {
             resourceEnvRefs.put(name, type);
         }
-        support.firePropertyChange("resourceEnvRef", null,
-                                   name + ":" + type);
+        support.firePropertyChange("resourceEnvRef", null, name + ":" + type);
 
     }
-
 
     /**
      * Add a resource link for this web application.
@@ -345,7 +305,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Return the EJB resource reference with the specified name, if any;
      * otherwise, return <code>null</code>.
@@ -360,7 +319,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Return the defined EJB resource references for this application.
      * If there are none, a zero-length array is returned.
@@ -373,7 +331,6 @@ public final class NamingResources {
         }
 
     }
-
 
     /**
      * Return the environment entry with the specified name, if any;
@@ -389,10 +346,9 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Return the set of defined environment entries for this web
-     * application.  If none have been defined, a zero-length array
+     * application. If none have been defined, a zero-length array
      * is returned.
      */
     public ContextEnvironment[] findEnvironments() {
@@ -403,7 +359,6 @@ public final class NamingResources {
         }
 
     }
-
 
     /**
      * Return the local EJB resource reference with the specified name, if any;
@@ -419,7 +374,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Return the defined local EJB resource references for this application.
      * If there are none, a zero-length array is returned.
@@ -432,7 +386,6 @@ public final class NamingResources {
         }
 
     }
-
 
     /**
      * Return the resource reference with the specified name, if any;
@@ -448,7 +401,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Return the resource link with the specified name, if any;
      * otherwise return <code>null</code>.
@@ -463,25 +415,23 @@ public final class NamingResources {
 
     }
 
-
     /**
-     * Return the defined resource links for this application.  If
+     * Return the defined resource links for this application. If
      * none have been defined, a zero-length array is returned.
      */
     public ContextResourceLink[] findResourceLinks() {
 
         synchronized (resourceLinks) {
-            ContextResourceLink results[] = 
-                new ContextResourceLink[resourceLinks.size()];
-            return ((ContextResourceLink[]) resourceLinks.values()
-                    .toArray(results));
+            ContextResourceLink results[] = new ContextResourceLink[resourceLinks
+                    .size()];
+            return ((ContextResourceLink[]) resourceLinks.values().toArray(
+                    results));
         }
 
     }
 
-
     /**
-     * Return the defined resource references for this application.  If
+     * Return the defined resource references for this application. If
      * none have been defined, a zero-length array is returned.
      */
     public ContextResource[] findResources() {
@@ -492,7 +442,6 @@ public final class NamingResources {
         }
 
     }
-
 
     /**
      * Return the resource environment reference type for the specified
@@ -508,10 +457,9 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Return the set of resource environment reference names for this
-     * web application.  If none have been specified, a zero-length
+     * web application. If none have been specified, a zero-length
      * array is returned.
      */
     public String[] findResourceEnvRefs() {
@@ -522,7 +470,6 @@ public final class NamingResources {
         }
 
     }
-
 
     /**
      * Return the resource parameters with the specified name, if any;
@@ -538,7 +485,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Return the resource parameters with the specified name, if any;
      * otherwise return <code>null</code>.
@@ -548,14 +494,13 @@ public final class NamingResources {
     public ResourceParams[] findResourceParams() {
 
         synchronized (resourceParams) {
-            ResourceParams results[] = 
-                new ResourceParams[resourceParams.size()];
-            return ((ResourceParams[]) resourceParams.values()
-                    .toArray(results));
+            ResourceParams results[] = new ResourceParams[resourceParams
+                    .size()];
+            return ((ResourceParams[]) resourceParams.values().toArray(
+                    results));
         }
 
     }
-
 
     /**
      * Return true if the name specified already exists.
@@ -565,7 +510,6 @@ public final class NamingResources {
         return (entries.containsKey(name));
 
     }
-
 
     /**
      * Remove any EJB resource reference with the specified name.
@@ -587,7 +531,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Remove any environment entry with the specified name.
      *
@@ -607,7 +550,6 @@ public final class NamingResources {
         }
 
     }
-
 
     /**
      * Remove any local EJB resource reference with the specified name.
@@ -629,7 +571,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Remove a property change listener from this component.
      *
@@ -640,7 +581,6 @@ public final class NamingResources {
         support.removePropertyChangeListener(listener);
 
     }
-
 
     /**
      * Remove any resource reference with the specified name.
@@ -662,7 +602,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Remove any resource environment reference with the specified name.
      *
@@ -677,12 +616,11 @@ public final class NamingResources {
             type = (String) resourceEnvRefs.remove(name);
         }
         if (type != null) {
-            support.firePropertyChange("resourceEnvRef",
-                                       name + ":" + type, null);
+            support.firePropertyChange("resourceEnvRef", name + ":" + type,
+                    null);
         }
 
     }
-
 
     /**
      * Remove any resource link with the specified name.
@@ -704,7 +642,6 @@ public final class NamingResources {
 
     }
 
-
     /**
      * Remove any resource parameters with the specified name.
      *
@@ -718,11 +655,10 @@ public final class NamingResources {
         }
         if (resourceParameters != null) {
             support.firePropertyChange("resourceParams", resourceParameters,
-                                       null);
+                    null);
             resourceParameters.setNamingResources(null);
         }
 
     }
-
 
 }

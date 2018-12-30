@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/startup/EmbeddedManager.java,v 1.4 2001/09/26 18:55:40 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/startup/
+ * EmbeddedManager.java,v 1.4 2001/09/26 18:55:40 remm Exp $
  * $Revision: 1.4 $
  * $Date: 2001/09/26 18:55:40 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,14 +43,11 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
 package org.apache.catalina.startup;
@@ -84,59 +73,45 @@ import javax.management.Notification;
  * @version $Revision: 1.4 $
  */
 
-public final class EmbeddedManager
-    extends NotificationBroadcasterSupport
-    implements EmbeddedManagerMBean, MBeanRegistration {
-
+public final class EmbeddedManager extends NotificationBroadcasterSupport
+        implements EmbeddedManagerMBean, MBeanRegistration {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Status of the Slide domain.
      */
     private int state = STOPPED;
 
-
     /**
      * Notification sequence number.
      */
     private long sequenceNumber = 0;
-
 
     /**
      * Embedded Catalina.
      */
     private Embedded embedded = new Embedded();
 
-
     // ---------------------------------------------- MBeanRegistration Methods
 
-
     public ObjectName preRegister(MBeanServer server, ObjectName name)
-        throws Exception {
+            throws Exception {
         return new ObjectName(OBJECT_NAME);
     }
-
 
     public void postRegister(Boolean registrationDone) {
         if (!registrationDone.booleanValue())
             destroy();
     }
 
-
-    public void preDeregister()
-        throws Exception {
-    }
-
+    public void preDeregister() throws Exception {}
 
     public void postDeregister() {
         destroy();
     }
 
-
     // ----------------------------------------------------- SlideMBean Methods
-
 
     /**
      * Retruns the Catalina component name.
@@ -145,7 +120,6 @@ public final class EmbeddedManager
         return NAME;
     }
 
-
     /**
      * Returns the state.
      */
@@ -153,14 +127,12 @@ public final class EmbeddedManager
         return state;
     }
 
-
     /**
      * Returns a String representation of the state.
      */
     public String getStateString() {
         return states[state];
     }
-
 
     /**
      * Start the servlet container.
@@ -176,10 +148,10 @@ public final class EmbeddedManager
 
         // Notifying the MBEan server that we're starting
 
-        notification = new AttributeChangeNotification
-            (this, sequenceNumber++, System.currentTimeMillis(),
-             "Starting " + NAME, "State", "java.lang.Integer",
-             new Integer(STOPPED), new Integer(STARTING));
+        notification = new AttributeChangeNotification(this, sequenceNumber++,
+                System.currentTimeMillis(), "Starting " + NAME, "State",
+                "java.lang.Integer", new Integer(STOPPED), new Integer(
+                        STARTING));
         sendNotification(notification);
 
         try {
@@ -187,23 +159,22 @@ public final class EmbeddedManager
             embedded.start();
 
             state = STARTED;
-            notification = new AttributeChangeNotification
-                (this, sequenceNumber++, System.currentTimeMillis(),
-                 "Started " + NAME, "State", "java.lang.Integer",
-                 new Integer(STARTING), new Integer(STARTED));
+            notification = new AttributeChangeNotification(this,
+                    sequenceNumber++, System.currentTimeMillis(), "Started "
+                            + NAME, "State", "java.lang.Integer", new Integer(
+                                    STARTING), new Integer(STARTED));
             sendNotification(notification);
 
         } catch (Throwable t) {
             state = STOPPED;
-            notification = new AttributeChangeNotification
-                (this, sequenceNumber++, System.currentTimeMillis(),
-                 "Stopped " + NAME, "State", "java.lang.Integer",
-                 new Integer(STARTING), new Integer(STOPPED));
+            notification = new AttributeChangeNotification(this,
+                    sequenceNumber++, System.currentTimeMillis(), "Stopped "
+                            + NAME, "State", "java.lang.Integer", new Integer(
+                                    STARTING), new Integer(STOPPED));
             sendNotification(notification);
         }
 
     }
-
 
     /**
      * Stop the servlet container.
@@ -217,10 +188,10 @@ public final class EmbeddedManager
 
         state = STOPPING;
 
-        notification = new AttributeChangeNotification
-            (this, sequenceNumber++, System.currentTimeMillis(),
-             "Stopping " + NAME, "State", "java.lang.Integer",
-             new Integer(STARTED), new Integer(STOPPING));
+        notification = new AttributeChangeNotification(this, sequenceNumber++,
+                System.currentTimeMillis(), "Stopping " + NAME, "State",
+                "java.lang.Integer", new Integer(STARTED), new Integer(
+                        STOPPING));
         sendNotification(notification);
 
         try {
@@ -236,14 +207,13 @@ public final class EmbeddedManager
 
         state = STOPPED;
 
-        notification = new AttributeChangeNotification
-            (this, sequenceNumber++, System.currentTimeMillis(),
-             "Stopped " + NAME, "State", "java.lang.Integer",
-             new Integer(STOPPING), new Integer(STOPPED));
+        notification = new AttributeChangeNotification(this, sequenceNumber++,
+                System.currentTimeMillis(), "Stopped " + NAME, "State",
+                "java.lang.Integer", new Integer(STOPPING), new Integer(
+                        STOPPED));
         sendNotification(notification);
 
     }
-
 
     /**
      * Destroy servlet container (if any is running).
@@ -255,14 +225,12 @@ public final class EmbeddedManager
 
     }
 
-
-   /**
+    /**
      * Return the debugging detail level for this component.
      */
     public int getDebug() {
         return embedded.getDebug();
     }
-
 
     /**
      * Set the debugging detail level for this component.
@@ -273,14 +241,12 @@ public final class EmbeddedManager
         embedded.setDebug(debug);
     }
 
-
     /**
      * Return true if naming is enabled.
      */
     public boolean isUseNaming() {
         return embedded.isUseNaming();
     }
-
 
     /**
      * Enables or disables naming support.
@@ -291,14 +257,12 @@ public final class EmbeddedManager
         embedded.setUseNaming(useNaming);
     }
 
-
     /**
      * Return the Logger for this component.
      */
     public Logger getLogger() {
         return embedded.getLogger();
     }
-
 
     /**
      * Set the Logger for this component.
@@ -309,14 +273,12 @@ public final class EmbeddedManager
         embedded.setLogger(logger);
     }
 
-
     /**
      * Return the default Realm for our Containers.
      */
     public Realm getRealm() {
         return embedded.getRealm();
     }
-
 
     /**
      * Set the default Realm for our Containers.
@@ -327,14 +289,12 @@ public final class EmbeddedManager
         embedded.setRealm(realm);
     }
 
-
     /**
      * Return the secure socket factory class name.
      */
     public String getSocketFactory() {
         return embedded.getSocketFactory();
     }
-
 
     /**
      * Set the secure socket factory class name.
@@ -345,9 +305,8 @@ public final class EmbeddedManager
         embedded.setSocketFactory(socketFactory);
     }
 
-
     /**
-     * Add a new Connector to the set of defined Connectors.  The newly
+     * Add a new Connector to the set of defined Connectors. The newly
      * added Connector will be associated with the most recently added Engine.
      *
      * @param connector The connector to be added
@@ -358,7 +317,6 @@ public final class EmbeddedManager
         embedded.addConnector(connector);
     }
 
-
     /**
      * Add a new Engine to the set of defined Engines.
      *
@@ -368,21 +326,19 @@ public final class EmbeddedManager
         embedded.addEngine(engine);
     }
 
-
     /**
      * Create, configure, and return a new TCP/IP socket connector
      * based on the specified properties.
      *
      * @param address InetAddress to listen to, or <code>null</code>
-     *  to listen on all address on this server
-     * @param port Port number to listen to
-     * @param secure Should this port be SSL-enabled?
+     *                to listen on all address on this server
+     * @param port    Port number to listen to
+     * @param secure  Should this port be SSL-enabled?
      */
     public Connector createConnector(InetAddress address, int port,
-                                     boolean secure) {
+            boolean secure) {
         return embedded.createConnector(address, port, secure);
     }
-
 
     /**
      * Create, configure, and return a Context that will process all
@@ -393,24 +349,26 @@ public final class EmbeddedManager
      * After you have customized the properties, listeners, and Valves
      * for this Context, you must attach it to the corresponding Host
      * by calling:
+     * 
      * <pre>
-     *   host.addChild(context);
+     * host.addChild(context);
      * </pre>
+     * 
      * which will also cause the Context to be started if the Host has
      * already been started.
      *
-     * @param path Context path of this application ("" for the default
-     *  application for this host, must start with a slash otherwise)
+     * @param path    Context path of this application ("" for the default
+     *                application for this host, must start with a slash
+     *                otherwise)
      * @param docBase Absolute pathname to the document base directory
-     *  for this web application
+     *                for this web application
      *
      * @exception IllegalArgumentException if an invalid parameter
-     *  is specified
+     *                                     is specified
      */
     public Context createContext(String path, String docBase) {
         return embedded.createContext(path, docBase);
     }
-
 
     /**
      * Create, configure, and return an Engine that will process all
@@ -421,7 +379,6 @@ public final class EmbeddedManager
         return embedded.createEngine();
     }
 
-
     /**
      * Create, configure, and return a Host that will process all
      * HTTP requests received from one of the associated Connectors,
@@ -430,28 +387,30 @@ public final class EmbeddedManager
      * After you have customized the properties, listeners, and Valves
      * for this Host, you must attach it to the corresponding Engine
      * by calling:
+     * 
      * <pre>
-     *   engine.addChild(host);
+     * engine.addChild(host);
      * </pre>
+     * 
      * which will also cause the Host to be started if the Engine has
-     * already been started.  If this is the default (or only) Host you
+     * already been started. If this is the default (or only) Host you
      * will be defining, you may also tell the Engine to pass all requests
      * not assigned to another virtual host to this one:
+     * 
      * <pre>
-     *   engine.setDefaultHost(host.getName());
+     * engine.setDefaultHost(host.getName());
      * </pre>
      *
-     * @param name Canonical name of this virtual host
+     * @param name    Canonical name of this virtual host
      * @param appBase Absolute pathname to the application base directory
-     *  for this virtual host
+     *                for this virtual host
      *
      * @exception IllegalArgumentException if an invalid parameter
-     *  is specified
+     *                                     is specified
      */
     public Host createHost(String name, String appBase) {
         return embedded.createHost(name, appBase);
     }
-
 
     /**
      * Return descriptive information about this Server implementation and
@@ -462,7 +421,6 @@ public final class EmbeddedManager
         return embedded.getInfo();
     }
 
-
     /**
      * Remove the specified Connector from the set of defined Connectors.
      *
@@ -472,10 +430,9 @@ public final class EmbeddedManager
         embedded.removeConnector(connector);
     }
 
-
     /**
      * Remove the specified Context from the set of defined Contexts for its
-     * associated Host.  If this is the last Context for this Host, the Host
+     * associated Host. If this is the last Context for this Host, the Host
      * will also be removed.
      *
      * @param context The Context to be removed
@@ -484,10 +441,9 @@ public final class EmbeddedManager
         embedded.removeContext(context);
     }
 
-
     /**
      * Remove the specified Engine from the set of defined Engines, along with
-     * all of its related Hosts and Contexts.  All associated Connectors are
+     * all of its related Hosts and Contexts. All associated Connectors are
      * also removed.
      *
      * @param engine The Engine to be removed
@@ -496,10 +452,9 @@ public final class EmbeddedManager
         embedded.removeEngine(engine);
     }
 
-
     /**
      * Remove the specified Host, along with all of its related Contexts,
-     * from the set of defined Hosts for its associated Engine.  If this is
+     * from the set of defined Hosts for its associated Engine. If this is
      * the last Host for this Engine, the Engine will also be removed.
      *
      * @param host The Host to be removed
@@ -507,6 +462,5 @@ public final class EmbeddedManager
     public void removeHost(Host host) {
         embedded.removeHost(host);
     }
-
 
 }

@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/core/StandardContextValve.java,v 1.16 2002/03/14 20:58:24 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/core/
+ * StandardContextValve.java,v 1.16 2002/03/14 20:58:24 remm Exp $
  * $Revision: 1.16 $
  * $Date: 2002/03/14 20:58:24 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999-2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999-2001 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +43,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.core;
-
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -78,41 +65,33 @@ import org.apache.catalina.Wrapper;
 import org.apache.catalina.util.StringManager;
 import org.apache.catalina.valves.ValveBase;
 
-
 /**
  * Valve that implements the default basic behavior for the
  * <code>StandardContext</code> container implementation.
  * <p>
- * <b>USAGE CONSTRAINT</b>:  This implementation is likely to be useful only
+ * <b>USAGE CONSTRAINT</b>: This implementation is likely to be useful only
  * when processing HTTP requests.
  *
  * @author Craig R. McClanahan
  * @version $Revision: 1.16 $ $Date: 2002/03/14 20:58:24 $
  */
 
-final class StandardContextValve
-    extends ValveBase {
-
+final class StandardContextValve extends ValveBase {
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The descriptive information related to this implementation.
      */
-    private static final String info =
-        "org.apache.catalina.core.StandardContextValve/1.0";
-
+    private static final String info = "org.apache.catalina.core.StandardContextValve/1.0";
 
     /**
      * The string manager for this package.
      */
-    private static final StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return descriptive information about this Valve implementation.
@@ -123,42 +102,38 @@ final class StandardContextValve
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Select the appropriate child Wrapper to process this request,
-     * based on the specified request URI.  If no matching Wrapper can
+     * based on the specified request URI. If no matching Wrapper can
      * be found, return an appropriate HTTP error.
      *
-     * @param request Request to be processed
-     * @param response Response to be produced
+     * @param request      Request to be processed
+     * @param response     Response to be produced
      * @param valveContext Valve context used to forward to the next Valve
      *
-     * @exception IOException if an input/output error occurred
+     * @exception IOException      if an input/output error occurred
      * @exception ServletException if a servlet error occurred
      */
     public void invoke(Request request, Response response,
-                       ValveContext valveContext)
-        throws IOException, ServletException {
+            ValveContext valveContext) throws IOException, ServletException {
 
         // Validate the request and response object types
-        if (!(request.getRequest() instanceof HttpServletRequest) ||
-            !(response.getResponse() instanceof HttpServletResponse)) {
-            return;     // NOTE - Not much else we can do generically
+        if (!(request.getRequest() instanceof HttpServletRequest) || !(response
+                .getResponse() instanceof HttpServletResponse)) {
+            return; // NOTE - Not much else we can do generically
         }
 
         // Disallow any direct access to resources under WEB-INF or META-INF
         HttpServletRequest hreq = (HttpServletRequest) request.getRequest();
         String contextPath = hreq.getContextPath();
         String requestURI = ((HttpRequest) request).getDecodedRequestURI();
-        String relativeURI =
-            requestURI.substring(contextPath.length()).toUpperCase();
-        if (relativeURI.equals("/META-INF") ||
-            relativeURI.equals("/WEB-INF") ||
-            relativeURI.startsWith("/META-INF/") ||
-            relativeURI.startsWith("/WEB-INF/")) {
+        String relativeURI = requestURI.substring(contextPath.length())
+                .toUpperCase();
+        if (relativeURI.equals("/META-INF") || relativeURI.equals("/WEB-INF")
+                || relativeURI.startsWith("/META-INF/") || relativeURI
+                        .startsWith("/WEB-INF/")) {
             notFound(requestURI, (HttpServletResponse) response.getResponse());
             return;
         }
@@ -170,8 +145,8 @@ final class StandardContextValve
         try {
             wrapper = (Wrapper) context.map(request, true);
         } catch (IllegalArgumentException e) {
-            badRequest(requestURI, 
-                       (HttpServletResponse) response.getResponse());
+            badRequest(requestURI, (HttpServletResponse) response
+                    .getResponse());
             return;
         }
         if (wrapper == null) {
@@ -186,18 +161,16 @@ final class StandardContextValve
 
     }
 
-
     // -------------------------------------------------------- Private Methods
 
-
     /**
-     * Report a "bad request" error for the specified resource.  FIXME:  We
+     * Report a "bad request" error for the specified resource. FIXME: We
      * should really be using the error reporting settings for this web
      * application, but currently that code runs at the wrapper level rather
      * than the context level.
      *
      * @param requestURI The request URI for the requested resource
-     * @param response The response we are creating
+     * @param response   The response we are creating
      */
     private void badRequest(String requestURI, HttpServletResponse response) {
 
@@ -212,13 +185,13 @@ final class StandardContextValve
     }
 
     /**
-     * Report a "not found" error for the specified resource.  FIXME:  We
+     * Report a "not found" error for the specified resource. FIXME: We
      * should really be using the error reporting settings for this web
      * application, but currently that code runs at the wrapper level rather
      * than the context level.
      *
      * @param requestURI The request URI for the requested resource
-     * @param response The response we are creating
+     * @param response   The response we are creating
      */
     private void notFound(String requestURI, HttpServletResponse response) {
 

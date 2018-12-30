@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/session/ManagerBase.java,v 1.12 2002/09/19 22:55:48 amyroh Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/session/
+ * ManagerBase.java,v 1.12 2002/09/19 22:55:48 amyroh Exp $
  * $Revision: 1.12 $
  * $Date: 2002/09/19 22:55:48 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +43,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.session;
-
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -81,10 +68,9 @@ import org.apache.catalina.Manager;
 import org.apache.catalina.Session;
 import org.apache.catalina.util.StringManager;
 
-
 /**
  * Minimal implementation of the <b>Manager</b> interface that supports
- * no session persistence or distributable capabilities.  This class may
+ * no session persistence or distributable capabilities. This class may
  * be subclassed to create more sophisticated Manager implementations.
  *
  * @author Craig R. McClanahan
@@ -93,9 +79,7 @@ import org.apache.catalina.util.StringManager;
 
 public abstract class ManagerBase implements Manager {
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The default message digest algorithm to use if we cannot use
@@ -103,54 +87,46 @@ public abstract class ManagerBase implements Manager {
      */
     protected static final String DEFAULT_ALGORITHM = "MD5";
 
-
     /**
      * The number of random bytes to include when generating a
      * session identifier.
      */
     protected static final int SESSION_ID_BYTES = 16;
 
-
     /**
      * The message digest algorithm to be used when generating session
-     * identifiers.  This must be an algorithm supported by the
+     * identifiers. This must be an algorithm supported by the
      * <code>java.security.MessageDigest</code> class on your platform.
      */
     protected String algorithm = DEFAULT_ALGORITHM;
-
 
     /**
      * The Container with which this Manager is associated.
      */
     protected Container container;
 
-
     /**
      * The debugging detail level for this component.
      */
     protected int debug = 0;
 
-
     /**
      * The DefaultContext with which this Manager is associated.
      */
     protected DefaultContext defaultContext = null;
-    
-    
+
     /**
      * Return the MessageDigest implementation to be used when
      * creating session identifiers.
      */
     protected MessageDigest digest = null;
 
-
     /**
-     * The distributable flag for Sessions created by this Manager.  If this
+     * The distributable flag for Sessions created by this Manager. If this
      * flag is set to <code>true</code>, any user attributes added to a
      * session controlled by this Manager must be Serializable.
      */
     protected boolean distributable;
-
 
     /**
      * A String initialization parameter used to increase the entropy of
@@ -158,12 +134,10 @@ public abstract class ManagerBase implements Manager {
      */
     protected String entropy = null;
 
-
     /**
      * The descriptive information string for this implementation.
      */
     private static final String info = "ManagerBase/1.0";
-
 
     /**
      * The default maximum inactive interval for Sessions created by
@@ -171,18 +145,15 @@ public abstract class ManagerBase implements Manager {
      */
     protected int maxInactiveInterval = 60;
 
-
     /**
      * The descriptive name of this Manager implementation (for logging).
      */
     protected static String name = "ManagerBase";
 
-
     /**
      * A random number generator to use when generating session identifiers.
      */
     protected Random random = null;
-
 
     /**
      * The Java class name of the random number generator class to be used
@@ -190,12 +161,10 @@ public abstract class ManagerBase implements Manager {
      */
     protected String randomClass = "java.security.SecureRandom";
 
-
     /**
      * The set of previously recycled Sessions for this Manager.
      */
     protected ArrayList recycled = new ArrayList();
-
 
     /**
      * The set of currently active Sessions for this Manager, keyed by
@@ -203,22 +172,18 @@ public abstract class ManagerBase implements Manager {
      */
     protected HashMap sessions = new HashMap();
 
-
     /**
      * The string manager for this package.
      */
-    protected static StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected static StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The property change support for this component.
      */
     protected PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the message digest algorithm for this Manager.
@@ -228,7 +193,6 @@ public abstract class ManagerBase implements Manager {
         return (this.algorithm);
 
     }
-
 
     /**
      * Set the message digest algorithm for this Manager.
@@ -243,7 +207,6 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Return the Container with which this Manager is associated.
      */
@@ -252,7 +215,6 @@ public abstract class ManagerBase implements Manager {
         return (this.container);
 
     }
-
 
     /**
      * Set the Container with which this Manager is associated.
@@ -267,7 +229,6 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Return the DefaultContext with which this Manager is associated.
      */
@@ -276,7 +237,6 @@ public abstract class ManagerBase implements Manager {
         return (this.defaultContext);
 
     }
-
 
     /**
      * Set the DefaultContext with which this Manager is associated.
@@ -287,11 +247,11 @@ public abstract class ManagerBase implements Manager {
 
         DefaultContext oldDefaultContext = this.defaultContext;
         this.defaultContext = defaultContext;
-        support.firePropertyChange("defaultContext", oldDefaultContext, this.defaultContext);
+        support.firePropertyChange("defaultContext", oldDefaultContext,
+                this.defaultContext);
 
     }
-    
-    
+
     /**
      * Return the debugging detail level for this component.
      */
@@ -300,7 +260,6 @@ public abstract class ManagerBase implements Manager {
         return (this.debug);
 
     }
-
 
     /**
      * Set the debugging detail level for this component.
@@ -313,10 +272,9 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Return the MessageDigest object to be used for calculating
-     * session identifiers.  If none has been created yet, initialize
+     * session identifiers. If none has been created yet, initialize
      * one the first time this method is called.
      */
     public synchronized MessageDigest getDigest() {
@@ -331,8 +289,8 @@ public abstract class ManagerBase implements Manager {
                 try {
                     this.digest = MessageDigest.getInstance(DEFAULT_ALGORITHM);
                 } catch (NoSuchAlgorithmException f) {
-                    log(sm.getString("managerBase.digest",
-                                     DEFAULT_ALGORITHM), e);
+                    log(sm.getString("managerBase.digest", DEFAULT_ALGORITHM),
+                            e);
                     this.digest = null;
                 }
             }
@@ -344,7 +302,6 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Return the distributable flag for the sessions supported by
      * this Manager.
@@ -355,10 +312,9 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Set the distributable flag for the sessions supported by this
-     * Manager.  If this flag is set, all user data objects added to
+     * Manager. If this flag is set, all user data objects added to
      * sessions associated with this manager must implement Serializable.
      *
      * @param distributable The new distributable flag
@@ -367,12 +323,10 @@ public abstract class ManagerBase implements Manager {
 
         boolean oldDistributable = this.distributable;
         this.distributable = distributable;
-        support.firePropertyChange("distributable",
-                                   new Boolean(oldDistributable),
-                                   new Boolean(this.distributable));
+        support.firePropertyChange("distributable", new Boolean(
+                oldDistributable), new Boolean(this.distributable));
 
     }
-
 
     /**
      * Return the entropy increaser value, or compute a semi-useful value
@@ -388,7 +342,6 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Set the entropy increaser value.
      *
@@ -402,7 +355,6 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Return descriptive information about this Manager implementation and
      * the corresponding version number, in the format
@@ -414,7 +366,6 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Return the default maximum inactive interval (in seconds)
      * for Sessions created by this Manager.
@@ -424,7 +375,6 @@ public abstract class ManagerBase implements Manager {
         return (this.maxInactiveInterval);
 
     }
-
 
     /**
      * Set the default maximum inactive interval (in seconds)
@@ -436,12 +386,10 @@ public abstract class ManagerBase implements Manager {
 
         int oldMaxInactiveInterval = this.maxInactiveInterval;
         this.maxInactiveInterval = interval;
-        support.firePropertyChange("maxInactiveInterval",
-                                   new Integer(oldMaxInactiveInterval),
-                                   new Integer(this.maxInactiveInterval));
+        support.firePropertyChange("maxInactiveInterval", new Integer(
+                oldMaxInactiveInterval), new Integer(this.maxInactiveInterval));
 
     }
-
 
     /**
      * Return the descriptive short name of this Manager implementation.
@@ -452,10 +400,9 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Return the random number generator instance we should use for
-     * generating session identifiers.  If there is no such generator
+     * generating session identifiers. If there is no such generator
      * currently defined, construct and seed a new one.
      */
     public synchronized Random getRandom() {
@@ -478,8 +425,7 @@ public abstract class ManagerBase implements Manager {
                         this.random.setSeed(seed);
                     } catch (Exception e) {
                         // Fall back to the simple case
-                        log(sm.getString("managerBase.random", randomClass),
-                            e);
+                        log(sm.getString("managerBase.random", randomClass), e);
                         this.random = new java.util.Random();
                         this.random.setSeed(seed);
                     }
@@ -492,7 +438,6 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Return the random number generator class name.
      */
@@ -501,7 +446,6 @@ public abstract class ManagerBase implements Manager {
         return (this.randomClass);
 
     }
-
 
     /**
      * Set the random number generator class name.
@@ -513,13 +457,11 @@ public abstract class ManagerBase implements Manager {
         String oldRandomClass = this.randomClass;
         this.randomClass = randomClass;
         support.firePropertyChange("randomClass", oldRandomClass,
-                                   this.randomClass);
+                this.randomClass);
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add this Session to the set of active Sessions for this Manager.
@@ -534,7 +476,6 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Add a property change listener to this component.
      *
@@ -546,16 +487,15 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Construct and return a new session object, based on the default
-     * settings specified by this Manager's properties.  The session
+     * settings specified by this Manager's properties. The session
      * id will be assigned by this method, and available via the getId()
-     * method of the returned session.  If a new session cannot be created
+     * method of the returned session. If a new session cannot be created
      * for any reason, return <code>null</code>.
      *
      * @exception IllegalStateException if a new session cannot be
-     *  instantiated for any reason
+     *                                  instantiated for any reason
      */
     public Session createSession() {
 
@@ -586,17 +526,16 @@ public abstract class ManagerBase implements Manager {
             session.setId(sessionId);
         }
         /*
-        synchronized (sessions) {
-            while (sessions.get(sessionId) != null)        // Guarantee uniqueness
-                sessionId = generateSessionId();
-        }
-        */
+         * synchronized (sessions) {
+         * while (sessions.get(sessionId) != null) // Guarantee uniqueness
+         * sessionId = generateSessionId();
+         * }
+         */
         session.setId(sessionId);
 
         return (session);
 
     }
-
 
     /**
      * Return the active Session, associated with this Manager, with the
@@ -605,9 +544,9 @@ public abstract class ManagerBase implements Manager {
      * @param id The session id for the session to be returned
      *
      * @exception IllegalStateException if a new session cannot be
-     *  instantiated for any reason
-     * @exception IOException if an input/output error occurs while
-     *  processing this request
+     *                                  instantiated for any reason
+     * @exception IOException           if an input/output error occurs while
+     *                                  processing this request
      */
     public Session findSession(String id) throws IOException {
 
@@ -619,7 +558,6 @@ public abstract class ManagerBase implements Manager {
         }
 
     }
-
 
     /**
      * Return the set of active Sessions associated with this Manager.
@@ -636,7 +574,6 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Remove this Session from the active Sessions for this Manager.
      *
@@ -650,7 +587,6 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     /**
      * Remove a property change listener from this component.
      *
@@ -662,9 +598,7 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Generate and return a new session identifier.
@@ -695,9 +629,7 @@ public abstract class ManagerBase implements Manager {
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Retrieve the enclosing Engine for this Manager.
@@ -706,17 +638,18 @@ public abstract class ManagerBase implements Manager {
      */
     public Engine getEngine() {
         Engine e = null;
-        for (Container c = getContainer(); e == null && c != null ; c = c.getParent()) {
+        for (Container c = getContainer(); e == null && c != null; c = c
+                .getParent()) {
             if (c != null && c instanceof Engine) {
-                e = (Engine)c;
+                e = (Engine) c;
             }
         }
         return e;
     }
 
-
     /**
      * Retrieve the JvmRoute for the enclosing Engine.
+     * 
      * @return the JvmRoute or null.
      */
     public String getJvmRoute() {
@@ -724,9 +657,7 @@ public abstract class ManagerBase implements Manager {
         return e == null ? null : e.getJvmRoute();
     }
 
-
     // -------------------------------------------------------- Package Methods
-
 
     /**
      * Log a message on the Logger associated with our Container (if any).
@@ -739,23 +670,21 @@ public abstract class ManagerBase implements Manager {
         if (container != null)
             logger = container.getLogger();
         if (logger != null)
-            logger.log(getName() + "[" + container.getName() + "]: "
-                       + message);
+            logger.log(getName() + "[" + container.getName() + "]: " + message);
         else {
             String containerName = null;
             if (container != null)
                 containerName = container.getName();
-            System.out.println(getName() + "[" + containerName
-                               + "]: " + message);
+            System.out.println(getName() + "[" + containerName + "]: "
+                    + message);
         }
 
     }
 
-
     /**
      * Log a message on the Logger associated with our Container (if any).
      *
-     * @param message Message to be logged
+     * @param message   Message to be logged
      * @param throwable Associated exception
      */
     void log(String message, Throwable throwable) {
@@ -764,19 +693,18 @@ public abstract class ManagerBase implements Manager {
         if (container != null)
             logger = container.getLogger();
         if (logger != null)
-            logger.log(getName() + "[" + container.getName() + "] "
-                       + message, throwable);
+            logger.log(getName() + "[" + container.getName() + "] " + message,
+                    throwable);
         else {
             String containerName = null;
             if (container != null)
                 containerName = container.getName();
-            System.out.println(getName() + "[" + containerName
-                               + "]: " + message);
+            System.out.println(getName() + "[" + containerName + "]: "
+                    + message);
             throwable.printStackTrace(System.out);
         }
 
     }
-
 
     /**
      * Add this Session to the recycle collection for this Manager.
@@ -790,6 +718,5 @@ public abstract class ManagerBase implements Manager {
         }
 
     }
-
 
 }

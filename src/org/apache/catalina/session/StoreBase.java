@@ -1,48 +1,40 @@
 /*
  * StoreBase.java
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/session/StoreBase.java,v 1.6 2002/08/28 17:08:58 bobh Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/session/
+ * StoreBase.java,v 1.6 2002/08/28 17:08:58 bobh Exp $
  * $Revision: 1.6 $
  * $Date: 2002/08/28 17:08:58 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -52,14 +44,11 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
 package org.apache.catalina.session;
@@ -85,8 +74,7 @@ import org.apache.catalina.util.StringManager;
  * @version $Revision: 1.6 $, $Date: 2002/08/28 17:08:58 $
  */
 
-public abstract class StoreBase
-    implements Lifecycle, Runnable, Store {
+public abstract class StoreBase implements Lifecycle, Runnable, Store {
 
     // ----------------------------------------------------- Instance Variables
 
@@ -156,21 +144,21 @@ public abstract class StoreBase
      * Return the info for this Store.
      */
     public String getInfo() {
-        return(info);
+        return (info);
     }
 
     /**
      * Return the thread name for this Store.
      */
     public String getThreadName() {
-        return(threadName);
+        return (threadName);
     }
 
     /**
      * Return the name for this Store, used for logging.
      */
     public String getStoreName() {
-        return(storeName);
+        return (storeName);
     }
 
     /**
@@ -186,9 +174,8 @@ public abstract class StoreBase
      * Return the debugging detail level for this Store.
      */
     public int getDebug() {
-        return(this.debug);
+        return (this.debug);
     }
-
 
     /**
      * Set the check interval (in seconds) for this Store.
@@ -198,16 +185,15 @@ public abstract class StoreBase
     public void setCheckInterval(int checkInterval) {
         int oldCheckInterval = this.checkInterval;
         this.checkInterval = checkInterval;
-        support.firePropertyChange("checkInterval",
-                                   new Integer(oldCheckInterval),
-                                   new Integer(this.checkInterval));
+        support.firePropertyChange("checkInterval", new Integer(
+                oldCheckInterval), new Integer(this.checkInterval));
     }
 
     /**
      * Return the check interval (in seconds) for this Store.
      */
     public int getCheckInterval() {
-        return(this.checkInterval);
+        return (this.checkInterval);
     }
 
     /**
@@ -225,7 +211,7 @@ public abstract class StoreBase
      * Return the Manager with which the Store is associated.
      */
     public Manager getManager() {
-        return(this.manager);
+        return (this.manager);
     }
 
     // --------------------------------------------------------- Public Methods
@@ -239,9 +225,8 @@ public abstract class StoreBase
         lifecycle.addLifecycleListener(listener);
     }
 
-
     /**
-     * Get the lifecycle listeners associated with this lifecycle. If this 
+     * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
      */
     public LifecycleListener[] findLifecycleListeners() {
@@ -249,7 +234,6 @@ public abstract class StoreBase
         return lifecycle.findLifecycleListeners();
 
     }
-
 
     /**
      * Remove a lifecycle event listener from this component.
@@ -290,13 +274,13 @@ public abstract class StoreBase
         long timeNow = System.currentTimeMillis();
         String[] keys = null;
 
-        if(!started)
+        if (!started)
             return;
 
         try {
             keys = keys();
         } catch (IOException e) {
-            log (e.toString());
+            log(e.toString());
             e.printStackTrace();
             return;
         }
@@ -310,9 +294,10 @@ public abstract class StoreBase
                 if (maxInactiveInterval < 0)
                     continue;
                 int timeIdle = // Truncate, do not round up
-                    (int) ((timeNow - session.getLastAccessedTime()) / 1000L);
+                        (int) ((timeNow - session.getLastAccessedTime())
+                                / 1000L);
                 if (timeIdle >= maxInactiveInterval) {
-                    if ( ( (PersistentManagerBase) manager).isLoaded( keys[i] )) {
+                    if (((PersistentManagerBase) manager).isLoaded(keys[i])) {
                         // recycle old backup session
                         session.recycle();
                     } else {
@@ -322,10 +307,10 @@ public abstract class StoreBase
                     remove(session.getId());
                 }
             } catch (IOException e) {
-                log (e.toString());
+                log(e.toString());
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
-                log (e.toString());
+                log(e.toString());
                 e.printStackTrace();
             }
         }
@@ -344,14 +329,14 @@ public abstract class StoreBase
             logger = container.getLogger();
 
         if (logger != null) {
-            logger.log(getStoreName()+"[" + container.getName() + "]: "
-                       + message);
+            logger.log(getStoreName() + "[" + container.getName() + "]: "
+                    + message);
         } else {
             String containerName = null;
             if (container != null)
                 containerName = container.getName();
-            System.out.println(getStoreName()+"[" + containerName
-                               + "]: " + message);
+            System.out.println(getStoreName() + "[" + containerName + "]: "
+                    + message);
         }
     }
 
@@ -370,17 +355,18 @@ public abstract class StoreBase
 
     /**
      * Prepare for the beginning of active use of the public methods of this
-     * component.  This method should be called after <code>configure()</code>,
+     * component. This method should be called after <code>configure()</code>,
      * and before any of the public methods of the component are utilized.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     public void start() throws LifecycleException {
         // Validate and update our current component state
         if (started)
-            throw new LifecycleException
-                (sm.getString(getStoreName()+".alreadyStarted"));
+            throw new LifecycleException(sm.getString(getStoreName()
+                    + ".alreadyStarted"));
         lifecycle.fireLifecycleEvent(START_EVENT, null);
         started = true;
 
@@ -390,17 +376,17 @@ public abstract class StoreBase
 
     /**
      * Gracefully terminate the active use of the public methods of this
-     * component.  This method should be the last one called on a given
+     * component. This method should be the last one called on a given
      * instance of this component.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that needs to be reported
+     *                               that needs to be reported
      */
     public void stop() throws LifecycleException {
         // Validate and update our current component state
         if (!started)
-            throw new LifecycleException
-                (sm.getString(getStoreName()+".notStarted"));
+            throw new LifecycleException(sm.getString(getStoreName()
+                    + ".notStarted"));
         lifecycle.fireLifecycleEvent(STOP_EVENT, null);
         started = false;
 

@@ -1,6 +1,5 @@
 package org.apache.catalina.connector.http;
 
-
 /**
  * Static constants for this package.
  *

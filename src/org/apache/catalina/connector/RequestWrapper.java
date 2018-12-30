@@ -1,47 +1,39 @@
 /*
- * $Header: /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/connector/RequestWrapper.java,v 1.4 2002/03/18 07:15:39 remm Exp $
+ * $Header:
+ * /home/cvs/jakarta-tomcat-4.0/catalina/src/share/org/apache/catalina/connector
+ * /RequestWrapper.java,v 1.4 2002/03/18 07:15:39 remm Exp $
  * $Revision: 1.4 $
  * $Date: 2002/03/18 07:15:39 $
- *
  * ====================================================================
- *
  * The Apache Software License, Version 1.1
- *
- * Copyright (c) 1999 The Apache Software Foundation.  All rights
+ * Copyright (c) 1999 The Apache Software Foundation. All rights
  * reserved.
- *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
- *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
+ * notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
  * 3. The end-user documentation included with the redistribution, if
- *    any, must include the following acknowlegement:
- *       "This product includes software developed by the
- *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowlegement may appear in the software itself,
- *    if and wherever such third-party acknowlegements normally appear.
- *
+ * any, must include the following acknowlegement:
+ * "This product includes software developed by the
+ * Apache Software Foundation (http://www.apache.org/)."
+ * Alternately, this acknowlegement may appear in the software itself,
+ * if and wherever such third-party acknowlegements normally appear.
  * 4. The names "The Jakarta Project", "Tomcat", and "Apache Software
- *    Foundation" must not be used to endorse or promote products derived
- *    from this software without prior written permission. For written
- *    permission, please contact apache@apache.org.
- *
+ * Foundation" must not be used to endorse or promote products derived
+ * from this software without prior written permission. For written
+ * permission, please contact apache@apache.org.
  * 5. Products derived from this software may not be called "Apache"
- *    nor may "Apache" appear in their names without prior written
- *    permission of the Apache Group.
- *
+ * nor may "Apache" appear in their names without prior written
+ * permission of the Apache Group.
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
  * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
@@ -51,19 +43,14 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Apache Software Foundation.  For more
+ * individuals on behalf of the Apache Software Foundation. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
  * [Additional notices, if required by prior licensing conditions]
- *
  */
 
-
 package org.apache.catalina.connector;
-
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -76,10 +63,9 @@ import org.apache.catalina.Request;
 import org.apache.catalina.Response;
 import org.apache.catalina.Wrapper;
 
-
 /**
  * Abstract convenience class that wraps a Catalina-internal <b>Request</b>
- * object.  By default, all methods are delegated to the wrapped request,
+ * object. By default, all methods are delegated to the wrapped request,
  * but subclasses can override individual methods as required to provide the
  * functionality that they require.
  *
@@ -90,9 +76,7 @@ import org.apache.catalina.Wrapper;
 
 public abstract class RequestWrapper implements Request {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a wrapper for the specified request.
@@ -106,15 +90,12 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The wrapped request.
      */
     protected Request request = null;
-
 
     /**
      * Return the wrapped request.
@@ -125,9 +106,7 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the authorization credentials sent with this request.
@@ -137,7 +116,6 @@ public abstract class RequestWrapper implements Request {
         return (request.getAuthorization());
 
     }
-
 
     /**
      * Set the authorization credentials sent with this request.
@@ -150,7 +128,6 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Return the Connector through which this Request was received.
      */
@@ -159,7 +136,6 @@ public abstract class RequestWrapper implements Request {
         return (request.getConnector());
 
     }
-
 
     /**
      * Set the Connector through which this Request was received.
@@ -172,7 +148,6 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Return the Context within which this Request is being processed.
      */
@@ -182,9 +157,8 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
-     * Set the Context within which this Request is being processed.  This
+     * Set the Context within which this Request is being processed. This
      * must be called as soon as the appropriate Context is identified, because
      * it identifies the value to be returned by <code>getContextPath()</code>,
      * and thus enables parsing of the request URI.
@@ -197,7 +171,6 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Return descriptive information about this Request implementation and
      * the corresponding version number, in the format
@@ -209,7 +182,6 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Return the <code>ServletRequest</code> for which this object
      * is the facade.
@@ -220,7 +192,6 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Return the Response with which this Request is associated.
      */
@@ -229,7 +200,6 @@ public abstract class RequestWrapper implements Request {
         return (request.getResponse());
 
     }
-
 
     /**
      * Set the Response with which this Request is associated.
@@ -241,7 +211,6 @@ public abstract class RequestWrapper implements Request {
         request.setResponse(response);
 
     }
-
 
     /**
      * Return the Socket (if any) through which this Request was received.
@@ -255,7 +224,6 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Set the Socket (if any) through which this Request was received.
      *
@@ -267,7 +235,6 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Return the input stream associated with this Request.
      */
@@ -276,7 +243,6 @@ public abstract class RequestWrapper implements Request {
         return (request.getStream());
 
     }
-
 
     /**
      * Set the input stream associated with this Request.
@@ -289,7 +255,6 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Return the Wrapper within which this Request is being processed.
      */
@@ -299,9 +264,8 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
-     * Set the Wrapper within which this Request is being processed.  This
+     * Set the Wrapper within which this Request is being processed. This
      * must be called as soon as the appropriate Wrapper is identified, and
      * before the Request is ultimately passed to an application servlet.
      *
@@ -313,9 +277,7 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Create and return a ServletInputStream to read the content
@@ -329,7 +291,6 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Perform whatever actions are required to flush and close the input
      * stream or reader, in a single operation.
@@ -342,7 +303,6 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Release all object references, and initialize instance variables, in
      * preparation for reuse of this object.
@@ -352,7 +312,6 @@ public abstract class RequestWrapper implements Request {
         request.recycle();
 
     }
-
 
     /**
      * Set the content length associated with this Request.
@@ -365,10 +324,9 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Set the content type (and optionally the character encoding)
-     * associated with this Request.  For example,
+     * associated with this Request. For example,
      * <code>text/html; charset=ISO-8859-4</code>.
      *
      * @param type The new content type
@@ -378,7 +336,6 @@ public abstract class RequestWrapper implements Request {
         request.setContentType(type);
 
     }
-
 
     /**
      * Set the protocol name and version associated with this Request.
@@ -391,9 +348,8 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
-     * Set the remote IP address associated with this Request.  NOTE:  This
+     * Set the remote IP address associated with this Request. NOTE: This
      * value will be used to resolve the value for <code>getRemoteHost()</code>
      * if that method is called.
      *
@@ -405,9 +361,8 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
-     * Set the name of the scheme associated with this request.  Typical values
+     * Set the name of the scheme associated with this request. Typical values
      * are <code>http</code>, <code>https</code>, and <code>ftp</code>.
      *
      * @param scheme The scheme
@@ -417,7 +372,6 @@ public abstract class RequestWrapper implements Request {
         request.setScheme(scheme);
 
     }
-
 
     /**
      * Set the value to be returned by <code>isSecure()</code>
@@ -431,7 +385,6 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Set the name of the server (virtual host) to process this request.
      *
@@ -443,7 +396,6 @@ public abstract class RequestWrapper implements Request {
 
     }
 
-
     /**
      * Set the port number of the server to process this request.
      *
@@ -454,6 +406,5 @@ public abstract class RequestWrapper implements Request {
         request.setServerPort(port);
 
     }
-
 
 }
